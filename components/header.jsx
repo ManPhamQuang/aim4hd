@@ -51,9 +51,10 @@ export default function DesktopHeader() {
                             >
                                 <MenuIcon />
                             </IconButton>
-                            <Typography variant="h6" className={classes.title}>
-                                News
-                            </Typography>
+                            <Typography
+                                variant="h6"
+                                className={classes.title}
+                            ></Typography>
                             <Button className={classes.button} color="inherit">
                                 Home
                             </Button>

@@ -1,7 +1,11 @@
 import Head from "next/head";
 import { Grid } from "@material-ui/core";
-import Header from "../components/header";
+import Posts from "../components/Posts";
 
 export default function Home() {
-    return <h1>hello</h1>;
+    return (
+        <div>
+            <Posts />
+        </div>
+    );
 }

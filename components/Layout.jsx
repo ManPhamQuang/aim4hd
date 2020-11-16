@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./header";
+import Header from "./Header";
 import { Grid } from "@material-ui/core";
 
 export default function Layout(props) {

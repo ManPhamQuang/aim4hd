@@ -53,6 +53,10 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "flex-end",
         // flex: "1 1 auto",
     },
+    title: {
+        fontWeight: 400,
+        fontSize: 19,
+    },
     bottom: {
         flexWrap: "wrap",
         // overflowX: "hidden",
@@ -88,16 +92,13 @@ export default function PostCard({
     return (
         <Card className={classes.root}>
             <CardHeader
-                classes={{ action: classes.action }}
+                classes={{ action: classes.action, title: classes.title }}
                 avatar={
                     <Avatar
                         alt={author}
                         src={avatar}
-                        aria-label="recipe"
                         className={classes.avatar}
-                    >
-                        R
-                    </Avatar>
+                    ></Avatar>
                 }
                 action={
                     <IconButton aria-label="settings">

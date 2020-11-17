@@ -16,10 +16,12 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
+import { Hidden } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 345,
+        // maxWidth: 400,
+        // maxWidth: 700,
     },
     media: {
         height: 0,
@@ -37,13 +39,35 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         backgroundColor: red[500],
+        width: theme.spacing(8),
+        height: theme.spacing(8),
     },
     content: {
         paddingTop: "0px",
     },
+    action: {
+        // backgroundColor: "red",
+        // display: "inline-block",
+        // flex: "0 1 auto",
+        flexWrap: "wrap",
+        justifyContent: "flex-end",
+        // flex: "1 1 auto",
+    },
+    bottom: {
+        flexWrap: "wrap",
+        // overflowX: "hidden",
+        justifyContent: "flex-end",
+    },
 }));
 
-export default function PostCard({ author, major, skills, title, content }) {
+export default function PostCard({
+    author,
+    major,
+    skills,
+    title,
+    content,
+    avatar,
+}) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -51,11 +75,27 @@ export default function PostCard({ author, major, skills, title, content }) {
         setExpanded(!expanded);
     };
 
+    const skillBadges = () => {
+        return (
+            <Hidden xsDown>
+                {skills.map((skill) => (
+                    <SkillBadge label={skill} />
+                ))}
+            </Hidden>
+        );
+    };
+
     return (
         <Card className={classes.root}>
             <CardHeader
+                classes={{ action: classes.action }}
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
+                    <Avatar
+                        alt={author}
+                        src={avatar}
+                        aria-label="recipe"
+                        className={classes.avatar}
+                    >
                         R
                     </Avatar>
                 }
@@ -64,24 +104,29 @@ export default function PostCard({ author, major, skills, title, content }) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                action={skills.map((skill) => (
-                    <SkillBadge label={skill} />
-                ))}
+                action={
+                    <Hidden xsDown>
+                        {/* desktop */}
+                        {skills.map((skill, idx) => {
+                            if (idx < 4) {
+                                return <SkillBadge label={skill} />;
+                            }
+                        })}
+                    </Hidden>
+                }
                 title={author}
                 subheader={major}
             />
             <CardContent className={classes.content}>
                 <Typography variant="h5" component="h2">
-                    Looking for a teammate
+                    {title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    This impressive paella is a perfect party dish and a fun
-                    meal to cook together with your guests. Add 1 cup of frozen
-                    peas along with the mussels, if you like.
+                    {content}
                 </Typography>
             </CardContent>
-            {/* <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
+            <CardActions className={classes.bottom} disableSpacing>
+                {/* <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
                 <IconButton aria-label="share">
@@ -96,8 +141,16 @@ export default function PostCard({ author, major, skills, title, content }) {
                     aria-label="show more"
                 >
                     <ExpandMoreIcon />
-                </IconButton>
-            </CardActions> */}
+                </IconButton> */}
+                <Hidden smUp>
+                    {/* mobile */}
+                    {skills.map((skill, idx) => {
+                        if (idx < 4) {
+                            return <SkillBadge label={skill} />;
+                        }
+                    })}
+                </Hidden>
+            </CardActions>
             {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>Method:</Typography>

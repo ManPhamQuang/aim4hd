@@ -41,7 +41,7 @@ export default function DesktopHeader() {
         <div className={classes.root}>
             <AppBar className={classes.appbar} position="static">
                 <Grid container direction="row">
-                    <Grid item xs={0} sm={1} />
+                    <Grid item xs={false} sm={1} />
                     <Grid item xs={12} sm={10} className={classes.content}>
                         <Toolbar disableGutters spacing={3}>
                             <IconButton
@@ -77,7 +77,7 @@ export default function DesktopHeader() {
                             </Button>
                         </Toolbar>
                     </Grid>
-                    <Grid item xs={0} sm={1} />
+                    <Grid item xs={false} sm={1} />
                 </Grid>
             </AppBar>
         </div>

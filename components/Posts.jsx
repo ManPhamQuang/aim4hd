@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PostCard from "./PostCard";
 import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const data = [
     {
@@ -35,21 +36,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 export default function Posts() {
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        axios
+            .get("https://warm-castle-19908.herokuapp.com/api/v1/posts")
+            .then((res) => {
+                setPosts(res.data.data.posts);
+                console.log(res.data.data.posts);
+            })
+            .catch((err) => console.log(err));
+    }, []);
     const classes = useStyles();
     return (
         <Grid container direction="column" spacing={4}>
-            {data.map((post) => (
+            {posts.map((post) => (
                 <Grid item>
                     <PostCard {...post} />
                 </Grid>
             ))}
         </Grid>
-    );
-    return (
-        <Container className={classes.root}>
-            {data.map((post) => (
-                <PostCard {...post} />
-            ))}
-        </Container>
     );
 }

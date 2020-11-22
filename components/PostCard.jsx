@@ -16,7 +16,9 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
-import { Hidden } from "@material-ui/core";
+import { Box, Button, Grid, Hidden } from "@material-ui/core";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import SendIcon from "@material-ui/icons/Send";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,15 +64,45 @@ const useStyles = makeStyles((theme) => ({
         // overflowX: "hidden",
         justifyContent: "flex-end",
     },
+    button: {
+        // color: theme.color.prim
+        // [theme.breakpoints.up("md")]: {
+        //     maxWidth: 250,
+        // },
+        // flexGrow: 1,
+        // maxWidth: 200,
+        // minWidth: 145,
+        width: "100%",
+    },
+    bottomAction: {
+        // flex: "0 1 auto",
+        display: "flex",
+        width: "100%",
+        // paddingLeft: "8px",
+        justifyContent: "space-around",
+        paddingLeft: "0.6rem",
+        paddingRight: "0.6rem",
+        paddingBottom: "0.6rem",
+    },
+    buttonsContainer: {
+        padding: theme.spacing(2),
+        // paddingLeft: theme.spacing(3),
+        // paddingRight: theme.spacing(3),
+        // marginBottom: theme.spacing(3),
+    },
 }));
 
 export default function PostCard({
+    isOpen,
+    createdAt,
+    _id,
     author,
-    major,
-    skills,
     title,
     content,
-    avatar,
+    aiming,
+    currentMember,
+    maximumMember,
+    course,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -95,8 +127,8 @@ export default function PostCard({
                 classes={{ action: classes.action, title: classes.title }}
                 avatar={
                     <Avatar
-                        alt={author}
-                        src={avatar}
+                        alt={author.name}
+                        src={author.avatar}
                         className={classes.avatar}
                     ></Avatar>
                 }
@@ -108,15 +140,15 @@ export default function PostCard({
                 action={
                     <Hidden xsDown>
                         {/* desktop */}
-                        {skills.map((skill, idx) => {
+                        {author.skills.map((skill, idx) => {
                             if (idx < 4) {
                                 return <SkillBadge label={skill} />;
                             }
                         })}
                     </Hidden>
                 }
-                title={author}
-                subheader={major}
+                title={author.name}
+                subheader={author.school}
             />
             <CardContent className={classes.content}>
                 <Typography variant="h5" component="h2">
@@ -145,13 +177,46 @@ export default function PostCard({
                 </IconButton> */}
                 <Hidden smUp>
                     {/* mobile */}
-                    {skills.map((skill, idx) => {
+                    {author.skills.map((skill, idx) => {
                         if (idx < 4) {
                             return <SkillBadge label={skill} />;
                         }
                     })}
                 </Hidden>
             </CardActions>
+            <Grid container spacing={3} className={classes.buttonsContainer}>
+                <Grid item xs={6}>
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        startIcon={<BookmarkIcon />}
+                    >
+                        Save It
+                    </Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        endIcon={<SendIcon />}
+                        color="primary"
+                    >
+                        Apply
+                    </Button>
+                </Grid>
+            </Grid>
+            {/* <Box className={classes.bottomAction}>
+                <Button variant="contained" className={classes.button}>
+                    Save It
+                </Button>
+                <Button
+                    variant="contained"
+                    className={classes.button}
+                    color="primary"
+                >
+                    Apply
+                </Button>
+            </Box> */}
             {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>Method:</Typography>

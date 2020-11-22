@@ -39,7 +39,7 @@ export default function Posts() {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         axios
-            .get("https://warm-castle-19908.herokuapp.com/api/v1/posts")
+            .get("https://aim4hd.herokuapp.com/api/v1/posts")
             .then((res) => {
                 setPosts(res.data.data.posts);
                 console.log(res.data.data.posts);

@@ -116,7 +116,7 @@ export default function PostCard({
         return (
             <Hidden xsDown>
                 {skills.map((skill) => (
-                    <SkillBadge label={skill.name} />
+                    <SkillBadge key={skill.name} label={skill.name} />
                 ))}
             </Hidden>
         );
@@ -143,7 +143,12 @@ export default function PostCard({
                         {/* desktop */}
                         {author.skills.map((skill, idx) => {
                             if (idx < 4) {
-                                return <SkillBadge label={skill.name} />;
+                                return (
+                                    <SkillBadge
+                                        key={skill.name}
+                                        label={skill.name}
+                                    />
+                                );
                             }
                         })}
                     </Hidden>
@@ -180,7 +185,12 @@ export default function PostCard({
                     {/* mobile */}
                     {author.skills.map((skill, idx) => {
                         if (idx < 4) {
-                            return <SkillBadge label={skill.name} />;
+                            return (
+                                <SkillBadge
+                                    key={skill.name}
+                                    label={skill.name}
+                                />
+                            );
                         }
                     })}
                 </Hidden>

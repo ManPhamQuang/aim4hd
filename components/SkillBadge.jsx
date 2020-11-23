@@ -30,19 +30,19 @@ const generateRandomColor = () => {
             break;
         case 3:
             return {
-                color: "",
+                color: null,
                 style: { borderColor: "violet", color: "violet" },
             };
             break;
         case 4:
             return {
-                color: "",
+                color: null,
                 style: { borderColor: green[600], color: green[600] },
             };
             break;
         case 5:
             return {
-                color: "",
+                color: null,
                 style: { borderColor: purple[600], color: purple[600] },
             };
             break;
@@ -61,7 +61,7 @@ export default function SkillBadge({ label }) {
         <Chip
             className={classes.root}
             // color={green}
-            color={generateRandomColor().color}
+            // color={generateRandomColor().color}
             style={generateRandomColor().style}
             variant="outlined"
             label={label}

@@ -16,10 +16,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
-import { Box, Button, Grid, Hidden } from "@material-ui/core";
+import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
-
+import Link from "next/link";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -54,11 +54,13 @@ const useStyles = makeStyles((theme) => ({
         // flex: "0 1 auto",
         flexWrap: "wrap",
         justifyContent: "flex-end",
-        // flex: "1 1 auto",
+        flex: "0 1 auto",
     },
     title: {
         fontWeight: 400,
         fontSize: 19,
+        minWidth: 130,
+        backgroundColor: "blue",
     },
     bottom: {
         flexWrap: "wrap",
@@ -90,6 +92,14 @@ const useStyles = makeStyles((theme) => ({
         // paddingLeft: theme.spacing(3),
         // paddingRight: theme.spacing(3),
         // marginBottom: theme.spacing(3),
+    },
+    commentText: {
+        fontSize: "16px",
+        padding: "16px",
+        "&:hover": {
+            cursor: "pointer",
+            textDecoration: "underline",
+        },
     },
 }));
 
@@ -164,6 +174,23 @@ export default function PostCard({
                     {content}
                 </Typography>
             </CardContent>
+            <Link href="/about">
+                <Typography
+                    variant="caption"
+                    align="right"
+                    className={classes.commentText}
+                    component="a"
+                >
+                    3 comments
+                </Typography>
+            </Link>
+            {/* <MUILink
+                component={Link}
+                href="/about"
+                className={classes.commentText}
+            >
+                3 comments
+            </MUILink> */}
             <CardActions className={classes.bottom} disableSpacing>
                 {/* <IconButton aria-label="add to favorites">
                     <FavoriteIcon />

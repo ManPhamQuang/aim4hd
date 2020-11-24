@@ -6,7 +6,7 @@ import Filter from "../components/Filter";
 export default function Home() {
     return (
         <Grid container justify="center">
-            <Grid item xs={false} md={3}>
+            <Grid item xs={12} md={3}>
                 <Filter />
             </Grid>
             <Grid item xs={11} md={5}>

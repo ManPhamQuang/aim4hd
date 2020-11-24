@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
         fontSize: 19,
         minWidth: 130,
-        backgroundColor: "blue",
     },
     bottom: {
         flexWrap: "wrap",

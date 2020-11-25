@@ -11,12 +11,10 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-
         margin: theme.spacing(4),
         backgroundColor: 'white',
 		justifyContent: "center",
-		alignItems: "center",
-		marginBottom: "-5%",
+        alignItems: "center",
     },
     overview:{
 		margin: theme.spacing(4),
@@ -62,6 +60,7 @@ export default function CenterProfile(){
 					Overview
 				</Typography>
             </div>
+            <hr/>
             <div className={classes.about}>
                 <Typography
                     variant="h5"
@@ -77,6 +76,7 @@ export default function CenterProfile(){
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore est perspiciatis aliquam quas. Laborum quas dolor delectus, culpa aliquam sequi architecto nam sapiente dicta molestiae harum quis doloremque! Vero, repudiandae?
                 </Typography>
             </div>
+            <hr/>
             <div className={classes.about}>
                 <Typography
                     variant="h5"

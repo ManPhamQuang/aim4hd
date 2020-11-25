@@ -88,7 +88,10 @@ export default function UserProfile() {
 
 			<div
 				className={classes.root}
-				style={{ marginBottom: "2%", borderBottom: "2px solid black" }}
+				style={{
+					marginBottom: "2%",
+					borderBottom: "2px solid black",
+				}}
 			>
 				<IconButton
 					aria-label="Facebook.com"
@@ -116,7 +119,7 @@ export default function UserProfile() {
 					variant="h4"
 					align="center"
 					style={{
-						textDecoration: "underline red",
+						textDecoration: "underline orange",
 						fontWeight: "bold",
 						textShadow: "1px 1px 2px #000000",
 					}}

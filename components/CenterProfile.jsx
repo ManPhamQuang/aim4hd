@@ -19,19 +19,15 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: "-5%",
     },
     overview:{
-        // display: "flex",
 		margin: theme.spacing(4),
-		// justifyContent: "space-around",
 		alignItems: "left",
 		marginBottom: "10%",
         marginTop: "10%",
-        marginLeft:"20%",
+        marginLeft:"5%",
 
     },
 	about: {
-		// display: "flex",
 		margin: theme.spacing(4),
-		// justifyContent: "space-around",
 		alignItems: "left",
 		marginBottom: "10%",
         marginTop: "10%",
@@ -61,7 +57,6 @@ export default function CenterProfile(){
             <div className={classes.overview}>
 				<Typography
 					variant="h3"
-					align="center"
 					style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
 				>
 					Overview
@@ -78,7 +73,6 @@ export default function CenterProfile(){
             <div className={classes.content}>
                 <Typography
                     variant="h6"
-                    style={{ textShadow: "1px 1px 2px #000000" }}
                 >
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore est perspiciatis aliquam quas. Laborum quas dolor delectus, culpa aliquam sequi architecto nam sapiente dicta molestiae harum quis doloremque! Vero, repudiandae?
                 </Typography>
@@ -86,7 +80,6 @@ export default function CenterProfile(){
             <div className={classes.about}>
                 <Typography
                     variant="h5"
-                    // align="left"
                     style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
                 >
                     Skill
@@ -95,8 +88,6 @@ export default function CenterProfile(){
             <div className={classes.content}>
                 <Typography
                     variant="h6"
-                    // align="left"
-                    style={{textShadow: "1px 1px 2px #000000" }}
                 >
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi saepe maxime adipisci nesciunt consectetur incidunt molestiae. Non repellendus, adipisci cum eveniet aliquid dolore rem, inventore provident eaque sequi quidem voluptate?
                 </Typography>

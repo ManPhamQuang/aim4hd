@@ -70,23 +70,13 @@ function TabPanel(props) {
   );
 }
 
-export default function CenterProfile() {
+export default function CenterProfile({ user }) {
   const classes = useStyles();
-  const [user, setUser] = useState({});
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  useEffect(() => {
-    axios
-      .get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace691")
-      .then((res) => {
-        setUser(res.data.data.user);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   const skillBadges = () => {
     return (

@@ -17,190 +17,184 @@ import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Phone } from "@material-ui/icons";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+// import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: "flex",
-		margin: theme.spacing(4),
-		justifyContent: "center",
-		alignItems: "center",
-		marginBottom: "-5%",
-	},
-	profile_picture: {
-		width: theme.spacing(23),
-		height: theme.spacing(23),
-	},
-	logo: {
-		fontSize: "3rem",
-	},
-	logo2: {
-		fontSize: "2.5rem",
-	},
-	info: {
-		fontSize: "2rem",
-	},
-	contactInfo: {
-		display: "flex",
-		margin: theme.spacing(4),
-		justifyContent: "center",
-		alignItems: "center",
-		marginBottom: "-4%",
-		marginTop: "3%",
-	},
+  root: {
+    display: "flex",
+    margin: theme.spacing(4),
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "-5%",
+  },
+  profile_picture: {
+    width: theme.spacing(23),
+    height: theme.spacing(23),
+  },
+  logo: {
+    fontSize: "3rem",
+  },
+  logo2: {
+    fontSize: "2rem",
+  },
+  info: {
+    fontSize: "1.5rem",
+  },
+  contactInfo: {
+    display: "flex",
+    margin: theme.spacing(4),
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "-4%",
+    marginTop: "3%",
+  },
 }));
 
-export default function UserProfile() {
-	const classes = useStyles();
-	const [user, setUser] = useState({});
-	useEffect(() => {
-		axios
-			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace691")
-			.then((res) => setUser(res.data.data.user))
-			.catch((err) => console.log(err));
-	}, []);
-	return (
-		<div>
-			<div className={classes.root}>
-				<Avatar
-					alt="User avatar"
-					src={user.avatar}
-					className={classes.profile_picture}
-				/>
-			</div>
-			<div className={classes.root}>
-				<Typography
-					variant="h3"
-					align="center"
-					style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
-				>
-					{user.name}
-				</Typography>
-			</div>
-			<div className={classes.root}>
-				<Typography
-					variant="h4"
-					align="center"
-					style={{ textShadow: "1px 1px 1px #000000" }}
-				>
-					{user.major}
-				</Typography>
-			</div>
+export default function UserProfile({ user }) {
+  const classes = useStyles();
+  return (
+    <div>
+      <div className={classes.root}>
+        <Avatar
+          alt="User avatar"
+          src={user.avatar}
+          className={classes.profile_picture}
+        />
+      </div>
+      <div className={classes.root}>
+        <Typography
+          variant="h4"
+          align="center"
+          style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
+        >
+          {user.name}
+        </Typography>
+      </div>
+      <div className={classes.root}>
+        <Typography
+          variant="h5"
+          align="center"
+          style={{ textShadow: "1px 1px 1px #000000" }}
+        >
+          {user.major}
+        </Typography>
+      </div>
 
-			<div
-				className={classes.root}
-				style={{
-					marginBottom: "2%",
-					borderBottom: "2px solid black",
-				}}
-			>
-				<IconButton
-					aria-label="Facebook.com"
-					onClick={() => window.open("https://www.facebook.com")}
-				>
-					<FacebookIcon style={{ fill: "#1877F2" }} className={classes.logo} />
-				</IconButton>
+      <div
+        className={classes.root}
+        style={{
+          marginBottom: "2%",
+          borderBottom: "2px solid black",
+        }}
+      >
+        <IconButton
+          aria-label="Facebook.com"
+          onClick={() => window.open("https://www.facebook.com")}
+        >
+          <FacebookIcon style={{ fill: "#1877F2" }} className={classes.logo} />
+        </IconButton>
 
-				<IconButton
-					aria-label="Instagram.com"
-					onClick={() => window.open("https://www.instagram.com")}
-				>
-					<InstagramIcon style={{ fill: "#E74159" }} className={classes.logo} />
-				</IconButton>
+        <IconButton
+          aria-label="Instagram.com"
+          onClick={() => window.open("https://www.instagram.com")}
+        >
+          <InstagramIcon style={{ fill: "#E74159" }} className={classes.logo} />
+        </IconButton>
 
-				<IconButton
-					aria-label="Linkedin.com"
-					onClick={() => window.open("https://www.Linkedin.com")}
-				>
-					<LinkedInIcon style={{ fill: "#006699" }} className={classes.logo} />
-				</IconButton>
-			</div>
-			<span className={classes.root} style={{ marginBottom: "-7%" }}>
-				<Typography
-					variant="h4"
-					align="center"
-					style={{
-						textDecoration: "underline orange",
-						fontWeight: "bold",
-						textShadow: "1px 1px 2px #000000",
-					}}
-				>
-					Contact Information
-				</Typography>
-			</span>
-			<div className={classes.contactInfo}>
-				<Grid
-					container
-					direction="row"
-					alignItems="center"
-					className={classes.root}
-				>
-					<Grid item>
-						<EmailIcon className={classes.logo2} />
-					</Grid>
-					<Grid item className={classes.info}>
-						Email
-					</Grid>
-				</Grid>
-			</div>
-			<div className={classes.root}>
-				<Typography
-					variant="caption"
-					align="center"
-					style={{ fontSize: "1.5rem" }}
-				>
-					{user.email}
-				</Typography>
-			</div>
+        <IconButton
+          aria-label="Linkedin.com"
+          onClick={() => window.open("https://www.Linkedin.com")}
+        >
+          <LinkedInIcon style={{ fill: "#006699" }} className={classes.logo} />
+        </IconButton>
+      </div>
+      <span className={classes.root} style={{ marginBottom: "-7%" }}>
+        <Typography
+          variant="h5"
+          align="center"
+          style={{
+            textDecoration: "underline orange",
+            fontWeight: "bold",
+            textShadow: "1px 1px 2px #000000",
+          }}
+        >
+          Contact Information
+        </Typography>
+      </span>
+      <div className={classes.contactInfo}>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          className={classes.root}
+        >
+          <Grid item>
+            <EmailIcon className={classes.logo2} />
+          </Grid>
+          <Grid item className={classes.info}>
+            Email
+          </Grid>
+        </Grid>
+      </div>
+      <div className={classes.root}>
+        <Typography
+          variant="caption"
+          align="center"
+          style={{ fontSize: "1.5rem" }}
+        >
+          {user.email}
+        </Typography>
+      </div>
 
-			<div className={classes.contactInfo}>
-				<Grid
-					container
-					direction="row"
-					alignItems="center"
-					className={classes.root}
-				>
-					<Grid item>
-						<PhoneIcon className={classes.logo2} />
-					</Grid>
-					<Grid item className={classes.info}>
-						Phone
-					</Grid>
-				</Grid>
-			</div>
-			<div className={classes.root}>
-				<Typography
-					variant="caption"
-					align="center"
-					style={{ fontSize: "1.5rem" }}
-				>
-					+94 903321432
-				</Typography>
-			</div>
+      <div className={classes.contactInfo}>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          className={classes.root}
+        >
+          <Grid item>
+            <PhoneIcon className={classes.logo2} />
+          </Grid>
+          <Grid item className={classes.info}>
+            Phone
+          </Grid>
+        </Grid>
+      </div>
+      <div className={classes.root}>
+        <Typography
+          variant="caption"
+          align="center"
+          style={{ fontSize: "1.5rem" }}
+        >
+          +94 903321432
+        </Typography>
+      </div>
 
-			<div className={classes.contactInfo}>
-				<Grid
-					container
-					direction="row"
-					alignItems="center"
-					className={classes.root}
-				>
-					<Grid item>
-						<PersonPinIcon className={classes.logo2} />
-					</Grid>
-					<Grid item className={classes.info}>
-						Location
-					</Grid>
-				</Grid>
-			</div>
-			<div className={classes.root}>
-				<Typography
-					variant="caption"
-					align="center"
-					style={{ fontSize: "1.5rem" }}
-				>
-					Ho Chi Minh city
-				</Typography>
-			</div>
-		</div>
-	);
+      <div className={classes.contactInfo}>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          className={classes.root}
+        >
+          <Grid item>
+            <PersonPinIcon className={classes.logo2} />
+          </Grid>
+          <Grid item className={classes.info}>
+            Location
+          </Grid>
+        </Grid>
+      </div>
+      <div className={classes.root}>
+        <Typography
+          variant="caption"
+          align="center"
+          style={{ fontSize: "1.5rem" }}
+        >
+          Ho Chi Minh city
+        </Typography>
+      </div>
+    </div>
+  );
 }

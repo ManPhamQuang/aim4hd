@@ -57,7 +57,7 @@ export default function UserProfile() {
 			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace691")
 			.then((res) => setUser(res.data.data.user))
 			.catch((err) => console.log(err));
-	});
+	}, []);
 	return (
 		<div>
 			<div className={classes.root}>

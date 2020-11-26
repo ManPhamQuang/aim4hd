@@ -110,16 +110,14 @@ export default function CenterProfile({ user }) {
       <TabPanel value={value} index={0}>
         <div className={classes.about}>
           <Typography
-            variant="h4" component="h2"
+            variant="h5" component="h2"
             style={{ fontWeight: "bold" }}
           >
             About
           </Typography>
         </div>
         <div className={classes.content}>
-          <Typography variant="h6" 
-            component="p"
-            style={{ fontWeight: "fontLight" }}
+          <Typography value={value}
           >
             {user.description}
           </Typography>
@@ -127,7 +125,7 @@ export default function CenterProfile({ user }) {
         <hr />
         <div className={classes.about}>
           <Typography
-            variant="h4" component="h2"
+            variant="h5" component="h2"
             style={{ fontWeight: "bold" }}
           >
             Skill
@@ -148,7 +146,7 @@ export default function CenterProfile({ user }) {
         <hr />
         <div className={classes.about}>
           <Typography
-            variant="h4" component="h2"
+            variant="h5" component="h2"
             style={{ fontWeight: "bold" }}
           >
             Current Courses

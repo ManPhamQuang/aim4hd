@@ -20,8 +20,8 @@ export default function UserProfile() {
 	return (
 		<React.Fragment>
 		<Head>
-                <title>{user.name} | AimforHD</title>
-            </Head>
+            <title>{user.name} | AimforHD</title>
+        </Head>
 		<Grid container justify="center">
 			<Grid item xs={12} md={3}>
 				<LeftProfile user={user}/>

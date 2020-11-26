@@ -113,6 +113,7 @@ export default function PostCard({
     currentMember,
     maximumMember,
     course,
+    numberOfComments,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -180,7 +181,7 @@ export default function PostCard({
                     className={classes.commentText}
                     component="a"
                 >
-                    3 comments
+                    {numberOfComments} comments
                 </Typography>
             </Link>
             {/* <MUILink

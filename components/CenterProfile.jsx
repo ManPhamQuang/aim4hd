@@ -22,32 +22,29 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  overview: {
-    margin: theme.spacing(4),
-    alignItems: "left",
-    marginBottom: "10%",
-    marginTop: "10%",
-    marginLeft: "5%",
-  },
+  // overview: {
+  //   margin: theme.spacing(4),
+  //   alignItems: "left",
+  //   marginBottom: "10%",
+  //   marginTop: "10%",
+  //   marginLeft: "5%",
+  // },
   about: {
     margin: theme.spacing(4),
     alignItems: "left",
-    marginBottom: "10%",
-    marginTop: "10%",
-    marginLeft: "20%",
+    marginLeft: "10%",
   },
   content: {
     margin: theme.spacing(4),
     alignItems: "left",
     marginBottom: "10%",
-    marginTop: "10%",
-    marginLeft: "20%",
+    marginLeft: "10%",
   },
   skill: {
     margin: theme.spacing(4),
     marginBottom: "10%",
     marginTop: "10%",
-    marginLeft: "20%",
+    marginLeft: "10%",
   },
 }));
 function TabPanel(props) {
@@ -104,6 +101,7 @@ export default function CenterProfile({ user }) {
           value={value}
           onChange={handleChange}
           aria-label="simple tabs example"
+          centered
         >
           <Tab label="Overview" />
           <Tab label="Teams" />
@@ -112,20 +110,25 @@ export default function CenterProfile({ user }) {
       <TabPanel value={value} index={0}>
         <div className={classes.about}>
           <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", textShadow: "1px 1px 1px #000000" }}
+            variant="h4" component="h2"
+            style={{ fontWeight: "bold" }}
           >
             About
           </Typography>
         </div>
         <div className={classes.content}>
-          <Typography variant="h6">{user.description}</Typography>
+          <Typography variant="h6" 
+            component="p"
+            style={{ fontWeight: "fontLight" }}
+          >
+            {user.description}
+          </Typography>
         </div>
         <hr />
         <div className={classes.about}>
           <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
+            variant="h4" component="h2"
+            style={{ fontWeight: "bold" }}
           >
             Skill
           </Typography>
@@ -145,8 +148,8 @@ export default function CenterProfile({ user }) {
         <hr />
         <div className={classes.about}>
           <Typography
-            variant="h5"
-            style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
+            variant="h4" component="h2"
+            style={{ fontWeight: "bold" }}
           >
             Current Courses
           </Typography>

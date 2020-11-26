@@ -17,7 +17,6 @@ import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Phone } from "@material-ui/icons";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
-// import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2rem",
   },
   info: {
-    fontSize: "1.5rem",
+    fontSize: "1rem",
   },
   contactInfo: {
     display: "flex",
@@ -76,7 +75,7 @@ export default function UserProfile({ user }) {
           align="center"
           style={{ textShadow: "1px 1px 1px #000000" }}
         >
-          {user.major}
+          {user.major} - {user.school}
         </Typography>
       </div>
 
@@ -115,7 +114,7 @@ export default function UserProfile({ user }) {
           style={{
             textDecoration: "underline orange",
             fontWeight: "bold",
-            textShadow: "1px 1px 2px #000000",
+            textShadow: "1px 1px 1px #000000",
           }}
         >
           Contact Information
@@ -140,7 +139,7 @@ export default function UserProfile({ user }) {
         <Typography
           variant="caption"
           align="center"
-          style={{ fontSize: "1.5rem" }}
+          style={{ fontSize: "1rem" }}
         >
           {user.email}
         </Typography>
@@ -165,7 +164,7 @@ export default function UserProfile({ user }) {
         <Typography
           variant="caption"
           align="center"
-          style={{ fontSize: "1.5rem" }}
+          style={{ fontSize: "1rem" }}
         >
           +94 903321432
         </Typography>
@@ -190,7 +189,7 @@ export default function UserProfile({ user }) {
         <Typography
           variant="caption"
           align="center"
-          style={{ fontSize: "1.5rem" }}
+          style={{ fontSize: "1rem" }}
         >
           Ho Chi Minh city
         </Typography>

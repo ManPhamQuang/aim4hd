@@ -6,8 +6,8 @@ import LeftProfile from "../components/LeftProfile";
 import CenterProfile from "../components/CenterProfile";
 //* Styling import
 import { Grid } from "@material-ui/core";
-import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
 export default function UserProfile() {
 	const [user, setUser] = useState({});
@@ -27,7 +27,6 @@ export default function UserProfile() {
 				<LeftProfile user={user}/>
 			</Grid>
 			<Grid item xs={11} md={5}>
-				{/* center user description */}
                 <CenterProfile user={user}/>
 			</Grid>
 			<Grid item xs={false} md={4}>

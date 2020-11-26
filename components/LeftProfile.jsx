@@ -62,7 +62,7 @@ export default function UserProfile({ user }) {
       </div>
       <div className={classes.root}>
         <Typography
-          variant="h4"
+          variant="h5"
           align="center"
           style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
         >
@@ -71,7 +71,7 @@ export default function UserProfile({ user }) {
       </div>
       <div className={classes.root}>
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           style={{ textShadow: "1px 1px 1px #000000" }}
         >
@@ -109,12 +109,12 @@ export default function UserProfile({ user }) {
       </div>
       <span className={classes.root} style={{ marginBottom: "-7%" }}>
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           style={{
             textDecoration: "underline orange",
             fontWeight: "bold",
-            textShadow: "1px 1px 1px #000000",
+            textShadow: "1px 1px #000000",
           }}
         >
           Contact Information

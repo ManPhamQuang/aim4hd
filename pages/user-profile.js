@@ -13,7 +13,7 @@ export default function UserProfile() {
 	const [user, setUser] = useState({});
 	useEffect(() => {
 		axios
-			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace691")
+			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace698")
 			.then((res) => setUser(res.data.data.user))
 			.catch((err) => console.log(err));
 	}, []);
@@ -21,6 +21,10 @@ export default function UserProfile() {
 		<React.Fragment>
 		<Head>
                 <title>{user.name} | AimforHD</title>
+				<meta
+                    name="viewport"
+                    content="minimum-scale=1, initial-scale=1, width=device-width"
+                />
             </Head>
 		<Grid container justify="center">
 			<Grid item xs={12} md={3}>

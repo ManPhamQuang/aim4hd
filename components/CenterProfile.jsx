@@ -90,8 +90,8 @@ export default function CenterProfile({ user }) {
   const courseBadges = () => {
     return (
       <Hidden xsDown>
-        {currentCourse.map((currentCourse) => (
-          <CourseBadges key={currentCourse.name} label={currentCourse.name} />
+        {currentCourse.map((course) => (
+          <CourseBadges key={course.name} label={course.name} />
         ))}
       </Hidden>
     );
@@ -155,12 +155,12 @@ export default function CenterProfile({ user }) {
           <Hidden xsDown>
             {/* desktop */}
             {user.currentCourse
-              ? user.currentCourse.map((currentCourse, idx) => {
+              ? user.currentCourse.map((course, idx) => {
                   if (idx < 4) {
                     return (
-                      <SkillBadge
-                        key={currentCourse.name}
-                        label={currentCourse.name}
+                      <CourseBadge
+                        key={course.name}
+                        label={course.name}
                       />
                     );
                   }

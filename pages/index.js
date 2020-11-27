@@ -1,7 +1,8 @@
 import Head from "next/head";
-import { Grid } from "@material-ui/core";
+import { Grid, Hidden, recomposeColor } from "@material-ui/core";
 import Posts from "../components/Posts";
 import Filter from "../components/Filter";
+import RecommendedUsers from "../components/RecommendUsers";
 
 export default function Home() {
     return (
@@ -12,7 +13,11 @@ export default function Home() {
             <Grid item xs={11} md={5}>
                 <Posts />
             </Grid>
-            <Grid item xs={false} md={4} />
+            <Hidden smDown>
+                <Grid item xs={false} md={4}>
+                    <RecommendedUsers />
+                </Grid>
+            </Hidden>
         </Grid>
     );
 }

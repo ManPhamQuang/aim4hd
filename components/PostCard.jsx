@@ -20,6 +20,7 @@ import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
+import ProgressButton from "./ApplyButton";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -114,6 +115,7 @@ export default function PostCard({
     maximumMember,
     course,
     numberOfComments,
+    appliedStudents,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -233,14 +235,10 @@ export default function PostCard({
                     </Button>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        endIcon={<SendIcon />}
-                        color="primary"
-                    >
-                        Apply
-                    </Button>
+                    <ProgressButton
+                        postId={_id}
+                        appliedStudents={appliedStudents}
+                    />
                 </Grid>
             </Grid>
             {/* <Box className={classes.bottomAction}>

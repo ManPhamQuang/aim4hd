@@ -59,7 +59,6 @@ export default function RecommenedUsers() {
             .then((res) => setUsers(res.data.data.user))
             .catch((err) => console.log(err));
     }, []);
-    console.log(users);
     const UserCard = ({ user }) => {
         return (
             <Card className={classes.root}>
@@ -88,7 +87,7 @@ export default function RecommenedUsers() {
         <Container>
             <Grid container direction="column" spacing={4}>
                 {users.map((user) => (
-                    <Link href="/user-profile">
+                    <Link href="/user-profile" key={user._id}>
                         <Grid item>
                             <UserCard user={user} />
                         </Grid>

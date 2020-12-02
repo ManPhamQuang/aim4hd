@@ -13,7 +13,7 @@ export default function UserProfile() {
 	const [user, setUser] = useState({});
 	useEffect(() => {
 		axios
-			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace698")
+			.get("https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694")
 			.then((res) => setUser(res.data.data.user))
 			.catch((err) => console.log(err));
 	}, []);

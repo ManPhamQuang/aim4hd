@@ -14,37 +14,34 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { black } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(4),
+    // margin: theme.spacing(2),
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+    paddingBottom:  "2rem",
+
   },
-  // overview: {
-  //   margin: theme.spacing(4),
-  //   alignItems: "left",
-  //   marginBottom: "10%",
-  //   marginTop: "10%",
-  //   marginLeft: "5%",
-  // },
+
   about: {
-    margin: theme.spacing(4),
-    alignItems: "left",
-    marginLeft: "10%",
+    marginLeft: "4%",
+    marginTop: "3%",
+
   },
   content: {
-    margin: theme.spacing(4),
-    alignItems: "left",
-    marginBottom: "10%",
-    marginLeft: "10%",
+    marginLeft: "4%",
+    marginTop: "3%",
+
+
   },
   skill: {
-    margin: theme.spacing(4),
-    marginBottom: "10%",
-    marginTop: "10%",
-    marginLeft: "10%",
+    marginLeft: "4%",
+    marginTop: "3%",
+
+
   },
 }));
 function TabPanel(props) {
@@ -93,6 +90,16 @@ export default function CenterProfile({ user }) {
       </Hidden>
     );
   };
+  const ColorLine = ({ color }) => (
+    <hr
+        style={{
+            color: color,
+            backgroundColor: color,
+            height: 3,
+            width: '100%'
+        }}
+    />
+);
 
   return (
     <div className={classes.root}>
@@ -101,7 +108,7 @@ export default function CenterProfile({ user }) {
           value={value}
           onChange={handleChange}
           aria-label="simple tabs example"
-          centered
+  
         >
           <Tab label="Overview" />
           <Tab label="Teams" />
@@ -122,7 +129,7 @@ export default function CenterProfile({ user }) {
             {user.description}
           </Typography>
         </div>
-        <hr />
+        <ColorLine color="gray[900]" />
         <div className={classes.about}>
           <Typography
             variant="h5" component="h2"
@@ -143,7 +150,7 @@ export default function CenterProfile({ user }) {
               : null}
           </Hidden>
         </div>
-        <hr />
+        <ColorLine color="gray[900]" />
         <div className={classes.about}>
           <Typography
             variant="h5" component="h2"

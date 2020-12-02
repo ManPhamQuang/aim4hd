@@ -96,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
     commentText: {
         fontSize: "16px",
         padding: "16px",
+        paddingBottom: "0px",
+        paddingTop: "0px",
         "&:hover": {
             cursor: "pointer",
             textDecoration: "underline",
@@ -176,16 +178,35 @@ export default function PostCard({
                     {content}
                 </Typography>
             </CardContent>
-            <Link href="/about">
-                <Typography
-                    variant="caption"
-                    align="right"
-                    className={classes.commentText}
-                    component="a"
-                >
-                    {numberOfComments} comments
-                </Typography>
-            </Link>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "0px",
+                }}
+            >
+                <Link href="/about">
+                    <Typography
+                        variant="caption"
+                        align="right"
+                        className={classes.commentText}
+                        component="a"
+                    >
+                        {numberOfComments} comments
+                    </Typography>
+                </Link>
+                <Link href="/about">
+                    <Typography
+                        variant="caption"
+                        align="right"
+                        className={classes.commentText}
+                        component="a"
+                    >
+                        recruiting {maximumMember - currentMember}/{""}
+                        {maximumMember} members
+                    </Typography>
+                </Link>
+            </div>
             {/* <MUILink
                 component={Link}
                 href="/about"

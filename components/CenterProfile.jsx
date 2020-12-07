@@ -15,25 +15,30 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { black } from "@material-ui/core/colors";
-
+// import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
   root: {
     // margin: theme.spacing(2),
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom:  "2rem",
-
+    marginBottom: "50px",
+    borderRadius: "0px 0px 8px 8px"
   },
 
   about: {
     marginLeft: "4%",
     marginTop: "3%",
+    
+
+
 
   },
   content: {
     marginLeft: "4%",
     marginTop: "3%",
+    marginBottom:"5%"
+
 
 
   },
@@ -43,26 +48,11 @@ const useStyles = makeStyles((theme) => ({
 
 
   },
+  Box:{
+    paddingBottom: "4px", borderRadius: "0px 0px 30px 30px"
+  }
 }));
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 export default function CenterProfile({ user }) {
   const classes = useStyles();
@@ -71,6 +61,26 @@ export default function CenterProfile({ user }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+        
+      >
+        {value === index && (
+          <Box p={false} className={classes.Box}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
 
   const skillBadges = () => {
     return (
@@ -93,9 +103,9 @@ export default function CenterProfile({ user }) {
   const ColorLine = ({ color }) => (
     <hr
         style={{
-            color: color,
-            backgroundColor: color,
-            height: 3,
+            borderStyle: "none",
+            backgroundColor: "#f2f2f2",
+            height: 4,
             width: '100%'
         }}
     />
@@ -114,7 +124,7 @@ export default function CenterProfile({ user }) {
           <Tab label="Teams" />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0} >
         <div className={classes.about}>
           <Typography
             variant="h5" component="h2"
@@ -135,22 +145,25 @@ export default function CenterProfile({ user }) {
             variant="h5" component="h2"
             style={{ fontWeight: "bold" }}
           >
-            Skill
+            Skill 
           </Typography>
         </div>
         <div className={classes.content}>
           <Hidden xsDown>
             {/* desktop */}
             {user.skills
-              ? user.skills.map((skill, idx) => {
+              ? user.skills.map((skill, idx) => {        
+                  
                   if (idx < 4) {
-                    return <SkillBadge key={skill.name} label={skill.name} />;
+                    return <SkillBadge key={skill.name} label={skill.name}/>;
                   }
                 })
               : null}
+              
           </Hidden>
         </div>
         <ColorLine color="gray[900]" />
+        <div style={{marginBottom:"3px" }}>
         <div className={classes.about}>
           <Typography
             variant="h5" component="h2"
@@ -175,6 +188,7 @@ export default function CenterProfile({ user }) {
                 })
               : null}
           </Hidden>
+        </div>
         </div>
       </TabPanel>
       <TabPanel value={value} index={1}>

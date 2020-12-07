@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { green, purple } from "@material-ui/core/colors";
 const useStyles = makeStyles({
     root: {
-        marginLeft: "5px",
+        marginRight: "5px",
         marginBottom: "3px",
         // borderColor: "red",
     },

@@ -21,10 +21,8 @@ import PersonPinIcon from "@material-ui/icons/PersonPin";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    margin: theme.spacing(4),
+    margin: theme.spacing(2),
     justifyContent: "center",
-    alignItems: "center",
-    marginBottom: "-5%",
   },
   profile_picture: {
     width: theme.spacing(23),
@@ -42,12 +40,21 @@ const useStyles = makeStyles((theme) => ({
   contactInfo: {
     display: "flex",
     margin: theme.spacing(4),
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: "-4%",
-    marginTop: "3%",
+    marginLeft:"15%",
+    marginBottom: "2%",
+    marginTop: "2%",
   },
 }));
+const ColorLine = ({ color }) => (
+  <hr
+      style={{
+          borderStyle: "none",
+          backgroundColor: color,
+          height: 4,
+          width: '80%'
+      }}
+  />
+);
 
 export default function UserProfile({ user }) {
   const classes = useStyles();
@@ -64,7 +71,7 @@ export default function UserProfile({ user }) {
         <Typography
           variant="h5"
           align="center"
-          style={{ fontWeight: "bold", textShadow: "1px 1px 2px #000000" }}
+          style={{ fontWeight: "bold" }}
         >
           {user.name}
         </Typography>
@@ -73,7 +80,6 @@ export default function UserProfile({ user }) {
         <Typography
           variant="h6"
           align="center"
-          style={{ textShadow: "1px 1px 1px #000000" }}
         >
           {user.major} - {user.school}
         </Typography>
@@ -81,10 +87,6 @@ export default function UserProfile({ user }) {
 
       <div
         className={classes.root}
-        style={{
-          marginBottom: "2%",
-          borderBottom: "2px solid black",
-        }}
       >
         <IconButton
           aria-label="Facebook.com"
@@ -107,38 +109,36 @@ export default function UserProfile({ user }) {
           <LinkedInIcon style={{ fill: "#006699" }} className={classes.logo} />
         </IconButton>
       </div>
-      <span className={classes.root} style={{ marginBottom: "-7%" }}>
+      <ColorLine color="#e5e5e5" />
+      <div className={classes.contactInfo} style={{ marginBottom: "5%" }}>
         <Typography
-          variant="h6"
-          align="center"
+          variant="h5"
           style={{
-            textDecoration: "underline orange",
             fontWeight: "bold",
-            textShadow: "1px 1px #000000",
           }}
         >
           Contact Information
         </Typography>
-      </span>
+      </div>
+      <ColorLine color="#d6072b" />
+    
       <div className={classes.contactInfo}>
         <Grid
           container
           direction="row"
-          alignItems="center"
-          className={classes.root}
         >
           <Grid item>
             <EmailIcon className={classes.logo2} />
           </Grid>
-          <Grid item className={classes.info}>
+          <Grid item className={classes.info} style={{marginTop: "2%",}}
+          >
             Email
           </Grid>
         </Grid>
       </div>
-      <div className={classes.root}>
+      <div className={classes.contactInfo}>
         <Typography
           variant="caption"
-          align="center"
           style={{ fontSize: "1rem" }}
         >
           {user.email}
@@ -149,21 +149,18 @@ export default function UserProfile({ user }) {
         <Grid
           container
           direction="row"
-          alignItems="center"
-          className={classes.root}
         >
           <Grid item>
             <PhoneIcon className={classes.logo2} />
           </Grid>
-          <Grid item className={classes.info}>
+          <Grid item className={classes.info} style={{marginTop: "2%"}}>
             Phone
           </Grid>
         </Grid>
       </div>
-      <div className={classes.root}>
+      <div className={classes.contactInfo}>
         <Typography
           variant="caption"
-          align="center"
           style={{ fontSize: "1rem" }}
         >
           +94 903321432
@@ -174,21 +171,20 @@ export default function UserProfile({ user }) {
         <Grid
           container
           direction="row"
-          alignItems="center"
-          className={classes.root}
+      
         >
           <Grid item>
             <PersonPinIcon className={classes.logo2} />
           </Grid>
-          <Grid item className={classes.info}>
+          <Grid item className={classes.info} style={{marginTop: "2%"}}>
             Location
           </Grid>
         </Grid>
       </div>
-      <div className={classes.root}>
+      <div className={classes.contactInfo}>
         <Typography
           variant="caption"
-          align="center"
+          // align="center"
           style={{ fontSize: "1rem" }}
         >
           Ho Chi Minh city

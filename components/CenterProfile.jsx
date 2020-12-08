@@ -29,24 +29,15 @@ const useStyles = makeStyles((theme) => ({
   about: {
     marginLeft: "4%",
     marginTop: "3%",
-    
-
-
-
   },
   content: {
     marginLeft: "4%",
     marginTop: "3%",
     marginBottom:"5%"
-
-
-
   },
   skill: {
     marginLeft: "4%",
     marginTop: "3%",
-
-
   },
   Box:{
     paddingBottom: "4px", borderRadius: "0px 0px 30px 30px"

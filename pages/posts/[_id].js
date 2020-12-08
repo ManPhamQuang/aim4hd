@@ -12,7 +12,9 @@ export async function getStaticPaths() {
 }
 
 const getPosts = async () => {
-    let posts = await axios.get("https://aim4hd.herokuapp.com/api/v1/posts");
+    let posts = await axios.get(
+        "https://aim4hd.herokuapp.com/api/v1/posts?limit=300"
+    );
     return posts.data.data.posts;
 };
 

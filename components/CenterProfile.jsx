@@ -164,8 +164,8 @@ export default function CenterProfile({ user }) {
                     </div>
                     <div className={classes.content}>
                         {/* desktop */}
-                        {user.currentCourse
-                            ? user.currentCourse.map((course, idx) => {
+                        {user.currentCourses
+                            ? user.currentCourses.map((course, idx) => {
                                   if (idx < 4) {
                                       return (
                                           <CourseBadge

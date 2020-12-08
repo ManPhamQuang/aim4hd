@@ -27,7 +27,7 @@ export default function UserProfile() {
                 />
             </Head>
 		<Grid container justify="center">
-			<Grid item xs={12} md={3}>
+			<Grid item xs={11} md={3}>
 				<LeftProfile user={user}/>
 			</Grid>
 			<Grid item xs={11} md={5}>

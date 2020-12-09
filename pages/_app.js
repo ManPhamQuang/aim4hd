@@ -29,7 +29,7 @@ export default function MyApp(props) {
         JSON.stringify({ authData: data.authData })
       );
     }
-    if (status === "signup") {
+    if (status === "signup" || status === "login") {
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify({ user: data.user }));
     }
@@ -45,12 +45,10 @@ export default function MyApp(props) {
   useEffect(() => {
     if (localStorage.getItem("authData")) {
       const data = JSON.parse(localStorage.getItem("authData"));
-      console.log(data);
       setAuthData(data.authData);
     }
     if (localStorage.getItem("user")) {
       const data = JSON.parse(localStorage.getItem("user"));
-      console.log(data);
       setUser(data.user);
     }
   }, []);

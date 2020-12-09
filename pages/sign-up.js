@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { FormHelperText, MenuItem } from "@material-ui/core";
 import validator from "../utils/validator";
 import axios from "axios";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,6 +32,9 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  root: {
+    zIndex: 10,
+  },
 }));
 
 export default function SignIn({ courses, skills }) {
@@ -38,26 +42,29 @@ export default function SignIn({ courses, skills }) {
   const auth = useContext(AuthContext);
   const router = useRouter();
   if (!auth.authData && typeof window !== "undefined") router.push("/");
+  if (auth.user && typeof window !== "undefined") router.push("/");
   const [input, setInput] = useState({
     name: auth.authData ? auth.authData.account.name : "",
     school: "",
     major: "",
     description: "",
     skills: [],
-    currentCourse: [],
+    currentCourses: [],
   });
 
   const [errorMsg, setErrorMsg] = useState({
     school: "",
     major: "",
     skills: "",
-    currentCourse: "",
+    currentCourses: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnInputChange = event => {
     if (
       event.target.name === "skills" ||
-      event.target.name === "currentCourse"
+      event.target.name === "currentCourses"
     ) {
       setInput(input => ({
         ...input,
@@ -72,6 +79,7 @@ export default function SignIn({ courses, skills }) {
       [event.target.name]: event.target.value,
     }));
     let newErrorMsg = { ...errorMsg };
+    console.log(newErrorMsg);
     const message = validator(event.target.name, event.target.value);
     if (message) setErrorMsg({ ...errorMsg, [event.target.name]: message });
     else {
@@ -82,21 +90,25 @@ export default function SignIn({ courses, skills }) {
 
   const handleSubmitSignin = async event => {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://aim4hd.herokuapp.com/api/v1/users/signup",
+        "https://aim4hd.herokuapp.com/api/v1/users/signup",
         {
           ...input,
           email: auth.authData.account.userName,
           studentNumber: auth.authData.account.userName.split("@")[0],
+          microsoftUniqueId: auth.authData.uniqueId,
         }
       );
       if (`${response.status}`.startsWith("2")) {
+        setIsLoading(false);
         console.log(response.data.data.user);
         auth.login("signup", { user: response.data.data.user });
         router.push("/");
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error.response);
     }
   };
@@ -104,6 +116,7 @@ export default function SignIn({ courses, skills }) {
   return (
     auth.authData && (
       <Container component="main" maxWidth="xs">
+        {isLoading && <LoadingSpinner isLoading={isLoading} />}
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -222,10 +235,10 @@ export default function SignIn({ courses, skills }) {
               margin="normal"
               fullWidth
               label="Current courses"
-              name="currentCourse"
+              name="currentCourses"
               SelectProps={{
                 multiple: true,
-                value: input.currentCourse,
+                value: input.currentCourses,
                 onChange: handleOnInputChange,
               }}
             >
@@ -235,8 +248,10 @@ export default function SignIn({ courses, skills }) {
                 </MenuItem>
               ))}
             </TextField>
-            {errorMsg.courses && (
-              <FormHelperText error={true}>{errorMsg.courses}</FormHelperText>
+            {errorMsg.currentCourses && (
+              <FormHelperText error={true}>
+                {errorMsg.currentCourses}
+              </FormHelperText>
             )}
             <Button
               type="submit"
@@ -246,7 +261,7 @@ export default function SignIn({ courses, skills }) {
               className={classes.submit}
               disabled={Object.keys(errorMsg).length > 0}
             >
-              Sign In
+              {isLoading ? "Processing..." : "Sign In"}
             </Button>
           </form>
         </div>
@@ -256,9 +271,11 @@ export default function SignIn({ courses, skills }) {
 }
 
 export async function getStaticProps(context) {
-  const skillsResponse = axios.get("http://aim4hd.herokuapp.com/api/v1/skills");
+  const skillsResponse = axios.get(
+    "https://aim4hd.herokuapp.com/api/v1/skills"
+  );
   const coursesResponse = axios.get(
-    "http://aim4hd.herokuapp.com/api/v1/courses?limit=100"
+    "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
   );
   try {
     const result = await Promise.all([skillsResponse, coursesResponse]);

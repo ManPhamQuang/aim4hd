@@ -8,7 +8,7 @@ export default function checkInput(name, value) {
   if (name === "skills") {
     if (value.length === 0) return "Please choose at least one skill";
   }
-  if (name === "courses") {
+  if (name === "currentCourses") {
     if (value.length === 0) return "Please choose at least one course";
   }
 }

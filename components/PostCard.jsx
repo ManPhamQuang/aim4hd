@@ -20,6 +20,7 @@ import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
+import ProgressButton from "./ApplyButton";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -95,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
     commentText: {
         fontSize: "16px",
         padding: "16px",
+        paddingBottom: "0px",
+        paddingTop: "0px",
         "&:hover": {
             cursor: "pointer",
             textDecoration: "underline",
@@ -113,6 +116,8 @@ export default function PostCard({
     currentMember,
     maximumMember,
     course,
+    numberOfComments,
+    appliedStudents,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -173,16 +178,35 @@ export default function PostCard({
                     {content}
                 </Typography>
             </CardContent>
-            <Link href="/about">
-                <Typography
-                    variant="caption"
-                    align="right"
-                    className={classes.commentText}
-                    component="a"
-                >
-                    3 comments
-                </Typography>
-            </Link>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "0px",
+                }}
+            >
+                <Link href="/about">
+                    <Typography
+                        variant="caption"
+                        align="right"
+                        className={classes.commentText}
+                        component="a"
+                    >
+                        {numberOfComments} comments
+                    </Typography>
+                </Link>
+                <Link href="/about">
+                    <Typography
+                        variant="caption"
+                        align="right"
+                        className={classes.commentText}
+                        component="a"
+                    >
+                        recruiting {maximumMember - currentMember}/{""}
+                        {maximumMember} members
+                    </Typography>
+                </Link>
+            </div>
             {/* <MUILink
                 component={Link}
                 href="/about"
@@ -232,14 +256,10 @@ export default function PostCard({
                     </Button>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        endIcon={<SendIcon />}
-                        color="primary"
-                    >
-                        Apply
-                    </Button>
+                    <ProgressButton
+                        postId={_id}
+                        appliedStudents={appliedStudents}
+                    />
                 </Grid>
             </Grid>
             {/* <Box className={classes.bottomAction}>

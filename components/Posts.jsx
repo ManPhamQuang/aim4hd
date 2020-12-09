@@ -3,29 +3,7 @@ import PostCard from "./PostCard";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-
-const data = [
-    {
-        author: "Huynh Van Anh",
-        major: "Information Technology",
-        skills: ["HTML", "CSS", "React.js"],
-        title: "I need two more member for my team",
-        avatar:
-            "https://scontent.fsgn5-5.fna.fbcdn.net/v/t1.0-9/122011102_1469051093304410_451830840054431871_o.jpg?_nc_cat=108&ccb=2&_nc_sid=09cbfe&_nc_ohc=sxu8LSivNd4AX94mBcR&_nc_ht=scontent.fsgn5-5.fna&oh=4fa2189588d43fdb7eba7f337dc17fab&oe=5FD9604D",
-        content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi quos deserunt nulla consectetur voluptatem magnam! Vitae autem laborum sequi reprehenderit magnam, nemo facere vel natus eligendi consectetur ipsum quas maxime.",
-    },
-    {
-        author: "Lam Phuong",
-        major: "Fashion Design",
-        skills: ["HTML", "CSS", "Java", "Cheerleading", "React.js"],
-        title: "Frontend developer needed",
-        avatar:
-            "https://scontent.fsgn5-3.fna.fbcdn.net/v/t1.0-9/116707843_2661908164022208_484094272993460414_n.jpg?_nc_cat=104&ccb=2&_nc_sid=09cbfe&_nc_ohc=4EiLuOpuEgsAX8CBN1N&_nc_ht=scontent.fsgn5-3.fna&oh=10b7b8b8829bf5ed206fa8f725e5894a&oe=5FD7946E",
-        content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi quos deserunt nulla consectetur voluptatem magnam! Vitae autem laborum sequi reprehenderit magnam, nemo facere vel natus eligendi consectetur ipsum quas maxime.",
-    },
-];
+import VisibilitySensor from "react-visibility-sensor";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,19 +19,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Posts() {
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [visible, setVisible] = useState(false);
+    const [endOfList, setEndOfList] = useState(false);
+    const onChange = (isVisible) => {
+        console.log("Element is now %s", isVisible ? "visible" : "hidden");
+        setVisible(isVisible);
+    };
     const fetchPosts = () => {
+        console.log("fetching page: " + page);
+        // setLoading(true);
         axios
-            .get("https://aim4hd.herokuapp.com/api/v1/posts")
+            .get(
+                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}`
+            )
             .then((res) => {
-                setPosts(res.data.data.posts);
-                setLoading(false);
+                if (res.data.length != 0) {
+                    setPosts([...posts, ...res.data.data.posts]);
+                    setPage(page + 1);
+                    setLoading(false);
+                } else {
+                    setEndOfList(true);
+                }
             })
             .catch((err) => console.log(err));
     };
     useEffect(() => {
-        fetchPosts();
-    }, []);
+        if (visible && !loading) {
+            // setLoading(true);
+            fetchPosts();
+        }
+    }, [visible]);
     const classes = useStyles();
     return (
         <Grid container direction="column" spacing={4}>
@@ -67,6 +64,11 @@ export default function Posts() {
                     </Grid>
                 ))
             )}
+            {!endOfList ? (
+                <VisibilitySensor onChange={onChange}>
+                    <h1>more more more</h1>
+                </VisibilitySensor>
+            ) : null}
         </Grid>
     );
 }

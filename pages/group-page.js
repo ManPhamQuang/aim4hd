@@ -9,7 +9,7 @@ import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function UserProfile() {
+export default function GroupPage() {
     return (
         <React.Fragment>
             <Head>
@@ -21,7 +21,7 @@ export default function UserProfile() {
             </Head>
             <Grid container justify="center">
                 <Grid item xs={11} md={3}>
-                    {/* <LeftProfile user={user} /> */}
+                    <LeftGroup />
                 </Grid>
                 <Grid item xs={11} md={5}>
                     {/* <CenterProfile user={user} /> */}

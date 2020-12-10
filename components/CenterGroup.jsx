@@ -90,7 +90,7 @@ export default function CenterGroup({ team }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.header}>
+            <div className={classes.header} style={{ paddingTop: "5%" }}>
                 <Typography
                     variant="h5"
                     component="h2"
@@ -139,7 +139,10 @@ export default function CenterGroup({ team }) {
                         Courses
                     </Typography>
                 </div>
-                <div className={classes.content}>
+                <div
+                    className={classes.content}
+                    style={{ paddingBottom: "5%" }}
+                >
                     {/* desktop */}
                     {team.courses
                         ? team.courses.map((course, idx) => {

@@ -103,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    titleLink: {
+        color: theme.palette.primary,
+        backgroundColor: theme.palette.primary,
+    },
 }));
 
 export default function PostCard({
@@ -177,6 +181,9 @@ export default function PostCard({
                 <Typography variant="body2" color="textSecondary" component="p">
                     {content}
                 </Typography>
+                <Link href={`/posts/${_id}`} className={classes.titleLink}>
+                    read more
+                </Link>
             </CardContent>
             <div
                 style={{
@@ -185,17 +192,17 @@ export default function PostCard({
                     padding: "0px",
                 }}
             >
-                <Link href="/about">
+                <Link href={`/posts/${_id}`}>
                     <Typography
                         variant="caption"
                         align="right"
                         className={classes.commentText}
                         component="a"
                     >
-                        {numberOfComments} comments
+                        {numberOfComments} comments - aiming: {aiming}
                     </Typography>
                 </Link>
-                <Link href="/about">
+                <Link href={`/posts/${_id}`}>
                     <Typography
                         variant="caption"
                         align="right"

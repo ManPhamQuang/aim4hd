@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "3rem",
     },
 }));
-export default function Posts() {
+export default function Posts({ aiming }) {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -32,7 +32,9 @@ export default function Posts() {
         // setLoading(true);
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}`
+                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
+                    aiming != "" ? `&aiming=${aiming}` : ""
+                }`
             )
             .then((res) => {
                 if (res.data.length != 0) {
@@ -51,6 +53,10 @@ export default function Posts() {
             fetchPosts();
         }
     }, [visible]);
+    useEffect(() => {
+        setPosts([]);
+        setPage(1);
+    }, [aiming]);
     const classes = useStyles();
     return (
         <Grid container direction="column" spacing={4}>

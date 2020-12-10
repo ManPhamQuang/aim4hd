@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     content: {
         padding: "0px",
     },
+    breaker: {
+        backgroundColor: theme.palette.primary.main,
+        width: "100%",
+        height: "3px",
+        marginBottom: "5px",
+    },
     cover: {
         width: 110,
         height: 110,
@@ -83,8 +89,15 @@ export default function RecommenedUsers() {
             </Card>
         );
     };
+    const Breaker = () => {
+        return <div className={classes.breaker}></div>;
+    };
     return (
         <Container>
+            <Typography variant="h5" component="h2">
+                Recommended Users
+            </Typography>
+            <Breaker />
             <Grid container direction="column" spacing={4}>
                 {users.map((user) => (
                     <Link href="/user-profile" key={user._id}>

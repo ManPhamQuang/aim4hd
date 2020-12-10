@@ -72,41 +72,67 @@ const MenuProps = {
     },
 };
 export default function Filter({ aiming, setAiming }) {
+    const [items, setItems] = useState(aiming);
     const classes = useStyles();
     const Breaker = () => {
         return <div className={classes.breaker}></div>;
     };
+
+    const handleChange = (e) => {
+        setItems(e.target.value);
+        // setAiming(e.target.value);
+    };
     return (
         <div>
             {/* Desktop */}
-            <Hidden smDown>
-                <Container>
+            {/* <Hidden smDown> */}
+            <Container>
+                <Hidden smDown>
                     <h2 className={classes.header}>Aiming</h2>
                     <Breaker />
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-mutiple-name-label">
-                            Aimings
-                        </InputLabel>
-                        <Select
-                            labelId="demo-mutiple-name-label"
-                            id="demo-mutiple-name"
-                            input={<Input />}
-                            value={aiming}
-                            multiple
-                            MenuProps={MenuProps}
-                            onChange={(e) => setAiming(e.target.value)}
-                        >
-                            {aimings.map((aim) => (
-                                <MenuItem key={aim.name} value={aim.label}>
-                                    {aim.label}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Container>
-            </Hidden>
+                </Hidden>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-mutiple-name-label">
+                        {aiming.length > 0 ? "Aiming" : "All"}
+                    </InputLabel>
+                    <Select
+                        labelId="demo-mutiple-name-label"
+                        id="demo-mutiple-name"
+                        input={<Input />}
+                        value={items}
+                        multiple
+                        MenuProps={MenuProps}
+                        onChange={handleChange}
+                        onClose={() => setAiming(items)}
+                    >
+                        {aimings.map((aim) => (
+                            <MenuItem key={aim.name} value={aim.label}>
+                                {aim.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                {/* <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">
+                        Course
+                    </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={aiming}
+                        onChange={(e) => setAiming(e.target.value)}
+                    >
+                        {aimings.map((aim) => (
+                            <MenuItem key={aim.name} value={aim.name}>
+                                {aim.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl> */}
+            </Container>
+            {/* </Hidden> */}
             {/* Mobile */}
-            <Hidden mdUp>
+            {/* <Hidden mdUp>
                 <Container className={classes.mobileCheckboxContainer}>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-label">
@@ -146,7 +172,7 @@ export default function Filter({ aiming, setAiming }) {
                         </Select>
                     </FormControl>
                 </Container>
-            </Hidden>
+            </Hidden> */}
         </div>
     );
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -178,6 +180,11 @@ export default function PostCard({
                 <Typography variant="h5" component="h2">
                     {title}
                 </Typography>
+                <Chip
+                    label={aiming}
+                    color="primary"
+                    icon={<HighlightOffIcon />}
+                />
                 <Typography variant="body2" color="textSecondary" component="p">
                     {content}
                 </Typography>
@@ -199,9 +206,10 @@ export default function PostCard({
                         className={classes.commentText}
                         component="a"
                     >
-                        {numberOfComments} comments - aiming: {aiming}
+                        {numberOfComments} comments
                     </Typography>
                 </Link>
+
                 <Link href={`/posts/${_id}`}>
                     <Typography
                         variant="caption"

@@ -38,20 +38,22 @@ export default function CenterGroup({ team }) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const memberBadges = () => {
+
+    const courseBadges = () => {
         return (
             <Hidden xsDown>
-                {team.members.map((name) => (
-                    <MemberBadge key={members.name} label={members.name} />
+                {course.map((course) => (
+                    <CourseBadges key={course.name} label={course.name} />
                 ))}
             </Hidden>
         );
     };
-    const courseBadges = () => {
+
+    const memberBadges = () => {
         return (
             <Hidden xsDown>
-                {team.courses.map((course) => (
-                    <CourseBadges key={courses.name} label={courses.name} />
+                {member.map((member) => (
+                    <CourseBadges key={member.name} label={member.name} />
                 ))}
             </Hidden>
         );
@@ -113,13 +115,13 @@ export default function CenterGroup({ team }) {
             </div>
             <div className={classes.content}>
                 {/* desktop */}
-                {team.members.names
-                    ? team.members.names.map((name, idx) => {
+                {team.members
+                    ? team.members.map((member, idx) => {
                           if (idx < 4) {
                               return (
                                   <MemberBadge
-                                      key={team.members.name}
-                                      label={team.members.name}
+                                      key={member.name}
+                                      label={member.name}
                                   />
                               );
                           }
@@ -144,8 +146,8 @@ export default function CenterGroup({ team }) {
                               if (idx < 4) {
                                   return (
                                       <CourseBadge
-                                          key={course}
-                                          label={course}
+                                          key={course.name}
+                                          label={course.name}
                                       />
                                   );
                               }

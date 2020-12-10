@@ -19,6 +19,30 @@ export default function GroupPage() {
 	//         .then((res) => setUser(res.data.data.user))
 	//         .catch((err) => console.log(err));
 	// }, []);
+	const team = {
+		name: "aim4hd",
+		avatar: "link image",
+		members: [
+			{
+				name: "man pham",
+			},
+			{
+				name: "Lam Phuong",
+			},
+			{
+				name: "Thang",
+			},
+			{
+				name: "Thien An",
+			},
+		],
+		description: "Lorem",
+		courses: [
+			{
+				name: " Introduction to IT",
+			},
+		],
+	};
 	return (
 		<React.Fragment>
 			<Head>
@@ -33,7 +57,7 @@ export default function GroupPage() {
 					<LeftGroup />
 				</Grid>
 				<Grid item xs={11} md={5}>
-					{/* <CenterProfile user={user} /> */}
+					<CenterGroup team={team} />
 				</Grid>
 				<Grid item xs={false} md={4}>
 					{/* suggested users - for later */}

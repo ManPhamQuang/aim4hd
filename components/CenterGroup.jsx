@@ -1,7 +1,7 @@
 //* Components import
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
-import SkillBadge from "./SkillBadge";
+import MemberBadge from "./MemberBadge";
 import CourseBadge from "./CourseBadge";
 
 //*Styling import
@@ -20,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "50px",
         borderRadius: "0px 0px 8px 8px",
     },
+    header: {
+        marginLeft: "4%",
+        marginTop: "3%",
+    },
+    content: {
+        marginLeft: "4%",
+        marginTop: "3%",
+        marginBottom: "5%",
+    },
 }));
 
 export default function CenterGroup({ team }) {
@@ -28,6 +37,24 @@ export default function CenterGroup({ team }) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+    const memberBadges = () => {
+        return (
+            <Hidden xsDown>
+                {team.members.map((name) => (
+                    <MemberBadge key={members.name} label={members.name} />
+                ))}
+            </Hidden>
+        );
+    };
+    const courseBadges = () => {
+        return (
+            <Hidden xsDown>
+                {team.courses.map((course) => (
+                    <CourseBadges key={courses.name} label={courses.name} />
+                ))}
+            </Hidden>
+        );
     };
     const ColorLine = ({ color }) => (
         <hr
@@ -39,6 +66,7 @@ export default function CenterGroup({ team }) {
             }}
         />
     );
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
         return (
@@ -60,13 +88,13 @@ export default function CenterGroup({ team }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.about}>
+            <div className={classes.header}>
                 <Typography
                     variant="h5"
                     component="h2"
                     style={{ fontWeight: "bold" }}
                 >
-                    About
+                    Description
                 </Typography>
             </div>
             <div className={classes.content}>
@@ -74,55 +102,55 @@ export default function CenterGroup({ team }) {
                 <Typography value={value}>{team.description}</Typography>
             </div>
             <ColorLine color="gray[900]" />
-            <div className={classes.about}>
+            <div className={classes.header}>
                 <Typography
                     variant="h5"
                     component="h2"
                     style={{ fontWeight: "bold" }}
                 >
-                    Skill
+                    Member
                 </Typography>
             </div>
             <div className={classes.content}>
                 {/* desktop */}
-                {/* {user.skills
-                    ? user.skills.map((skill, idx) => {
+                {team.members.names
+                    ? team.members.names.map((name, idx) => {
                           if (idx < 4) {
                               return (
-                                  <SkillBadge
-                                      key={skill.name}
-                                      label={skill.name}
+                                  <MemberBadge
+                                      key={team.members.name}
+                                      label={team.members.name}
                                   />
                               );
                           }
                       })
-                    : null} */}
+                    : null}
             </div>
             <ColorLine color="gray[900]" />
             <div style={{ marginBottom: "3px" }}>
-                <div className={classes.about}>
+                <div className={classes.header}>
                     <Typography
                         variant="h5"
                         component="h2"
                         style={{ fontWeight: "bold" }}
                     >
-                        Current Courses
+                        Courses
                     </Typography>
                 </div>
                 <div className={classes.content}>
                     {/* desktop */}
-                    {/* {user.currentCourses
-                        ? user.currentCourses.map((course, idx) => {
+                    {team.courses
+                        ? team.courses.map((course, idx) => {
                               if (idx < 4) {
                                   return (
                                       <CourseBadge
-                                          key={course.name}
-                                          label={course.name}
+                                          key={course}
+                                          label={course}
                                       />
                                   );
                               }
                           })
-                        : null} */}
+                        : null}
                 </div>
             </div>
         </div>

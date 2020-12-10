@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { red } from "@material-ui/core/colors";
 import axios from "axios";
 import {
@@ -20,6 +20,7 @@ import SkillBadge from "../../components/SkillBadge";
 import ProgressButton from "../../components/ApplyButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
+import AuthContext from "../../utils/authContext";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -156,6 +157,7 @@ function PostPage({
 }) {
     const [post, setPost] = useState({});
     const classes = useStyles();
+    const context = useContext(AuthContext);
     return (
         <Container maxWidth="lg">
             <Card className={classes.root}>
@@ -202,9 +204,6 @@ function PostPage({
                     >
                         {content}
                     </Typography>
-                    <Link href={`/posts/${_id}`} className={classes.titleLink}>
-                        read more
-                    </Link>
                 </CardContent>
                 <div
                     style={{
@@ -273,27 +272,29 @@ function PostPage({
                         })}
                     </Hidden>
                 </CardActions>
-                <Grid
-                    container
-                    spacing={3}
-                    className={classes.buttonsContainer}
-                >
-                    <Grid item xs={6}>
-                        <Button
-                            variant="contained"
-                            className={classes.button}
-                            startIcon={<BookmarkIcon />}
-                        >
-                            Save It
-                        </Button>
+                {context.user ? (
+                    <Grid
+                        container
+                        spacing={3}
+                        className={classes.buttonsContainer}
+                    >
+                        <Grid item xs={6}>
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                startIcon={<BookmarkIcon />}
+                            >
+                                Save It
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <ProgressButton
+                                postId={_id}
+                                appliedStudents={appliedStudents}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <ProgressButton
-                            postId={_id}
-                            appliedStudents={appliedStudents}
-                        />
-                    </Grid>
-                </Grid>
+                ) : null}
                 {/* <Box className={classes.bottomAction}>
                 <Button variant="contained" className={classes.button}>
                     Save It

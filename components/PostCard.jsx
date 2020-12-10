@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,6 +23,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
 import ProgressButton from "./ApplyButton";
+import AuthContext from "../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -127,7 +128,7 @@ export default function PostCard({
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-
+    const context = useContext(AuthContext);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -260,23 +261,29 @@ export default function PostCard({
                     })}
                 </Hidden>
             </CardActions>
-            <Grid container spacing={3} className={classes.buttonsContainer}>
-                <Grid item xs={6}>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        startIcon={<BookmarkIcon />}
-                    >
-                        Save It
-                    </Button>
+            {context.user ? (
+                <Grid
+                    container
+                    spacing={3}
+                    className={classes.buttonsContainer}
+                >
+                    <Grid item xs={6}>
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            startIcon={<BookmarkIcon />}
+                        >
+                            Save It
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ProgressButton
+                            postId={_id}
+                            appliedStudents={appliedStudents}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <ProgressButton
-                        postId={_id}
-                        appliedStudents={appliedStudents}
-                    />
-                </Grid>
-            </Grid>
+            ) : null}
             {/* <Box className={classes.bottomAction}>
                 <Button variant="contained" className={classes.button}>
                     Save It

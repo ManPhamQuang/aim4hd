@@ -7,6 +7,8 @@ import CourseBadge from "./CourseBadge";
 //*Styling import
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
+import Avatar from "@material-ui/core/Avatar";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "4%",
         marginTop: "3%",
         marginBottom: "5%",
+    },
+    chipTest: {
+        marginRight: "2%",
     },
 }));
 
@@ -90,7 +95,7 @@ export default function CenterGroup({ team }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.header}>
+            <div className={classes.header} style={{ paddingTop: "5%" }}>
                 <Typography
                     variant="h5"
                     component="h2"
@@ -119,10 +124,21 @@ export default function CenterGroup({ team }) {
                     ? team.members.map((member, idx) => {
                           if (idx < 4) {
                               return (
-                                  <MemberBadge
-                                      key={member.name}
+                                  <Chip
+                                      className={classes.chipTest}
+                                      size="medium"
+                                      avatar={
+                                          <Avatar
+                                              alt="avatar"
+                                              src={member.image}
+                                          />
+                                      }
                                       label={member.name}
                                   />
+                                  //   <MemberBadge
+                                  //       key={member.name}
+                                  //       label={member.name}
+                                  //   />
                               );
                           }
                       })
@@ -139,7 +155,10 @@ export default function CenterGroup({ team }) {
                         Courses
                     </Typography>
                 </div>
-                <div className={classes.content}>
+                <div
+                    className={classes.content}
+                    style={{ paddingBottom: "5%" }}
+                >
                     {/* desktop */}
                     {team.courses
                         ? team.courses.map((course, idx) => {

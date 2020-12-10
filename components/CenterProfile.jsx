@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "0px 0px 30px 30px",
     },
     chipTest: {
-        marginRight: "2.5%",
+        marginRight: "3%",
     },
 }));
 

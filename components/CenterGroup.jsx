@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chipTest: {
         marginRight: "2%",
+        marginBottom: "2.5%",
     },
 }));
 

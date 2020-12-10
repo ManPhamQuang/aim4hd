@@ -40,7 +40,7 @@ export default function GroupPage() {
 				image:"https://scontent.fsgn2-1.fna.fbcdn.net/v/t1.0-9/s1080x2048/92954613_2472736239723249_2665763270073253888_o.jpg?_nc_cat=105&ccb=2&_nc_sid=174925&_nc_ohc=StLTe9xkBxwAX-5m9lW&_nc_ht=scontent.fsgn2-1.fna&tp=7&oh=44f4a50ba6eec892d40b1a2fee2fc419&oe=5FF774EB"
             },
         ],
-        description: "Lorem",
+        description: "helolokkifjf fhiwhfnjdwhf  riejdnfjbwq ucqhwehqi",
         courses: [
             {
                 name: " Introduction to IT",

@@ -7,14 +7,16 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import SkillBadge from "./SkillBadge";
 import CourseBadge from "./CourseBadge";
-
+import Chip from "@material-ui/core/Chip";
 //*Styling import
+import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { black } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 // import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     Box: {
         paddingBottom: "4px",
         borderRadius: "0px 0px 30px 30px",
+    },
+    chipTest: {
+        marginRight: "2.5%",
     },
 }));
 
@@ -142,8 +147,9 @@ export default function CenterProfile({ user }) {
                         ? user.skills.map((skill, idx) => {
                               if (idx < 4) {
                                   return (
-                                      <SkillBadge
-                                          key={skill.name}
+                                      <Chip
+                                          className={classes.chipTest}
+                                          icon={<FavoriteIcon />}
                                           label={skill.name}
                                       />
                                   );

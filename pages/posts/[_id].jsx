@@ -16,11 +16,15 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
 import SkillBadge from "../../components/SkillBadge";
 import ProgressButton from "../../components/ApplyButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
+import Breaker from "../../components/Breaker";
+import moment from "moment";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -58,6 +62,8 @@ const useStyles = makeStyles((theme) => ({
         // maxWidth: 400,
         // maxWidth: 700,
         borderRadius: 7,
+        paddingBottom: theme.spacing(2),
+        // padding: theme.spacing(2),
     },
     media: {
         height: 0,
@@ -79,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(8),
     },
     content: {
-        paddingTop: "0px",
+        paddingTop: theme.spacing(2),
     },
     action: {
         // backgroundColor: "red",
@@ -91,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontWeight: 400,
-        fontSize: 19,
+        fontSize: 24,
         minWidth: 130,
     },
     bottom: {
@@ -100,30 +106,25 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "flex-end",
     },
     button: {
-        // color: theme.color.prim
-        // [theme.breakpoints.up("md")]: {
-        //     maxWidth: 250,
-        // },
-        // flexGrow: 1,
-        // maxWidth: 200,
-        // minWidth: 145,
         width: "100%",
     },
     bottomAction: {
-        // flex: "0 1 auto",
         display: "flex",
         width: "100%",
-        // paddingLeft: "8px",
         justifyContent: "space-around",
         paddingLeft: "0.6rem",
         paddingRight: "0.6rem",
         paddingBottom: "0.6rem",
     },
     buttonsContainer: {
-        padding: theme.spacing(2),
-        // paddingLeft: theme.spacing(3),
-        // paddingRight: theme.spacing(3),
-        // marginBottom: theme.spacing(3),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        width: "60%",
+        minWidth: "300px",
+    },
+    skillsContainer: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
     },
     commentText: {
         fontSize: "16px",
@@ -149,6 +150,7 @@ function PostPage({
     title,
     content,
     aiming,
+    requiredSkills,
     currentMember,
     maximumMember,
     course,
@@ -176,35 +178,57 @@ function PostPage({
                         </IconButton>
                     }
                     action={
-                        <Hidden xsDown>
-                            {/* desktop */}
-                            {author.skills.map((skill, idx) => {
-                                if (idx < 4) {
-                                    return (
-                                        <SkillBadge
-                                            key={skill.name}
-                                            label={skill.name}
-                                        />
-                                    );
-                                }
-                            })}
-                        </Hidden>
+                        <Typography paragraph>
+                            {moment(createdAt).format("DD-MM-YYYY")}
+                        </Typography>
                     }
                     title={author.name}
                     subheader={author.school}
                 />
+                <div className={classes.skillsContainer}>
+                    <Typography variant="h6" style={{ marginBottom: "10px" }}>
+                        Required Skills:{" "}
+                    </Typography>
+                    {requiredSkills.map((skill, idx) => {
+                        return (
+                            <SkillBadge key={skill.name} label={skill.name} />
+                        );
+                    })}
+                </div>
+                <Breaker />
+                {context.user ? (
+                    <Grid
+                        container
+                        spacing={3}
+                        className={classes.buttonsContainer}
+                    >
+                        <Grid item xs={6}>
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                startIcon={<BookmarkIcon />}
+                            >
+                                Save It
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <ProgressButton
+                                postId={_id}
+                                appliedStudents={appliedStudents}
+                            />
+                        </Grid>
+                    </Grid>
+                ) : null}
                 <CardContent className={classes.content}>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="h4" component="h2">
                         {title}
                     </Typography>
-                    <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                    >
+                    <Typography paragraph variant="body1" component="p">
                         {content}
                     </Typography>
                 </CardContent>
+                <Breaker />
+                {/* member list */}
                 <div
                     style={{
                         display: "flex",
@@ -234,114 +258,6 @@ function PostPage({
                         </Typography>
                     </Link>
                 </div>
-                {/* <MUILink
-                component={Link}
-                href="/about"
-                className={classes.commentText}
-            >
-                3 comments
-            </MUILink> */}
-                <CardActions className={classes.bottom} disableSpacing>
-                    {/* <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton> */}
-                    <Hidden smUp>
-                        {/* mobile */}
-                        {author.skills.map((skill, idx) => {
-                            if (idx < 4) {
-                                return (
-                                    <SkillBadge
-                                        key={skill.name}
-                                        label={skill.name}
-                                    />
-                                );
-                            }
-                        })}
-                    </Hidden>
-                </CardActions>
-                {context.user ? (
-                    <Grid
-                        container
-                        spacing={3}
-                        className={classes.buttonsContainer}
-                    >
-                        <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                startIcon={<BookmarkIcon />}
-                            >
-                                Save It
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ProgressButton
-                                postId={_id}
-                                appliedStudents={appliedStudents}
-                            />
-                        </Grid>
-                    </Grid>
-                ) : null}
-                {/* <Box className={classes.bottomAction}>
-                <Button variant="contained" className={classes.button}>
-                    Save It
-                </Button>
-                <Button
-                    variant="contained"
-                    className={classes.button}
-                    color="primary"
-                >
-                    Apply
-                </Button>
-            </Box> */}
-                {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>Method:</Typography>
-                    <Typography paragraph>
-                        Heat 1/2 cup of the broth in a pot until simmering, add
-                        saffron and set aside for 10 minutes.
-                    </Typography>
-                    <Typography paragraph>
-                        Heat oil in a (14- to 16-inch) paella pan or a large,
-                        deep skillet over medium-high heat. Add chicken, shrimp
-                        and chorizo, and cook, stirring occasionally until
-                        lightly browned, 6 to 8 minutes. Transfer shrimp to a
-                        large plate and set aside, leaving chicken and chorizo
-                        in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-                        onion, salt and pepper, and cook, stirring often until
-                        thickened and fragrant, about 10 minutes. Add saffron
-                        broth and remaining 4 1/2 cups chicken broth; bring to a
-                        boil.
-                    </Typography>
-                    <Typography paragraph>
-                        Add rice and stir very gently to distribute. Top with
-                        artichokes and peppers, and cook without stirring, until
-                        most of the liquid is absorbed, 15 to 18 minutes. Reduce
-                        heat to medium-low, add reserved shrimp and mussels,
-                        tucking them down into the rice, and cook again without
-                        stirring, until mussels have opened and rice is just
-                        tender, 5 to 7 minutes more. (Discard any mussels that
-                        don’t open.)
-                    </Typography>
-                    <Typography>
-                        Set aside off of the heat to let rest for 10 minutes,
-                        and then serve.
-                    </Typography>
-                </CardContent>
-            </Collapse> */}
             </Card>
         </Container>
     );

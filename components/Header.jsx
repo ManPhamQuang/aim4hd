@@ -15,6 +15,7 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import LoadingSpinner from './LoadingSpinner';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -116,8 +117,8 @@ export default function DesktopHeader() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnAuth = async (error, authData, msal, action) => {
-    console.log(authData); 
     if (authData) {
+      console.log(authData);
       setIsLoading(true);
       const data = await checkIfUserHasAlreadyLoginWithMicrosoft(authData.uniqueId);
       if (action === "signup") {
@@ -140,6 +141,7 @@ export default function DesktopHeader() {
         authCallback={(error, authData, msal) =>
           handleOnAuth(error, authData, msal, "login")
         }
+        prompt="select_account"
         children={
           <Button variant="contained" color="inherit" className={classes.login}>
             Login
@@ -152,6 +154,7 @@ export default function DesktopHeader() {
         authCallback={(error, authData, msal) =>
           handleOnAuth(error, authData, msal, "signup")
         }
+        prompt="select_account"
         children={
           <Button
             variant="contained"

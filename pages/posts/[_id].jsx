@@ -157,7 +157,6 @@ function PostPage({
     numberOfComments,
     appliedStudents,
 }) {
-    const [post, setPost] = useState({});
     const classes = useStyles();
     const context = useContext(AuthContext);
     return (

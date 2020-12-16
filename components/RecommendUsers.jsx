@@ -100,7 +100,7 @@ export default function RecommenedUsers() {
             <Breaker />
             <Grid container direction="column" spacing={4}>
                 {users.map((user) => (
-                    <Link href="/user-profile" key={user._id}>
+                    <Link href={`/users/${user._id}`} key={user._id}>
                         <Grid item>
                             <UserCard user={user} />
                         </Grid>

@@ -87,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
         transform: "rotate(180deg)",
     },
     avatar: {
+        [theme.breakpoints.down("sm")]: {
+            width: theme.spacing(6),
+            height: theme.spacing(6),
+        },
         backgroundColor: red[500],
         width: theme.spacing(8),
         height: theme.spacing(8),
@@ -160,6 +164,18 @@ const useStyles = makeStyles((theme) => ({
     },
     date: {
         fontSize: "1.5rem",
+        [theme.breakpoints.down("xs")]: {
+            fontSize: "12px",
+            marginTop: "1rem",
+        },
+        minWidth: "80px",
+    },
+    icon: {
+        fontSize: "20px",
+        [theme.breakpoints.down("xs")]: {
+            fontSize: "12px",
+        },
+        marginTop: "2px",
     },
     userCard: theme.userCard,
 }));
@@ -219,14 +235,14 @@ function PostPage({
                             {isOpen ? (
                                 <Tooltip title="This post is open for apply">
                                     <CheckCircleOutlineIcon
-                                        fontSize="small"
+                                        className={classes.icon}
                                         color="primary"
                                     />
                                 </Tooltip>
                             ) : (
                                 <Tooltip title="This post is not open for apply">
                                     <CheckCircleOutlineIcon
-                                        fontSize="small"
+                                        className={classes.icon}
                                         color="disabled"
                                     />
                                 </Tooltip>
@@ -240,55 +256,6 @@ function PostPage({
                     }
                     subheader={author.school}
                 />
-                {/* <div className={classes.infoContainer}>
-                    <div className={classes.skillsContainer}>
-                        <Typography
-                            variant="h6"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            Required Skills:{" "}
-                        </Typography>
-                        {requiredSkills.map((skill, idx) => {
-                            return (
-                                <SkillBadge
-                                    key={skill.name}
-                                    label={skill.name}
-                                />
-                            );
-                        })}
-                    </div>
-                    <div className={classes.skillsContainer}>
-                        <Typography
-                            variant="h6"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            Recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members:
-                        </Typography>
-                        <List className={classes.studentList}>
-                            {appliedStudents.map((student) => (
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={student.name}
-                                            src={student.avatar}
-                                        ></Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>{student.name}</ListItemText>
-                                </ListItem>
-                            ))}
-                        </List>
-                    </div>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
-                    >
-                        recruiting {maximumMember - currentMember}/{""}
-                        {maximumMember} members
-                    </Typography>
-                </div> */}
                 <Grid container className={classes.infoContainer}>
                     <Grid item xs={12} md={4}>
                         <Typography

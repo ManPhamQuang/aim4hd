@@ -16,7 +16,12 @@ import IconButton from "@material-ui/core/IconButton";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Phone } from "@material-ui/icons";
+import List from "@material-ui/core/List";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -143,69 +148,56 @@ export default function UserProfile({ user }) {
                 </Typography>
             </div>
             <ColorLine color="#d6072b" />
-
-            <div className={classes.contactInfo}>
-                <Grid container direction="row">
-                    <Grid item>
-                        <EmailIcon className={classes.logo2} />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.info}
-                        style={{ marginTop: "2%" }}
-                    >
-                        Email
-                    </Grid>
-                </Grid>
-            </div>
-            <div className={classes.contactInfo}>
-                <Typography variant="caption" style={{ fontSize: "1rem" }}>
-                    {user.email}
-                </Typography>
-            </div>
-
-            <div className={classes.contactInfo}>
-                <Grid container direction="row">
-                    <Grid item>
-                        <PhoneIcon className={classes.logo2} />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.info}
-                        style={{ marginTop: "2%" }}
-                    >
-                        Phone
-                    </Grid>
-                </Grid>
-            </div>
-            <div className={classes.contactInfo}>
-                <Typography variant="caption" style={{ fontSize: "1rem" }}>
-                    +94 903321432
-                </Typography>
-            </div>
-
-            <div className={classes.contactInfo}>
-                <Grid container direction="row">
-                    <Grid item>
-                        <PersonPinIcon className={classes.logo2} />
-                    </Grid>
-                    <Grid
-                        item
-                        className={classes.info}
-                        style={{ marginTop: "2%" }}
-                    >
-                        Location
-                    </Grid>
-                </Grid>
-            </div>
-            <div className={classes.contactInfo}>
-                <Typography
-                    variant="caption"
-                    // align="center"
-                    style={{ fontSize: "1rem" }}
-                >
-                    Ho Chi Minh city
-                </Typography>
+            <div>
+                <List>
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <EmailIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary="Emails"
+                            secondary={
+                                <Typography style={{ fontWeight: "500" }}>
+                                    {user.email}
+                                </Typography>
+                            }
+                        />
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <PhoneIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary="Phone"
+                            secondary={
+                                <Typography style={{ fontWeight: "500" }}>
+                                    +84 903321123
+                                </Typography>
+                            }
+                        />
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <PersonPinIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary="Location"
+                            secondary={
+                                <Typography style={{ fontWeight: "500" }}>
+                                    Viet Nam
+                                </Typography>
+                            }
+                        />
+                    </ListItem>
+                </List>
             </div>
         </div>
     );

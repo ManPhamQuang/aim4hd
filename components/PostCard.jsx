@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -21,6 +23,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
 import ProgressButton from "./ApplyButton";
+import AuthContext from "../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -103,6 +106,10 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    titleLink: {
+        color: theme.palette.primary,
+        backgroundColor: theme.palette.primary,
+    },
 }));
 
 export default function PostCard({
@@ -121,7 +128,7 @@ export default function PostCard({
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-
+    const context = useContext(AuthContext);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -174,9 +181,17 @@ export default function PostCard({
                 <Typography variant="h5" component="h2">
                     {title}
                 </Typography>
+                <Chip
+                    label={aiming}
+                    color="primary"
+                    icon={<HighlightOffIcon />}
+                />
                 <Typography variant="body2" color="textSecondary" component="p">
                     {content}
                 </Typography>
+                <Link href={`/posts/${_id}`} className={classes.titleLink}>
+                    read more
+                </Link>
             </CardContent>
             <div
                 style={{
@@ -185,7 +200,7 @@ export default function PostCard({
                     padding: "0px",
                 }}
             >
-                <Link href="/about">
+                <Link href={`/posts/${_id}`}>
                     <Typography
                         variant="caption"
                         align="right"
@@ -195,7 +210,8 @@ export default function PostCard({
                         {numberOfComments} comments
                     </Typography>
                 </Link>
-                <Link href="/about">
+
+                <Link href={`/posts/${_id}`}>
                     <Typography
                         variant="caption"
                         align="right"
@@ -245,23 +261,30 @@ export default function PostCard({
                     })}
                 </Hidden>
             </CardActions>
-            <Grid container spacing={3} className={classes.buttonsContainer}>
-                <Grid item xs={6}>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        startIcon={<BookmarkIcon />}
-                    >
-                        Save It
-                    </Button>
+            {context.user ? (
+                <Grid
+                    container
+                    spacing={3}
+                    className={classes.buttonsContainer}
+                >
+                    <Grid item xs={6}>
+                        <Button
+                            variant="contained"
+                            className={classes.button}
+                            startIcon={<BookmarkIcon />}
+                        >
+                            Save It
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <ProgressButton
+                            postId={_id}
+                            appliedStudents={appliedStudents}
+                            isOpen={isOpen}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <ProgressButton
-                        postId={_id}
-                        appliedStudents={appliedStudents}
-                    />
-                </Grid>
-            </Grid>
+            ) : null}
             {/* <Box className={classes.bottomAction}>
                 <Button variant="contained" className={classes.button}>
                     Save It

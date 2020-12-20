@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
+import AuthContext from "../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -33,14 +34,17 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: -12,
     },
 }));
-const userId = "5fab4912ffd1131f3cace693";
 
-export default function ButtonProgress({ postId, appliedStudents }) {
+export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const classes = useStyles();
+    const context = useContext(AuthContext);
+    const user = context.user;
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
-    const isApplied = appliedStudents.find((id) => id == userId) ? true : false;
+    const isApplied = appliedStudents.find((id) => id == user._id)
+        ? true
+        : false;
     // const isDisabled =
 
     const ButtonText = () => {
@@ -71,7 +75,7 @@ export default function ButtonProgress({ postId, appliedStudents }) {
     const applyToPost = () => {
         axios
             .post(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
-                userId: userId,
+                userId: user._id,
             })
             .then((res) => {
                 if (res.status == 200) {
@@ -100,7 +104,7 @@ export default function ButtonProgress({ postId, appliedStudents }) {
                 variant="contained"
                 color="primary"
                 className={buttonClassname}
-                disabled={isApplied || loading}
+                disabled={isApplied || loading || !isOpen}
                 onClick={handleButtonClick}
                 endIcon={success ? <DoneIcon /> : <SendIcon />}
             >

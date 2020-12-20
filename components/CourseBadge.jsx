@@ -2,11 +2,11 @@ import React from "react";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import { green, purple } from "@material-ui/core/colors";
+
 const useStyles = makeStyles({
     root: {
         marginRight: "5px",
         marginBottom: "3px",
-        // borderColor: "red",
     },
 });
 

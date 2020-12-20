@@ -12,6 +12,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Input,
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         marginBottom: "5px",
+        marginLeft: "8px",
     },
     formControl: {
         margin: theme.spacing(1),
@@ -59,66 +61,94 @@ const aimings = [
 ];
 let checkItems = {};
 aimings.forEach((aim) => (checkItems[aim.name] = false));
-export default function Filter() {
-    const [checkedItems, setCheckedItems] = useState(checkItems);
-    const [mobileCheckItem, setMobileCheckItem] = useState("");
-    const handleChange = (event) => {
-        // updating an object instead of a Map
-        setCheckedItems({
-            ...checkedItems,
-            [event.target.name]: event.target.checked,
-        });
-    };
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+export default function Filter({ aiming, setAiming }) {
+    const [items, setItems] = useState(aiming);
     const classes = useStyles();
     const Breaker = () => {
         return <div className={classes.breaker}></div>;
     };
+
+    const handleChange = (e) => {
+        setItems(e.target.value);
+        // setAiming(e.target.value);
+    };
     return (
         <div>
             {/* Desktop */}
-            <Hidden smDown>
-                <Container>
+            {/* <Hidden smDown> */}
+            <Container>
+                <Hidden smDown>
                     <h2 className={classes.header}>Aiming</h2>
                     <Breaker />
-                    <FormControl
-                        component="fieldset"
-                        className={classes.formControl}
+                </Hidden>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-mutiple-name-label">
+                        {aiming.length > 0 ? "Aiming" : "All"}
+                    </InputLabel>
+                    <Select
+                        labelId="demo-mutiple-name-label"
+                        id="demo-mutiple-name"
+                        input={<Input />}
+                        value={items}
+                        multiple
+                        MenuProps={MenuProps}
+                        onChange={handleChange}
+                        onClose={() => setAiming(items)}
                     >
-                        {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
-                        <FormGroup>
-                            {aimings.map((aim) => (
-                                <FormControlLabel
-                                    key={aim.name}
-                                    control={
-                                        <Checkbox
-                                            checked={checkedItems[aim.name]}
-                                            onChange={handleChange}
-                                            name={aim.name}
-                                        />
-                                    }
-                                    label={aim.label}
-                                />
-                            ))}
-                        </FormGroup>
-                        {/* <FormHelperText>P</FormHelperText> */}
-                    </FormControl>
-                </Container>
-            </Hidden>
+                        {aimings.map((aim) => (
+                            <MenuItem key={aim.name} value={aim.label}>
+                                {aim.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                {/* <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">
+                        Course
+                    </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={aiming}
+                        onChange={(e) => setAiming(e.target.value)}
+                    >
+                        {aimings.map((aim) => (
+                            <MenuItem key={aim.name} value={aim.name}>
+                                {aim.label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl> */}
+            </Container>
+            {/* </Hidden> */}
             {/* Mobile */}
-            <Hidden mdUp>
+            {/* <Hidden mdUp>
                 <Container className={classes.mobileCheckboxContainer}>
                     <FormControl className={classes.formControl}>
                         <InputLabel id="demo-simple-select-label">
                             Aiming
                         </InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={mobileCheckItem}
-                            onChange={(e) => setMobileCheckItem(e.target.value)}
+                            labelId="demo-mutiple-name-label"
+                            id="demo-mutiple-name"
+                            input={<Input />}
+                            value={aiming}
+                            multiple
+                            MenuProps={MenuProps}
+                            onChange={(e) => setAiming(e.target.value)}
                         >
                             {aimings.map((aim) => (
-                                <MenuItem key={aim.name} value={aim.name}>
+                                <MenuItem key={aim.name} value={aim.label}>
                                     {aim.label}
                                 </MenuItem>
                             ))}
@@ -131,8 +161,8 @@ export default function Filter() {
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={mobileCheckItem}
-                            onChange={(e) => setMobileCheckItem(e.target.value)}
+                            value={aiming}
+                            onChange={(e) => setAiming(e.target.value)}
                         >
                             {aimings.map((aim) => (
                                 <MenuItem key={aim.name} value={aim.name}>
@@ -142,7 +172,7 @@ export default function Filter() {
                         </Select>
                     </FormControl>
                 </Container>
-            </Hidden>
+            </Hidden> */}
         </div>
     );
 }

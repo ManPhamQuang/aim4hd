@@ -16,15 +16,17 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto",
         marginTop: "3rem",
     },
+    grid: {
+        marginBottom: "5rem",
+    },
 }));
-export default function Posts() {
+export default function Posts({ aiming, loading, setLoading }) {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
     const [endOfList, setEndOfList] = useState(false);
     const onChange = (isVisible) => {
-        console.log("Element is now %s", isVisible ? "visible" : "hidden");
+        // console.log("Element is now %s", isVisible ? "visible" : "hidden");
         setVisible(isVisible);
     };
     const fetchPosts = () => {
@@ -32,7 +34,9 @@ export default function Posts() {
         // setLoading(true);
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}`
+                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
+                    aiming != "" ? `&aiming=${aiming}` : ""
+                }`
             )
             .then((res) => {
                 if (res.data.length != 0) {
@@ -40,6 +44,7 @@ export default function Posts() {
                     setPage(page + 1);
                     setLoading(false);
                 } else {
+                    // no more posts, stop loading more
                     setEndOfList(true);
                 }
             })
@@ -47,26 +52,27 @@ export default function Posts() {
     };
     useEffect(() => {
         if (visible && !loading) {
-            // setLoading(true);
+            setLoading(true);
             fetchPosts();
         }
     }, [visible]);
+    useEffect(() => {
+        setPosts([]);
+        setPage(1);
+    }, [aiming]);
     const classes = useStyles();
     return (
-        <Grid container direction="column" spacing={4}>
+        <Grid container direction="column" spacing={4} className={classes.grid}>
             {/* show spinner when loading */}
-            {loading ? (
-                <CircularProgress className={classes.loader} />
-            ) : (
-                posts.map((post) => (
-                    <Grid item key={post._id}>
-                        <PostCard {...post} />
-                    </Grid>
-                ))
-            )}
+            {posts.map((post) => (
+                <Grid item key={post._id}>
+                    <PostCard {...post} />
+                </Grid>
+            ))}
             {!endOfList ? (
                 <VisibilitySensor onChange={onChange}>
-                    <h1>more more more</h1>
+                    <CircularProgress className={classes.loader} />
+                    {/* <h1>more more more</h1> */}
                 </VisibilitySensor>
             ) : null}
         </Grid>

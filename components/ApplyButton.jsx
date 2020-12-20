@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonProgress({ postId, appliedStudents }) {
+export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const user = context.user;
@@ -104,7 +104,7 @@ export default function ButtonProgress({ postId, appliedStudents }) {
                 variant="contained"
                 color="primary"
                 className={buttonClassname}
-                disabled={isApplied || loading}
+                disabled={isApplied || loading || !isOpen}
                 onClick={handleButtonClick}
                 endIcon={success ? <DoneIcon /> : <SendIcon />}
             >

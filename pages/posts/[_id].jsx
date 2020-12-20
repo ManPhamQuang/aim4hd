@@ -13,6 +13,7 @@ import {
     Hidden,
     Grid,
     Button,
+    Tooltip,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -25,6 +26,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
 import Breaker from "../../components/Breaker";
 import moment from "moment";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -140,6 +142,9 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary,
         backgroundColor: theme.palette.primary,
     },
+    date: {
+        fontSize: "1.5rem",
+    },
 }));
 
 function PostPage({
@@ -177,8 +182,23 @@ function PostPage({
                         </IconButton>
                     }
                     action={
-                        <Typography paragraph>
-                            {moment(createdAt).format("DD-MM-YYYY")}
+                        <Typography className={classes.date} paragraph>
+                            {moment(createdAt).format("DD-MM-YYYY")} {"  "}
+                            {isOpen ? (
+                                <Tooltip title="This post is open for apply">
+                                    <CheckCircleOutlineIcon
+                                        fontSize="small"
+                                        color="primary"
+                                    />
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="This post is not open for apply">
+                                    <CheckCircleOutlineIcon
+                                        fontSize="small"
+                                        color="disabled"
+                                    />
+                                </Tooltip>
+                            )}
                         </Typography>
                     }
                     title={author.name}
@@ -214,6 +234,7 @@ function PostPage({
                             <ProgressButton
                                 postId={_id}
                                 appliedStudents={appliedStudents}
+                                isOpen={isOpen}
                             />
                         </Grid>
                     </Grid>

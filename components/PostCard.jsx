@@ -280,6 +280,7 @@ export default function PostCard({
                         <ProgressButton
                             postId={_id}
                             appliedStudents={appliedStudents}
+                            isOpen={isOpen}
                         />
                     </Grid>
                 </Grid>

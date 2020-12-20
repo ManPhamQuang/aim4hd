@@ -106,6 +106,10 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
         fontSize: 24,
         minWidth: 130,
+        "&:hover": {
+            textDecoration: "underline",
+            cursor: "pointer",
+        },
     },
     bottom: {
         flexWrap: "wrap",
@@ -157,19 +161,7 @@ const useStyles = makeStyles((theme) => ({
     date: {
         fontSize: "1.5rem",
     },
-    userCard: {
-        boxShadow: "none",
-        alignItems: "center",
-        justifyContent: "space-between",
-        maxWidth: "300px",
-        borderColor: "",
-        "&:hover": {
-            boxShadow:
-                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-            borderRadius: "7px",
-            cursor: "pointer",
-        },
-    },
+    userCard: theme.userCard,
 }));
 
 function PostPage({
@@ -241,7 +233,11 @@ function PostPage({
                             )}
                         </Typography>
                     }
-                    title={author.name}
+                    title={
+                        <Link href={`/users/${author._id}`}>
+                            <Typography variant="h6">{author.name}</Typography>
+                        </Link>
+                    }
                     subheader={author.school}
                 />
                 {/* <div className={classes.infoContainer}>

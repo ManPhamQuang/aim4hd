@@ -14,6 +14,11 @@ import {
     Grid,
     Button,
     Tooltip,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    GridListTileBar,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -124,6 +129,10 @@ const useStyles = makeStyles((theme) => ({
         width: "60%",
         minWidth: "300px",
     },
+    infoContainer: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
     skillsContainer: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
@@ -142,8 +151,24 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary,
         backgroundColor: theme.palette.primary,
     },
+    studentList: {
+        width: "100%",
+    },
     date: {
         fontSize: "1.5rem",
+    },
+    userCard: {
+        boxShadow: "none",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: "300px",
+        borderColor: "",
+        "&:hover": {
+            boxShadow:
+                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            borderRadius: "7px",
+            cursor: "pointer",
+        },
     },
 }));
 
@@ -164,6 +189,21 @@ function PostPage({
 }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
+    const UserCard = ({ student }) => {
+        return (
+            <Link href={`/users/${student._id}`}>
+                <ListItem className={classes.userCard}>
+                    <ListItemAvatar>
+                        <Avatar
+                            alt={student.name}
+                            src={student.avatar}
+                        ></Avatar>
+                    </ListItemAvatar>
+                    <ListItemText>{student.name}</ListItemText>
+                </ListItem>
+            </Link>
+        );
+    };
     return (
         <Container maxWidth="lg">
             <Card className={classes.root}>
@@ -204,16 +244,115 @@ function PostPage({
                     title={author.name}
                     subheader={author.school}
                 />
-                <div className={classes.skillsContainer}>
-                    <Typography variant="h6" style={{ marginBottom: "10px" }}>
-                        Required Skills:{" "}
+                {/* <div className={classes.infoContainer}>
+                    <div className={classes.skillsContainer}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Required Skills:{" "}
+                        </Typography>
+                        {requiredSkills.map((skill, idx) => {
+                            return (
+                                <SkillBadge
+                                    key={skill.name}
+                                    label={skill.name}
+                                />
+                            );
+                        })}
+                    </div>
+                    <div className={classes.skillsContainer}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Recruiting {maximumMember - currentMember}/{""}
+                            {maximumMember} members:
+                        </Typography>
+                        <List className={classes.studentList}>
+                            {appliedStudents.map((student) => (
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={student.name}
+                                            src={student.avatar}
+                                        ></Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText>{student.name}</ListItemText>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </div>
+                    <Typography
+                        variant="caption"
+                        align="right"
+                        className={classes.commentText}
+                        component="a"
+                    >
+                        recruiting {maximumMember - currentMember}/{""}
+                        {maximumMember} members
                     </Typography>
-                    {requiredSkills.map((skill, idx) => {
-                        return (
-                            <SkillBadge key={skill.name} label={skill.name} />
-                        );
-                    })}
-                </div>
+                </div> */}
+                <Grid container className={classes.infoContainer}>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Required Skills:{" "}
+                        </Typography>
+                        {requiredSkills.map((skill, idx) => {
+                            return (
+                                <SkillBadge
+                                    key={skill.name}
+                                    label={skill.name}
+                                />
+                            );
+                        })}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Current members:
+                        </Typography>
+                        {appliedStudents.length > 0 ? (
+                            <List className={classes.studentList}>
+                                {appliedStudents.map((student) => (
+                                    <UserCard
+                                        student={student}
+                                        key={student._id}
+                                    />
+                                ))}
+                            </List>
+                        ) : (
+                            <Typography variant="h7">No member yet</Typography>
+                        )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Recruiting {maximumMember - currentMember}/{""}
+                            {maximumMember} members:
+                        </Typography>
+                        <List className={classes.studentList}>
+                            {appliedStudents.map((student) => (
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={student.name}
+                                            src={student.avatar}
+                                        ></Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText>{student.name}</ListItemText>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Grid>
+                </Grid>
                 <Breaker />
                 {context.user ? (
                     <Grid
@@ -249,35 +388,15 @@ function PostPage({
                 </CardContent>
                 <Breaker />
                 {/* member list */}
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        padding: "0px",
-                    }}
+
+                <Typography
+                    variant="caption"
+                    align="right"
+                    className={classes.commentText}
+                    component="a"
                 >
-                    <Link href={`/posts/${_id}`}>
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            {numberOfComments} comments
-                        </Typography>
-                    </Link>
-                    <Link href={`/posts/${_id}`}>
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members
-                        </Typography>
-                    </Link>
-                </div>
+                    {numberOfComments} comments
+                </Typography>
             </Card>
         </Container>
     );

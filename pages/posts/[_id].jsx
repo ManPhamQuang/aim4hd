@@ -14,6 +14,11 @@ import {
     Grid,
     Button,
     Tooltip,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    GridListTileBar,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
@@ -82,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
         transform: "rotate(180deg)",
     },
     avatar: {
+        [theme.breakpoints.down("sm")]: {
+            width: theme.spacing(6),
+            height: theme.spacing(6),
+        },
         backgroundColor: red[500],
         width: theme.spacing(8),
         height: theme.spacing(8),
@@ -101,6 +110,10 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
         fontSize: 24,
         minWidth: 130,
+        "&:hover": {
+            textDecoration: "underline",
+            cursor: "pointer",
+        },
     },
     bottom: {
         flexWrap: "wrap",
@@ -124,6 +137,10 @@ const useStyles = makeStyles((theme) => ({
         width: "60%",
         minWidth: "300px",
     },
+    infoContainer: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
     skillsContainer: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
@@ -142,9 +159,25 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary,
         backgroundColor: theme.palette.primary,
     },
+    studentList: {
+        width: "100%",
+    },
     date: {
         fontSize: "1.5rem",
+        [theme.breakpoints.down("xs")]: {
+            fontSize: "12px",
+            marginTop: "1rem",
+        },
+        minWidth: "80px",
     },
+    icon: {
+        fontSize: "20px",
+        [theme.breakpoints.down("xs")]: {
+            fontSize: "12px",
+        },
+        marginTop: "2px",
+    },
+    userCard: theme.userCard,
 }));
 
 function PostPage({
@@ -164,6 +197,21 @@ function PostPage({
 }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
+    const UserCard = ({ student }) => {
+        return (
+            <Link href={`/users/${student._id}`}>
+                <ListItem className={classes.userCard}>
+                    <ListItemAvatar>
+                        <Avatar
+                            alt={student.name}
+                            src={student.avatar}
+                        ></Avatar>
+                    </ListItemAvatar>
+                    <ListItemText>{student.name}</ListItemText>
+                </ListItem>
+            </Link>
+        );
+    };
     return (
         <Container maxWidth="lg">
             <Card className={classes.root}>
@@ -187,33 +235,87 @@ function PostPage({
                             {isOpen ? (
                                 <Tooltip title="This post is open for apply">
                                     <CheckCircleOutlineIcon
-                                        fontSize="small"
+                                        className={classes.icon}
                                         color="primary"
                                     />
                                 </Tooltip>
                             ) : (
                                 <Tooltip title="This post is not open for apply">
                                     <CheckCircleOutlineIcon
-                                        fontSize="small"
+                                        className={classes.icon}
                                         color="disabled"
                                     />
                                 </Tooltip>
                             )}
                         </Typography>
                     }
-                    title={author.name}
+                    title={
+                        <Link href={`/users/${author._id}`}>
+                            <Typography variant="h6">{author.name}</Typography>
+                        </Link>
+                    }
                     subheader={author.school}
                 />
-                <div className={classes.skillsContainer}>
-                    <Typography variant="h6" style={{ marginBottom: "10px" }}>
-                        Required Skills:{" "}
-                    </Typography>
-                    {requiredSkills.map((skill, idx) => {
-                        return (
-                            <SkillBadge key={skill.name} label={skill.name} />
-                        );
-                    })}
-                </div>
+                <Grid container className={classes.infoContainer}>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Required Skills:{" "}
+                        </Typography>
+                        {requiredSkills.map((skill, idx) => {
+                            return (
+                                <SkillBadge
+                                    key={skill.name}
+                                    label={skill.name}
+                                />
+                            );
+                        })}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Current members:
+                        </Typography>
+                        {appliedStudents.length > 0 ? (
+                            <List className={classes.studentList}>
+                                {appliedStudents.map((student) => (
+                                    <UserCard
+                                        student={student}
+                                        key={student._id}
+                                    />
+                                ))}
+                            </List>
+                        ) : (
+                            <Typography variant="h7">No member yet</Typography>
+                        )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Recruiting {maximumMember - currentMember}/{""}
+                            {maximumMember} members:
+                        </Typography>
+                        <List className={classes.studentList}>
+                            {appliedStudents.map((student) => (
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={student.name}
+                                            src={student.avatar}
+                                        ></Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText>{student.name}</ListItemText>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Grid>
+                </Grid>
                 <Breaker />
                 {context.user ? (
                     <Grid
@@ -249,35 +351,15 @@ function PostPage({
                 </CardContent>
                 <Breaker />
                 {/* member list */}
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        padding: "0px",
-                    }}
+
+                <Typography
+                    variant="caption"
+                    align="right"
+                    className={classes.commentText}
+                    component="a"
                 >
-                    <Link href={`/posts/${_id}`}>
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            {numberOfComments} comments
-                        </Typography>
-                    </Link>
-                    <Link href={`/posts/${_id}`}>
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members
-                        </Typography>
-                    </Link>
-                </div>
+                    {numberOfComments} comments
+                </Typography>
             </Card>
         </Container>
     );

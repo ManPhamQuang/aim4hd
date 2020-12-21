@@ -20,6 +20,8 @@ import {
     ListItemText,
     GridListTileBar,
 } from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -263,6 +265,17 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
+                            Aiming:
+                        </Typography>
+                        <Chip
+                            label={aiming}
+                            color="primary"
+                            icon={<HighlightOffIcon />}
+                        />
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
                             Required Skills:{" "}
                         </Typography>
                         {requiredSkills.map((skill, idx) => {
@@ -299,8 +312,7 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members:
+                            Course:
                         </Typography>
                         <List className={classes.studentList}>
                             {appliedStudents.map((student) => (

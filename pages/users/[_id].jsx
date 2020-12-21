@@ -37,6 +37,7 @@ export async function getStaticProps({ params }) {
     let res = await getUser(params._id);
     return {
         props: res,
+        revalidate: 1,
     };
 }
 

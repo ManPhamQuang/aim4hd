@@ -117,6 +117,7 @@ export default function CenterProfile({ user }) {
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Tabs
+					variant="fullWidth"
 					value={value}
 					onChange={handleChange}
 					aria-label="simple tabs example"
@@ -159,7 +160,7 @@ export default function CenterProfile({ user }) {
 											icon={<FavoriteIcon />}
 											clickable
 											label={skill.name}
-											color="primary"
+											// color="primary"
 											// style={{ backgroundColor: randomColor() }}
 										/>
 									);
@@ -188,7 +189,7 @@ export default function CenterProfile({ user }) {
 												className={classes.chipTest}
 												icon={<MenuBookIcon />}
 												label={course.name}
-												color="primary"
+												// color="primary"
 												clickable
 												// style={{ backgroundColor: randomColor() }}
 											/>

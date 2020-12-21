@@ -104,7 +104,10 @@ export default function SignIn({ courses, skills }) {
             if (`${response.status}`.startsWith("2")) {
                 setIsLoading(false);
                 console.log(response.data.data.user);
-                auth.login("signup", { user: response.data.data.user });
+                auth.login("signup", {
+                    user: response.data.data.user,
+                    token: response.data.data.token,
+                });
                 router.push("/");
             }
         } catch (error) {

@@ -104,7 +104,10 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             "https://aim4hd.herokuapp.com/api/v1/users/check",
             { microsoftUniqueId: uniqueId }
         );
-        return { user: response.data.data.user };
+        return {
+            user: response.data.data.user,
+            token: response.data.data.token,
+        };
     } catch (error) {
         return { error: error.response.data.message };
     }

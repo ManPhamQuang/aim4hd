@@ -10,6 +10,7 @@ import CourseBadge from "./CourseBadge";
 import Chip from "@material-ui/core/Chip";
 //*Styling import
 import Avatar from "@material-ui/core/Avatar";
+import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
@@ -18,6 +19,9 @@ import Tab from "@material-ui/core/Tab";
 import { black } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 // import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -49,6 +53,47 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: "3%",
 	},
 }));
+
+const Accordion = withStyles({
+	root: {
+		border: "1px solid rgba(0, 0, 0, .125)",
+		boxShadow: "none",
+		"&:not(:last-child)": {
+			borderBottom: 0,
+		},
+		"&:before": {
+			display: "none",
+		},
+		"&$expanded": {
+			margin: "auto",
+		},
+	},
+	expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+	root: {
+		backgroundColor: "rgba(0, 0, 0, .03)",
+		borderBottom: "1px solid rgba(0, 0, 0, .125)",
+		marginBottom: -1,
+		minHeight: 56,
+		"&$expanded": {
+			minHeight: 56,
+		},
+	},
+	content: {
+		"&$expanded": {
+			margin: "12px 0",
+		},
+	},
+	expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme) => ({
+	root: {
+		padding: theme.spacing(2),
+	},
+}))(MuiAccordionDetails);
 
 export default function CenterProfile({ user }) {
 	const classes = useStyles();
@@ -112,6 +157,11 @@ export default function CenterProfile({ user }) {
 
 		return color;
 	}
+	const [expanded, setExpanded] = React.useState("panel1");
+
+	const handleChange2 = (panel) => (event, newExpanded) => {
+		setExpanded(newExpanded ? panel : false);
+	};
 
 	return (
 		<div className={classes.root}>
@@ -123,7 +173,7 @@ export default function CenterProfile({ user }) {
 					aria-label="simple tabs example"
 				>
 					<Tab label="Overview" />
-					<Tab label="Teams" />
+					<Tab label="Groups" />
 				</Tabs>
 			</AppBar>
 			<TabPanel value={value} index={0}>
@@ -201,7 +251,53 @@ export default function CenterProfile({ user }) {
 				</div>
 			</TabPanel>
 			<TabPanel value={value} index={1}>
-				Item Two
+				<div>
+					<Accordion
+						square
+						expanded={expanded === "panel1"}
+						onChange={handleChange2("panel1")}
+					>
+						<AccordionSummary
+							aria-controls="panel1d-content"
+							id="panel1d-header"
+						>
+							<Typography>Group 1</Typography>
+						</AccordionSummary>
+						<AccordionDetails>
+							<Typography>Members</Typography>
+						</AccordionDetails>
+					</Accordion>
+					<Accordion
+						square
+						expanded={expanded === "panel2"}
+						onChange={handleChange2("panel2")}
+					>
+						<AccordionSummary
+							aria-controls="panel2d-content"
+							id="panel2d-header"
+						>
+							<Typography>Group 2</Typography>
+						</AccordionSummary>
+						<AccordionDetails>
+							<Typography>Members</Typography>
+						</AccordionDetails>
+					</Accordion>
+					<Accordion
+						square
+						expanded={expanded === "panel3"}
+						onChange={handleChange2("panel3")}
+					>
+						<AccordionSummary
+							aria-controls="panel3d-content"
+							id="panel3d-header"
+						>
+							<Typography>Group 3</Typography>
+						</AccordionSummary>
+						<AccordionDetails>
+							<Typography>Members</Typography>
+						</AccordionDetails>
+					</Accordion>
+				</div>
 			</TabPanel>
 		</div>
 	);

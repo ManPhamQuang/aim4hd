@@ -61,6 +61,7 @@ export async function getStaticProps({ params }) {
     let res = await getPost(params._id);
     return {
         props: res,
+        revalidate: 0.5,
     };
 }
 

@@ -25,7 +25,6 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
-<<<<<<< HEAD
     root: {
         // margin: theme.spacing(2),
         backgroundColor: "white",
@@ -77,36 +76,6 @@ const useStyles = makeStyles((theme) => ({
         flex: "20%",
         marginLeft: "5%",
     },
-=======
-	root: {
-		// margin: theme.spacing(2),
-		backgroundColor: "white",
-		justifyContent: "center",
-		alignItems: "center",
-		marginBottom: "50px",
-		borderRadius: "0px 0px 8px 8px",
-	},
-	about: {
-		marginLeft: "4%",
-		marginTop: "3%",
-	},
-	content: {
-		marginLeft: "4%",
-		marginTop: "3%",
-		marginBottom: "5%",
-	},
-	skill: {
-		marginLeft: "4%",
-		marginTop: "3%",
-	},
-	Box: {
-		paddingBottom: "4px",
-		borderRadius: "0px 0px 30px 30px",
-	},
-	chipTest: {
-		marginRight: "2%",
-	},
->>>>>>> 2ca4a237515752ec26abf4a891a85a37f042e6a3
 }));
 
 const Accordion = withStyles({
@@ -145,7 +114,6 @@ const AccordionSummary = withStyles({
 })(MuiAccordionSummary);
 
 const AccordionDetails = withStyles((theme2) => ({
-<<<<<<< HEAD
     root: {
         padding: theme2.spacing(2),
     },
@@ -159,16 +127,6 @@ export default function CenterProfile({ user }, feedback) {
     const handleChange2 = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     };
-=======
-	root: {
-		padding: theme2.spacing(3),
-	},
-}))(MuiAccordionDetails);
-
-export default function CenterProfile({ user }) {
-	const classes = useStyles();
-	const [value, setValue] = React.useState(0);
->>>>>>> 2ca4a237515752ec26abf4a891a85a37f042e6a3
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -228,7 +186,6 @@ export default function CenterProfile({ user }) {
 
         return color;
     }
-
 
     return (
         <div className={classes.root}>
@@ -440,127 +397,136 @@ export default function CenterProfile({ user }) {
         </div>
     );
 
-	return (
-		<div className={classes.root}>
-			<AppBar position="static">
-				<Tabs
-					variant="fullWidth"
-					value={value}
-					onChange={handleChange}
-					aria-label="simple tabs example"
-				>
-					<Tab label="Overview" />
-					<Tab label="Groups" />
-				</Tabs>
-			</AppBar>
-			<TabPanel value={value} index={0}>
-				<div className={classes.about}>
-					<Typography
-						variant="h5"
-						component="h2"
-						style={{ fontWeight: "bold" }}
-					>
-						About
-					</Typography>
-				</div>
-				<div className={classes.content}>
-					<Typography value={value}>{user.description}</Typography>
-				</div>
-				<ColorLine color="gray[900]" />
-				<div className={classes.about}>
-					<Typography
-						variant="h5"
-						component="h2"
-						style={{ fontWeight: "bold" }}
-					>
-						Skill
-					</Typography>
-				</div>
-				<div className={classes.content}>
-					{/* desktop */}
-					{user.skills
-						? user.skills.map((skill, idx) => {
-								if (idx < 4) {
-									return (
-										<Chip
-											className={classes.chipTest}
-											icon={<FavoriteIcon />}
-											clickable
-											label={skill.name}
-											// color="primary"
-											// style={{ backgroundColor: randomColor() }}
-										/>
-									);
-								}
-						  })
-						: null}
-				</div>
-				<ColorLine color="gray[900]" />
-				<div style={{ marginBottom: "3px" }}>
-					<div className={classes.about}>
-						<Typography
-							variant="h5"
-							component="h2"
-							style={{ fontWeight: "bold" }}
-						>
-							Current Courses
-						</Typography>
-					</div>
-					<div className={classes.content}>
-						{/* desktop */}
-						{user.currentCourses
-							? user.currentCourses.map((course, idx) => {
-									if (idx < 4) {
-										return (
-											<Chip
-												className={classes.chipTest}
-												icon={<MenuBookIcon />}
-												label={course.name}
-												// color="primary"
-												clickable
-												// style={{ backgroundColor: randomColor() }}
-											/>
-										);
-									}
-							  })
-							: null}
-					</div>
-				</div>
-			</TabPanel>
-			<TabPanel value={value} index={1}>
-				<div>
-					{user.groups
-						? user.groups.map((group) => {
-								return (
-									<Accordion>
-										<AccordionSummary
-											expandIcon={<ExpandMoreIcon />}
-											aria-controls={group.id + "-content"}
-											id={group.id + "-header"}
-										>
-											<Typography variant="h6">{group.course.name}</Typography>
-										</AccordionSummary>
-										<AccordionDetails>
-											{group.members
-												? group.members.map((member) => {
-														return (
-															<Chip
-																className={classes.chipTest}
-																label={member.name}
-																clickable
-																avatar={<Avatar src={member.avatar} />}
-															/>
-														);
-												  })
-												: null}
-										</AccordionDetails>
-									</Accordion>
-								);
-						  })
-						: null}
-				</div>
-			</TabPanel>
-		</div>
-	);
->>>>>>> 2ca4a237515752ec26abf4a891a85a37f042e6a3
+    return (
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Tabs
+                    variant="fullWidth"
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="simple tabs example"
+                >
+                    <Tab label="Overview" />
+                    <Tab label="Groups" />
+                </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0}>
+                <div className={classes.about}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        style={{ fontWeight: "bold" }}
+                    >
+                        About
+                    </Typography>
+                </div>
+                <div className={classes.content}>
+                    <Typography value={value}>{user.description}</Typography>
+                </div>
+                <ColorLine color="gray[900]" />
+                <div className={classes.about}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Skill
+                    </Typography>
+                </div>
+                <div className={classes.content}>
+                    {/* desktop */}
+                    {user.skills
+                        ? user.skills.map((skill, idx) => {
+                              if (idx < 4) {
+                                  return (
+                                      <Chip
+                                          className={classes.chipTest}
+                                          icon={<FavoriteIcon />}
+                                          clickable
+                                          label={skill.name}
+                                          // color="primary"
+                                          // style={{ backgroundColor: randomColor() }}
+                                      />
+                                  );
+                              }
+                          })
+                        : null}
+                </div>
+                <ColorLine color="gray[900]" />
+                <div style={{ marginBottom: "3px" }}>
+                    <div className={classes.about}>
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            style={{ fontWeight: "bold" }}
+                        >
+                            Current Courses
+                        </Typography>
+                    </div>
+                    <div className={classes.content}>
+                        {/* desktop */}
+                        {user.currentCourses
+                            ? user.currentCourses.map((course, idx) => {
+                                  if (idx < 4) {
+                                      return (
+                                          <Chip
+                                              className={classes.chipTest}
+                                              icon={<MenuBookIcon />}
+                                              label={course.name}
+                                              // color="primary"
+                                              clickable
+                                              // style={{ backgroundColor: randomColor() }}
+                                          />
+                                      );
+                                  }
+                              })
+                            : null}
+                    </div>
+                </div>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <div>
+                    {user.groups
+                        ? user.groups.map((group) => {
+                              return (
+                                  <Accordion>
+                                      <AccordionSummary
+                                          expandIcon={<ExpandMoreIcon />}
+                                          aria-controls={group.id + "-content"}
+                                          id={group.id + "-header"}
+                                      >
+                                          <Typography variant="h6">
+                                              {group.course.name}
+                                          </Typography>
+                                      </AccordionSummary>
+                                      <AccordionDetails>
+                                          {group.members
+                                              ? group.members.map((member) => {
+                                                    return (
+                                                        <Chip
+                                                            className={
+                                                                classes.chipTest
+                                                            }
+                                                            label={member.name}
+                                                            clickable
+                                                            avatar={
+                                                                <Avatar
+                                                                    src={
+                                                                        member.avatar
+                                                                    }
+                                                                />
+                                                            }
+                                                        />
+                                                    );
+                                                })
+                                              : null}
+                                      </AccordionDetails>
+                                  </Accordion>
+                              );
+                          })
+                        : null}
+                </div>
+            </TabPanel>
+        </div>
+    );
 }

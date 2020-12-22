@@ -50,6 +50,19 @@ export default function UserProfile({ user }) {
     //         .then((res) => setUser(res.data.data.user))
     //         .catch((err) => console.log(err));
     // }, []);
+
+    const feedback = {
+        reviewers: [
+            {
+                name: "Man Pham",
+                image:
+                    "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
+                comment: "This guy working really hard. Highly recommend.",
+                isAnonymous: "false",
+                isRecommended: "true",
+            },
+        ],
+    };
     return (
         <React.Fragment>
             <Head>

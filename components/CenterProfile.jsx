@@ -22,6 +22,7 @@ import MenuBookIcon from "@material-ui/icons/MenuBook";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -89,15 +90,20 @@ const AccordionSummary = withStyles({
 	expanded: {},
 })(MuiAccordionSummary);
 
-const AccordionDetails = withStyles((theme) => ({
+const AccordionDetails = withStyles((theme2) => ({
 	root: {
-		padding: theme.spacing(2),
+		padding: theme2.spacing(2),
 	},
 }))(MuiAccordionDetails);
 
 export default function CenterProfile({ user }) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
+	const [expanded, setExpanded] = React.useState(false);
+
+	const handleChange2 = (panel) => (event, newExpanded) => {
+		setExpanded(newExpanded ? panel : false);
+	};
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -157,11 +163,6 @@ export default function CenterProfile({ user }) {
 
 		return color;
 	}
-	const [expanded, setExpanded] = React.useState("panel1");
-
-	const handleChange2 = (panel) => (event, newExpanded) => {
-		setExpanded(newExpanded ? panel : false);
-	};
 
 	return (
 		<div className={classes.root}>
@@ -252,51 +253,39 @@ export default function CenterProfile({ user }) {
 			</TabPanel>
 			<TabPanel value={value} index={1}>
 				<div>
-					<Accordion
-						square
-						expanded={expanded === "panel1"}
-						onChange={handleChange2("panel1")}
-					>
-						<AccordionSummary
-							aria-controls="panel1d-content"
-							id="panel1d-header"
-						>
-							<Typography>Group 1</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<Typography>Members</Typography>
-						</AccordionDetails>
-					</Accordion>
-					<Accordion
-						square
-						expanded={expanded === "panel2"}
-						onChange={handleChange2("panel2")}
-					>
-						<AccordionSummary
-							aria-controls="panel2d-content"
-							id="panel2d-header"
-						>
-							<Typography>Group 2</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<Typography>Members</Typography>
-						</AccordionDetails>
-					</Accordion>
-					<Accordion
-						square
-						expanded={expanded === "panel3"}
-						onChange={handleChange2("panel3")}
-					>
-						<AccordionSummary
-							aria-controls="panel3d-content"
-							id="panel3d-header"
-						>
-							<Typography>Group 3</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<Typography>Members</Typography>
-						</AccordionDetails>
-					</Accordion>
+					{user.groups
+						? user.groups.map((group) => {
+								return (
+									<Accordion
+										square
+										expanded={expanded === group.id}
+										onChange={handleChange2(group.id)}
+									>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls={group.id + "-content"}
+											id={group.id + "-header"}
+										>
+											<Typography>{group.course.name}</Typography>
+										</AccordionSummary>
+										<AccordionDetails>
+											{group.members
+												? group.members.map((member) => {
+														return (
+															<Chip
+																className={classes.chipTest}
+																label={member.name}
+																clickable
+																avatar={<Avatar src={member.avatar} />}
+															/>
+														);
+												  })
+												: null}
+										</AccordionDetails>
+									</Accordion>
+								);
+						  })
+						: null}
 				</div>
 			</TabPanel>
 		</div>

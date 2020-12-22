@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: "0px 0px 30px 30px",
 	},
 	chipTest: {
-		marginRight: "3%",
+		marginRight: "2%",
 	},
 }));
 
@@ -92,18 +92,13 @@ const AccordionSummary = withStyles({
 
 const AccordionDetails = withStyles((theme2) => ({
 	root: {
-		padding: theme2.spacing(2),
+		padding: theme2.spacing(3),
 	},
 }))(MuiAccordionDetails);
 
 export default function CenterProfile({ user }) {
 	const classes = useStyles();
 	const [value, setValue] = React.useState(0);
-	const [expanded, setExpanded] = React.useState(false);
-
-	const handleChange2 = (panel) => (event, newExpanded) => {
-		setExpanded(newExpanded ? panel : false);
-	};
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -256,17 +251,13 @@ export default function CenterProfile({ user }) {
 					{user.groups
 						? user.groups.map((group) => {
 								return (
-									<Accordion
-										square
-										expanded={expanded === group.id}
-										onChange={handleChange2(group.id)}
-									>
+									<Accordion>
 										<AccordionSummary
 											expandIcon={<ExpandMoreIcon />}
 											aria-controls={group.id + "-content"}
 											id={group.id + "-header"}
 										>
-											<Typography>{group.course.name}</Typography>
+											<Typography variant="h6">{group.course.name}</Typography>
 										</AccordionSummary>
 										<AccordionDetails>
 											{group.members

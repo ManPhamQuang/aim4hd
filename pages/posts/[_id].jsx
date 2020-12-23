@@ -34,6 +34,7 @@ import AuthContext from "../../utils/authContext";
 import Breaker from "../../components/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import PostComments from "../../components/PostComments";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -373,6 +374,7 @@ function PostPage({
                 >
                     {numberOfComments} comments
                 </Typography>
+                <PostComments _id={_id} />
             </Card>
         </Container>
     );

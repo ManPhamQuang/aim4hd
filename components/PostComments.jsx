@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Avatar, Grid, Paper } from "@material-ui/core";
 export default function PostComments({ _id }) {
     const [comments, setComments] = useState([]);
     useEffect(() => {
@@ -10,9 +11,29 @@ export default function PostComments({ _id }) {
     });
     return (
         <div>
-            <h1>comments</h1>
+            <h1>Comments</h1>
             {comments.map((comment) => (
-                <h1>{comment.content}</h1>
+                <Paper style={{ padding: "20px 20px" }}>
+                    <Grid container wrap="nowrap" spacing={2}>
+                        <Grid item>
+                            <Avatar
+                                alt={comment.user.name}
+                                src={comment.user.avatar}
+                            />
+                        </Grid>
+                        <Grid justifyContent="left" item xs zeroMinWidth>
+                            <h4 style={{ margin: 0, textAlign: "left" }}>
+                                {comment.user.name}
+                            </h4>
+                            <p style={{ textAlign: "left" }}>
+                                {comment.content}
+                            </p>
+                            <p style={{ textAlign: "left", color: "gray" }}>
+                                posted 1 minute ago
+                            </p>
+                        </Grid>
+                    </Grid>
+                </Paper>
             ))}
         </div>
     );

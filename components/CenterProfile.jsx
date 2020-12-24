@@ -291,7 +291,7 @@ export default function CenterProfile({ user }, feedback) {
                     <div>
                         {feedback.reviewers
                             ? feedback.reviewers.map((reviewer) => {
-                                  if (reviewer.isRecommended == "true") {
+                                  if (reviewer.isAnonymous == "true") {
                                       return (
                                           <Avatar
                                               alt="avatar"
@@ -326,6 +326,7 @@ export default function CenterProfile({ user }, feedback) {
                               })
                             : null}
                     </div>
+
                     <div className={classes.feedback_content}>
                         <Typography value={feedback.reviewers}>
                             {value.comment}

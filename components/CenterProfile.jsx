@@ -288,43 +288,75 @@ export default function CenterProfile({ user }, feedback) {
                     </div>
                 </div>
                 <div className={classes.feedback}>
-                    {/* {feedback.reviewers
-                        ? feedback.reviewers.map((reviewer) => {
-                              if (reviewer.isRecommended == "true") {
-                                  return (
-                                      
-                                              <Avatar
-                                                  alt="avatar"
-                                                  src={reviewer.image}
-                                              />
-                                          
-                                      />
-                                  );
-                              }
-                          })
-                        : null} */}
                     <div>
+                        {feedback.reviewers
+                            ? feedback.reviewers.map((reviewer) => {
+                                  if (reviewer.isRecommended == "true") {
+                                      return (
+                                          <Avatar
+                                              alt="avatar"
+                                              src={reviewer.image}
+                                          />
+                                      );
+                                  }
+                              })
+                            : null}
+                    </div>
+                    <div className={classes.viewer_name}>
+                        {feedback.reviewers
+                            ? feedback.reviewers.map((reviewer) => {
+                                  if (reviewer.isAnonymous == "false") {
+                                      return (
+                                          <Typography
+                                              variant="body1"
+                                              style={{ fontWeight: "bold" }}
+                                          >
+                                              {reviewer.name}
+                                              {/* nếu như isRecommended là true thì sẽ hiện cục trái tim bên cạnh cái tên của reviewer (how to do this????)  */}
+                                              <FavoriteIcon
+                                                  fontSize="inherit"
+                                                  style={{
+                                                      marginLeft: "10px",
+                                                      fill: "#d6072b",
+                                                  }}
+                                              />
+                                          </Typography>
+                                      );
+                                  }
+                              })
+                            : null}
+                    </div>
+                    <div className={classes.feedback_content}>
+                        <Typography value={feedback.reviewers}>
+                            {value.comment}
+                        </Typography>
+                    </div>
+
+                    {/* <div>
                         <Avatar
                             className={classes.reviewer_avatar}
                             alt="avatar"
                             src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg"
                         />
-                    </div>
-                    <div className={classes.viewer_name}>
+                    </div> */}
+                    {/* <div className={classes.viewer_name}>
                         <Typography
                             variant="body1"
                             style={{ fontWeight: "bold" }}
                         >
                             Pham Quang Man
-                            <FavoriteIcon fontSize="inherit" />
+                            <FavoriteIcon
+                                fontSize="inherit"
+                                style={{ marginLeft: "10px", fill: "#d6072b" }}
+                            />
                         </Typography>
 
                         <div className={classes.feedback_content}>
                             This guy working really hard. Highly recommend.
                         </div>
                     </div>
-                </div>
-                <div className={classes.feedback}>
+                </div> */}
+                    {/* <div className={classes.feedback}>
                     <div>
                         <Avatar
                             className={classes.reviewer_avatar}
@@ -343,7 +375,7 @@ export default function CenterProfile({ user }, feedback) {
                             It is not easy to communicate with this guys because
                             he often has conflicts with teammates.
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </TabPanel>
 

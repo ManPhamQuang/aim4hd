@@ -16,7 +16,6 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
@@ -25,6 +24,11 @@ import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Divider from "@material-ui/core/Divider";
 // import { BiHeart } from 'react-icons/fa';
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -315,58 +319,124 @@ export default function CenterProfile({ user, feedback }) {
 						</div>
 					</div>
 				</div>
-				{/* <div className={classes.feedback}>
-                    <div>
-                        <Avatar
-                            className={classes.reviewer_avatar}
-                            alt="avatar"
-                            src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg"
-                        />
-                    </div>
-
-                    <div className={classes.viewer_name}>
-                        <Typography
-                            variant="body1"
-                            style={{ fontWeight: "bold" }}
-                        >
-                            Pham Quang Man
-                            <FavoriteIcon
-                                fontSize="inherit"
-                                style={{ marginLeft: "10px", fill: "#d6072b" }}
-                            />
-                        </Typography>
-
-                        <div className={classes.feedback_content}>
-                            This guy working really hard. Highly recommend.
-                        </div>
-                    </div>
-                </div> */}
-
-				<div className={classes.feedback}>
-					<div>
+				<div>
+					<List>
 						{feedback.reviewers
 							? feedback.reviewers.map((reviewer) => {
 									return (
 										<div>
 											{reviewer.isAnonymous == false ? (
-												<Avatar
-													className={classes.reviewer_avatar}
-													alt="avatar"
-													src={reviewer.image}
-												/>
+												<React.Fragment>
+													<ListItem>
+														<ListItemAvatar>
+															<Avatar alt="avatar" src={reviewer.image} />
+														</ListItemAvatar>
+														<ListItemText
+															primary={
+																<React.Fragment>
+																	<Typography
+																		variant="body1"
+																		style={{
+																			fontWeight: "bold",
+																		}}
+																	>
+																		Anonymous User
+																		{reviewer.isRecommended == true ? (
+																			<ThumbUpIcon
+																				fontSize="inherit"
+																				style={{
+																					marginLeft: "10px",
+																					fill: "#d6072b",
+																				}}
+																			/>
+																		) : (
+																			<ThumbDownIcon
+																				fontSize="inherit"
+																				style={{
+																					marginLeft: "10px",
+																					fill: "#d6072b",
+																				}}
+																			/>
+																		)}
+																	</Typography>
+																</React.Fragment>
+															}
+															secondary={
+																<React.Fragment>
+																	<Typography
+																		style={{
+																			fontWeight: "500",
+																		}}
+																	>
+																		{reviewer.comment}
+																	</Typography>
+																</React.Fragment>
+															}
+														/>
+													</ListItem>
+													<Divider variant="middle" />
+												</React.Fragment>
 											) : (
-												<Avatar
-													className={classes.reviewer_avatar}
-													alt="avatar"
-													src="https://i.stack.imgur.com/QBuke.gif"
-												/>
+												<React.Fragment>
+													<ListItem>
+														<ListItemAvatar>
+															<Avatar
+																alt="avatar"
+																src="https://i.stack.imgur.com/QBuke.gif"
+															/>
+														</ListItemAvatar>
+														<ListItemText
+															primary={
+																<React.Fragment>
+																	<Typography
+																		variant="body1"
+																		style={{
+																			fontWeight: "bold",
+																		}}
+																	>
+																		{reviewer.name}
+																		{reviewer.isRecommended == true ? (
+																			<ThumbUpIcon
+																				fontSize="inherit"
+																				style={{
+																					marginLeft: "10px",
+																					fill: "#d6072b",
+																				}}
+																			/>
+																		) : (
+																			<ThumbDownIcon
+																				fontSize="inherit"
+																				style={{
+																					marginLeft: "10px",
+																					fill: "#d6072b",
+																				}}
+																			/>
+																		)}
+																	</Typography>
+																</React.Fragment>
+															}
+															secondary={
+																<React.Fragment>
+																	<Typography
+																		style={{
+																			fontWeight: "500",
+																		}}
+																	>
+																		{reviewer.comment}
+																	</Typography>
+																</React.Fragment>
+															}
+														/>
+													</ListItem>
+													<Divider variant="middle" />
+												</React.Fragment>
 											)}
 										</div>
 									);
 							  })
 							: null}
-					</div>
-					<div className={classes.viewer_name}>
+					</List>
+					{/* <div className={classes.viewer_name}>
 						{feedback.reviewers
 							? feedback.reviewers.map((reviewer) => {
 									return (
@@ -435,7 +505,7 @@ export default function CenterProfile({ user, feedback }) {
 									);
 							  })
 							: null}
-					</div>
+					</div> */}
 				</div>
 			</TabPanel>
 

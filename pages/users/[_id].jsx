@@ -38,7 +38,7 @@ const feedback = {
             name: "Man Pham",
             image:
                 "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-            comment: "This guy working really hard. Highly recommend.",
+            comment: "This girl working really hard. Highly recommend.",
             isAnonymous: false,
             isRecommended: true,
         },
@@ -47,7 +47,7 @@ const feedback = {
             image:
                 "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
             comment:
-                "It is not easy to communicate with this guys because he often has conflicts with teammates.",
+                "It is not easy to communicate with this girl because she often has conflicts with teammates.",
             isAnonymous: true,
             isRecommended: false,
         },

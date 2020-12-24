@@ -315,41 +315,78 @@ export default function CenterProfile({ user, feedback }) {
                                               )}
                                           </div>
                                           <div>
-                                              <Typography
-                                                  variant="body1"
-                                                  style={{ fontWeight: "bold" }}
-                                              >
-                                                  {reviewer.name}
-                                                  {reviewer.isRecommended ==
-                                                  true ? (
-                                                      <ThumbUpIcon
-                                                          fontSize="inherit"
-                                                          style={{
-                                                              marginLeft:
-                                                                  "10px",
-                                                              fill: "#d6072b",
-                                                          }}
-                                                      />
-                                                  ) : (
-                                                      <ThumbDownIcon
-                                                          fontSize="inherit"
-                                                          style={{
-                                                              marginLeft:
-                                                                  "10px",
-                                                              fill: "#d6072b",
-                                                          }}
-                                                      />
-                                                  )}
-                                              </Typography>
-                                              <div
-                                                  className={
-                                                      classes.feedback_content
-                                                  }
-                                              >
-                                                  <Typography>
-                                                      {reviewer.comment}
+                                              {reviewer.isAnonymous == true ? (
+                                                  <Typography
+                                                      variant="body1"
+                                                      style={{
+                                                          fontWeight: "bold",
+                                                      }}
+                                                  >
+                                                      Hidden name
+                                                      {reviewer.isRecommended ==
+                                                      true ? (
+                                                          <ThumbUpIcon
+                                                              fontSize="inherit"
+                                                              style={{
+                                                                  marginLeft:
+                                                                      "10px",
+                                                                  fill:
+                                                                      "#d6072b",
+                                                              }}
+                                                          />
+                                                      ) : (
+                                                          <ThumbDownIcon
+                                                              fontSize="inherit"
+                                                              style={{
+                                                                  marginLeft:
+                                                                      "10px",
+                                                                  fill:
+                                                                      "#d6072b",
+                                                              }}
+                                                          />
+                                                      )}
                                                   </Typography>
-                                              </div>
+                                              ) : (
+                                                  <Typography
+                                                      variant="body1"
+                                                      style={{
+                                                          fontWeight: "bold",
+                                                      }}
+                                                  >
+                                                      {reviewer.name}
+                                                      {reviewer.isRecommended ==
+                                                      true ? (
+                                                          <ThumbUpIcon
+                                                              fontSize="inherit"
+                                                              style={{
+                                                                  marginLeft:
+                                                                      "10px",
+                                                                  fill:
+                                                                      "#d6072b",
+                                                              }}
+                                                          />
+                                                      ) : (
+                                                          <ThumbDownIcon
+                                                              fontSize="inherit"
+                                                              style={{
+                                                                  marginLeft:
+                                                                      "10px",
+                                                                  fill:
+                                                                      "#d6072b",
+                                                              }}
+                                                          />
+                                                      )}
+                                                  </Typography>
+                                              )}
+                                          </div>
+                                          <div
+                                              className={
+                                                  classes.feedback_content
+                                              }
+                                          >
+                                              <Typography>
+                                                  {reviewer.comment}
+                                              </Typography>
                                           </div>
                                       </div>
                                   );

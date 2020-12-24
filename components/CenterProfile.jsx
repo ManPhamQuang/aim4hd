@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
     about: {
         marginLeft: "4%",
         marginTop: "3%",
+        marginRight: "20px",
     },
     content: {
         marginLeft: "4%",
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     feedback: {
         display: "flex",
         // alignItems: "center",
-        marginBottom: "5%",
+        // marginBottom: "5%",
         marginLeft: "3%",
         marginTop: "3%",
     },
@@ -75,9 +76,14 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "15px",
     },
     viewer_name: {
-        // justifyContent: "center",
+        justifyContent: "center",
         flex: "20%",
         marginLeft: "5%",
+    },
+    review: {
+        display: "flex",
+        marginLeft: "4%",
+        marginTop: "3%",
     },
 }));
 
@@ -278,116 +284,175 @@ export default function CenterProfile({ user, feedback }) {
                 </div>
                 <ColorLine color="gray[900]" />
 
-                {/* waiting for data from backend */}
                 <div style={{ marginBottom: "3px" }}>
-                    <div className={classes.about}>
-                        <Typography
-                            variant="h5"
-                            component="h2"
-                            style={{ fontWeight: "bold" }}
-                        >
-                            Reviews
-                        </Typography>
+                    <div className={classes.review}>
+                        <div>
+                            <Typography
+                                className={classes.about}
+                                variant="h5"
+                                component="h2"
+                                style={{ fontWeight: "bold" }}
+                            >
+                                Reviews
+                            </Typography>
+                        </div>
+
+                        <div>
+                            <Typography
+                                variant="h6"
+                                fontWeight="fontWeightLight"
+                                style={{ marginTop: "5px" }}
+                            >
+                                {feedback.numberOfRecommended}
+                                <ThumbUpIcon
+                                    fontSize="inherit"
+                                    style={{
+                                        marginLeft: "5px",
+                                        fill: "#d6072b",
+                                    }}
+                                />
+                            </Typography>
+                        </div>
                     </div>
                 </div>
+                {/* <div className={classes.feedback}>
+                    <div>
+                        <Avatar
+                            className={classes.reviewer_avatar}
+                            alt="avatar"
+                            src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg"
+                        />
+                    </div>
+
+                    <div className={classes.viewer_name}>
+                        <Typography
+                            variant="body1"
+                            style={{ fontWeight: "bold" }}
+                        >
+                            Pham Quang Man
+                            <FavoriteIcon
+                                fontSize="inherit"
+                                style={{ marginLeft: "10px", fill: "#d6072b" }}
+                            />
+                        </Typography>
+
+                        <div className={classes.feedback_content}>
+                            This guy working really hard. Highly recommend.
+                        </div>
+                    </div>
+                </div> */}
+
                 <div className={classes.feedback}>
+                    <div>
+                        {feedback.reviewers
+                            ? feedback.reviewers.map((reviewer) => {
+                                  return (
+                                      <div>
+                                          {reviewer.isAnonymous == false ? (
+                                              <Avatar
+                                                  className={
+                                                      classes.reviewer_avatar
+                                                  }
+                                                  alt="avatar"
+                                                  src={reviewer.image}
+                                              />
+                                          ) : (
+                                              <Avatar
+                                                  className={
+                                                      classes.reviewer_avatar
+                                                  }
+                                                  alt="avatar"
+                                                  src="https://i.stack.imgur.com/QBuke.gif"
+                                              />
+                                          )}
+                                      </div>
+                                  );
+                              })
+                            : null}
+                    </div>
                     <div className={classes.viewer_name}>
                         {feedback.reviewers
                             ? feedback.reviewers.map((reviewer) => {
                                   return (
                                       <div>
                                           <div>
-                                              {reviewer.isAnonymous == false ? (
-                                                  <Avatar
+                                              <div>
+                                                  {reviewer.isAnonymous ==
+                                                  true ? (
+                                                      <Typography
+                                                          variant="body1"
+                                                          style={{
+                                                              fontWeight:
+                                                                  "bold",
+                                                          }}
+                                                      >
+                                                          Anonymous User
+                                                          {reviewer.isRecommended ==
+                                                          true ? (
+                                                              <ThumbUpIcon
+                                                                  fontSize="inherit"
+                                                                  style={{
+                                                                      marginLeft:
+                                                                          "10px",
+                                                                      fill:
+                                                                          "#d6072b",
+                                                                  }}
+                                                              />
+                                                          ) : (
+                                                              <ThumbDownIcon
+                                                                  fontSize="inherit"
+                                                                  style={{
+                                                                      marginLeft:
+                                                                          "10px",
+                                                                      fill:
+                                                                          "#d6072b",
+                                                                  }}
+                                                              />
+                                                          )}
+                                                      </Typography>
+                                                  ) : (
+                                                      <Typography
+                                                          variant="body1"
+                                                          style={{
+                                                              fontWeight:
+                                                                  "bold",
+                                                          }}
+                                                      >
+                                                          {reviewer.name}
+                                                          {reviewer.isRecommended ==
+                                                          true ? (
+                                                              <ThumbUpIcon
+                                                                  fontSize="inherit"
+                                                                  style={{
+                                                                      marginLeft:
+                                                                          "10px",
+                                                                      fill:
+                                                                          "#d6072b",
+                                                                  }}
+                                                              />
+                                                          ) : (
+                                                              <ThumbDownIcon
+                                                                  fontSize="inherit"
+                                                                  style={{
+                                                                      marginLeft:
+                                                                          "10px",
+                                                                      fill:
+                                                                          "#d6072b",
+                                                                  }}
+                                                              />
+                                                          )}
+                                                      </Typography>
+                                                  )}
+                                                  <div
                                                       className={
-                                                          classes.reviewer_avatar
+                                                          classes.feedback_content
                                                       }
-                                                      alt="avatar"
-                                                      src={reviewer.image}
-                                                  />
-                                              ) : (
-                                                  <Avatar
-                                                      className={
-                                                          classes.reviewer_avatar
-                                                      }
-                                                      alt="avatar"
-                                                      src="https://i.stack.imgur.com/QBuke.gif"
-                                                  />
-                                              )}
-                                          </div>
-                                          <div>
-                                              {reviewer.isAnonymous == true ? (
-                                                  <Typography
-                                                      variant="body1"
-                                                      style={{
-                                                          fontWeight: "bold",
-                                                      }}
                                                   >
-                                                      Hidden name
-                                                      {reviewer.isRecommended ==
-                                                      true ? (
-                                                          <ThumbUpIcon
-                                                              fontSize="inherit"
-                                                              style={{
-                                                                  marginLeft:
-                                                                      "10px",
-                                                                  fill:
-                                                                      "#d6072b",
-                                                              }}
-                                                          />
-                                                      ) : (
-                                                          <ThumbDownIcon
-                                                              fontSize="inherit"
-                                                              style={{
-                                                                  marginLeft:
-                                                                      "10px",
-                                                                  fill:
-                                                                      "#d6072b",
-                                                              }}
-                                                          />
-                                                      )}
-                                                  </Typography>
-                                              ) : (
-                                                  <Typography
-                                                      variant="body1"
-                                                      style={{
-                                                          fontWeight: "bold",
-                                                      }}
-                                                  >
-                                                      {reviewer.name}
-                                                      {reviewer.isRecommended ==
-                                                      true ? (
-                                                          <ThumbUpIcon
-                                                              fontSize="inherit"
-                                                              style={{
-                                                                  marginLeft:
-                                                                      "10px",
-                                                                  fill:
-                                                                      "#d6072b",
-                                                              }}
-                                                          />
-                                                      ) : (
-                                                          <ThumbDownIcon
-                                                              fontSize="inherit"
-                                                              style={{
-                                                                  marginLeft:
-                                                                      "10px",
-                                                                  fill:
-                                                                      "#d6072b",
-                                                              }}
-                                                          />
-                                                      )}
-                                                  </Typography>
-                                              )}
-                                          </div>
-                                          <div
-                                              className={
-                                                  classes.feedback_content
-                                              }
-                                          >
-                                              <Typography>
-                                                  {reviewer.comment}
-                                              </Typography>
+                                                      <Typography>
+                                                          {reviewer.comment}
+                                                      </Typography>
+                                                  </div>
+                                              </div>
                                           </div>
                                       </div>
                                   );

@@ -32,6 +32,27 @@ const getUser = async (_id) => {
     );
     return post.data.data;
 };
+const feedback = {
+    reviewers: [
+        {
+            name: "Man Pham",
+            image:
+                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
+            comment: "This guy working really hard. Highly recommend.",
+            isAnonymous: false,
+            isRecommended: true,
+        },
+        {
+            name: "Nguyen Dang Lam Phuong",
+            image:
+                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
+            comment:
+                "It is not easy to communicate with this guys because he often has conflicts with teammates.",
+            isAnonymous: true,
+            isRecommended: false,
+        },
+    ],
+};
 
 export async function getStaticProps({ params }) {
     let res = await getUser(params._id);
@@ -51,18 +72,6 @@ export default function UserProfile({ user }) {
     //         .catch((err) => console.log(err));
     // }, []);
 
-    const feedback = {
-        reviewers: [
-            {
-                name: "Man Pham",
-                image:
-                    "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-                comment: "This guy working really hard. Highly recommend.",
-                isAnonymous: "false",
-                isRecommended: "true",
-            },
-        ],
-    };
     return (
         <React.Fragment>
             <Head>
@@ -77,7 +86,7 @@ export default function UserProfile({ user }) {
                     <LeftProfile user={user} />
                 </Grid>
                 <Grid item xs={11} md={5}>
-                    <CenterProfile user={user} />
+                    <CenterProfile user={user} feedback={feedback} />
                 </Grid>
                 <Grid item xs={false} md={4}>
                     {/* suggested users - for later */}

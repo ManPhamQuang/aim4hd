@@ -316,17 +316,11 @@ function PostPage({
                             Course:
                         </Typography>
                         <List className={classes.studentList}>
-                            {appliedStudents.map((student) => (
-                                <ListItem key={student._id}>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={student.name}
-                                            src={student.avatar}
-                                        ></Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>{student.name}</ListItemText>
-                                </ListItem>
-                            ))}
+                            <ListItem>
+                                <ListItemText>
+                                    {course.name} - {course.code}
+                                </ListItemText>
+                            </ListItem>
                         </List>
                     </Grid>
                 </Grid>

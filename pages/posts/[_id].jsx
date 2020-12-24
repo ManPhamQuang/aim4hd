@@ -317,7 +317,7 @@ function PostPage({
                         </Typography>
                         <List className={classes.studentList}>
                             {appliedStudents.map((student) => (
-                                <ListItem>
+                                <ListItem key={student._id}>
                                     <ListItemAvatar>
                                         <Avatar
                                             alt={student.name}

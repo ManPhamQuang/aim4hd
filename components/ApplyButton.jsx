@@ -45,7 +45,6 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const isApplied = appliedStudents.find((id) => id == user._id)
         ? true
         : false;
-    console.log(isApplied);
     // const isDisabled =
 
     const ButtonText = () => {

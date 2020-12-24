@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chipTest: {
         marginRight: "3%",
+        marginBottom: "3%",
     },
     reviewer_avatar: {
         width: theme.spacing(8),

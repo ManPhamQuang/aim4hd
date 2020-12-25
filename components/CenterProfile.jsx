@@ -320,7 +320,7 @@ export default function CenterProfile({ user, feedback }) {
                     </div>
                 </div>
                 <div>
-                    <List>
+                    <List style={{ marginLeft: "2%" }}>
                         {feedback.reviewers
                             ? feedback.reviewers.map((reviewer) => {
                                   return (

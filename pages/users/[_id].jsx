@@ -4,6 +4,7 @@ import Posts from "../../components/Posts";
 import Filter from "../../components/Filter";
 import LeftProfile from "../../components/LeftProfile";
 import CenterProfile from "../../components/CenterProfile";
+import RightProfile from "../../components/RightProfile";
 //* Styling import
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
@@ -54,6 +55,10 @@ const feedback = {
         },
     ],
 };
+const history = {
+    image:
+        "https://cdn.slidesharecdn.com/ss_thumbnails/d8b0f189-3db0-4cf3-9691-ce34a7d0f9b0-150714050544-lva1-app6891-thumbnail-4.jpg?cb=1436850363",
+};
 
 export async function getStaticProps({ params }) {
     let res = await getUser(params._id);
@@ -91,6 +96,7 @@ export default function UserProfile({ user }) {
                 </Grid>
                 <Grid item xs={false} md={4}>
                     {/* suggested users - for later */}
+                    <RightProfile history={history} />
                 </Grid>
             </Grid>
         </React.Fragment>

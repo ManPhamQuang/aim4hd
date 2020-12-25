@@ -29,7 +29,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
-// import { BiHeart } from 'react-icons/fa';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         // margin: theme.spacing(2),
@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         marginLeft: "4%",
+        marginRight: "4%",
         marginTop: "3%",
         marginBottom: "5%",
     },

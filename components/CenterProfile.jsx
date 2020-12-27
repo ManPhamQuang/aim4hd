@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         justifyContent: "center",
         alignItems: "center",
-        marginBottom: "50px",
+        marginBottom: "20px",
         borderRadius: "0px 0px 8px 8px",
     },
     about: {

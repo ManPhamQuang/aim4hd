@@ -6,12 +6,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
+let timer;
 export default function MyApp(props) {
     const { Component, pageProps } = props;
-
     const [user, setUser] = useState(null);
     const [authData, setAuthData] = useState(null);
-
+    const [token, setToken] = useState(null);
     useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector("#jss-server-side");
@@ -22,34 +22,40 @@ export default function MyApp(props) {
 
     const login = useCallback((status, data) => {
         console.log(data);
-        if (status === "microsoftCheck") {
-            setAuthData(data.authData);
-            localStorage.setItem(
-                "authData",
-                JSON.stringify({ authData: data.authData })
-            );
-        }
+        if (status === "microsoftCheck") setAuthData(data.authData);
         if (status === "signup" || status === "login") {
             setUser(data.user);
-            localStorage.setItem("user", JSON.stringify({ user: data.user }));
+            setToken(data.token);
+            let expireTime = 1000 * 60 * 60;
+            let startSessionAt = Date.now() + expireTime;
+            timer = setTimeout(logout, expireTime);
+            localStorage.setItem(
+                "user",
+                JSON.stringify({
+                    user: data.user,
+                    startSessionAt,
+                    token: data.token,
+                })
+            );
         }
     });
 
     const logout = useCallback(() => {
         setUser(null);
         setAuthData(null);
-        localStorage.removeItem("authData");
         localStorage.removeItem("user");
+        clearTimeout(timer);
     }, []);
 
     useEffect(() => {
-        if (localStorage.getItem("authData")) {
-            const data = JSON.parse(localStorage.getItem("authData"));
-            setAuthData(data.authData);
-        }
         if (localStorage.getItem("user")) {
             const data = JSON.parse(localStorage.getItem("user"));
-            setUser(data.user);
+            let remainningTime = data.startSessionAt - Date.now();
+            if (remainningTime > 0) {
+                setUser(data.user);
+                setToken(data.token);
+                timer = setTimeout(logout, remainningTime);
+            } else logout();
         }
     }, []);
 
@@ -62,7 +68,9 @@ export default function MyApp(props) {
                     content="minimum-scale=1, initial-scale=1, width=device-width"
                 />
             </Head>
-            <AuthContext.Provider value={{ user, login, logout, authData }}>
+            <AuthContext.Provider
+                value={{ user, login, logout, authData, token }}
+            >
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <Layout>

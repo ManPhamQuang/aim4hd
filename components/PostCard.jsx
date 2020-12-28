@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
         // maxWidth: 700,
         borderRadius: 7,
     },
+    userCard: theme.userCard,
     media: {
         height: 0,
         paddingTop: "56.25%", // 16:9
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: red[500],
         width: theme.spacing(8),
         height: theme.spacing(8),
+        "&:hover": {
+            cursor: "pointer",
+        },
     },
     content: {
         paddingTop: "0px",
@@ -64,6 +68,10 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 400,
         fontSize: 19,
         minWidth: 130,
+        "&:hover": {
+            textDecoration: "underline",
+            cursor: "pointer",
+        },
     },
     bottom: {
         flexWrap: "wrap",
@@ -125,6 +133,7 @@ export default function PostCard({
     course,
     numberOfComments,
     appliedStudents,
+    requiredSkills,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -146,13 +155,18 @@ export default function PostCard({
     return (
         <Card className={classes.root}>
             <CardHeader
-                classes={{ action: classes.action, title: classes.title }}
+                classes={{
+                    action: classes.action,
+                    title: classes.title,
+                }}
                 avatar={
-                    <Avatar
-                        alt={author.name}
-                        src={author.avatar}
-                        className={classes.avatar}
-                    ></Avatar>
+                    <Link href={`/users/${author._id}`}>
+                        <Avatar
+                            alt={author.name}
+                            src={author.avatar}
+                            className={classes.avatar}
+                        />
+                    </Link>
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -162,7 +176,7 @@ export default function PostCard({
                 action={
                     <Hidden xsDown>
                         {/* desktop */}
-                        {author.skills.map((skill, idx) => {
+                        {requiredSkills.map((skill, idx) => {
                             if (idx < 4) {
                                 return (
                                     <SkillBadge
@@ -174,7 +188,11 @@ export default function PostCard({
                         })}
                     </Hidden>
                 }
-                title={author.name}
+                title={
+                    <Link href={`/users/${author._id}`}>
+                        <Typography variant="h6">{author.name}</Typography>
+                    </Link>
+                }
                 subheader={author.school}
             />
             <CardContent className={classes.content}>
@@ -249,7 +267,7 @@ export default function PostCard({
                 </IconButton> */}
                 <Hidden smUp>
                     {/* mobile */}
-                    {author.skills.map((skill, idx) => {
+                    {requiredSkills.map((skill, idx) => {
                         if (idx < 4) {
                             return (
                                 <SkillBadge
@@ -280,6 +298,7 @@ export default function PostCard({
                         <ProgressButton
                             postId={_id}
                             appliedStudents={appliedStudents}
+                            isOpen={isOpen}
                         />
                     </Grid>
                 </Grid>

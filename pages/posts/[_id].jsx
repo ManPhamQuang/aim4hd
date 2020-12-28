@@ -317,9 +317,11 @@ function PostPage({
                         </Typography>
                         <List className={classes.studentList}>
                             <ListItem>
-                                <ListItemText>
-                                    {course.name} - {course.code}
-                                </ListItemText>
+                                {course ? (
+                                    <ListItemText>
+                                        {course.name} - {course.code}
+                                    </ListItemText>
+                                ) : null}
                             </ListItem>
                         </List>
                     </Grid>

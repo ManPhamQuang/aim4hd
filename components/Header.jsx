@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -16,12 +17,14 @@ import {
     MenuItem,
     Popper,
 } from "@material-ui/core";
-import MicrosoftLogin from "react-microsoft-login";
 import { useContext } from "react";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
+    ssr: false,
+});
 
 function ElevationScroll(props) {
     const { children, window } = props;

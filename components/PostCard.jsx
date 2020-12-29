@@ -133,6 +133,7 @@ export default function PostCard({
     course,
     numberOfComments,
     appliedStudents,
+    requiredSkills,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -175,7 +176,7 @@ export default function PostCard({
                 action={
                     <Hidden xsDown>
                         {/* desktop */}
-                        {author.skills.map((skill, idx) => {
+                        {requiredSkills.map((skill, idx) => {
                             if (idx < 4) {
                                 return (
                                     <SkillBadge
@@ -266,7 +267,7 @@ export default function PostCard({
                 </IconButton> */}
                 <Hidden smUp>
                     {/* mobile */}
-                    {author.skills.map((skill, idx) => {
+                    {requiredSkills.map((skill, idx) => {
                         if (idx < 4) {
                             return (
                                 <SkillBadge

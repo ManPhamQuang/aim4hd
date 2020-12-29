@@ -50,7 +50,7 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const ButtonText = () => {
         if (isApplied) {
             // already applied
-            return "Applied";
+            return "Unapply";
         }
         if (success) {
             // applied successfuly
@@ -104,7 +104,7 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
                 variant="contained"
                 color="primary"
                 className={buttonClassname}
-                disabled={isApplied || loading || !isOpen}
+                disabled={loading || !isOpen}
                 onClick={handleButtonClick}
                 endIcon={success ? <DoneIcon /> : <SendIcon />}
             >

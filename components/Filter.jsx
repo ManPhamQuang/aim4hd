@@ -86,7 +86,7 @@ export default function Filter({ aiming, setAiming }) {
         <div>
             {/* Desktop */}
             {/* <Hidden smDown> */}
-            <Container>
+            <Container className={classes.container}>
                 <Hidden smDown>
                     <h2 className={classes.header}>Aiming</h2>
                     <Breaker />

@@ -20,6 +20,8 @@ import {
     ListItemText,
     GridListTileBar,
 } from "@material-ui/core";
+import Chip from "@material-ui/core/Chip";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -32,6 +34,7 @@ import AuthContext from "../../utils/authContext";
 import Breaker from "../../components/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import PostComments from "../../components/PostComments";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -61,6 +64,7 @@ export async function getStaticProps({ params }) {
     let res = await getPost(params._id);
     return {
         props: res,
+        revalidate: 1,
     };
 }
 
@@ -262,6 +266,17 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
+                            Aiming:
+                        </Typography>
+                        <Chip
+                            label={aiming}
+                            color="primary"
+                            icon={<HighlightOffIcon />}
+                        />
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
                             Required Skills:{" "}
                         </Typography>
                         {requiredSkills.map((skill, idx) => {
@@ -298,21 +313,16 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members:
+                            Course:
                         </Typography>
                         <List className={classes.studentList}>
-                            {appliedStudents.map((student) => (
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={student.name}
-                                            src={student.avatar}
-                                        ></Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>{student.name}</ListItemText>
-                                </ListItem>
-                            ))}
+                            <ListItem>
+                                {course ? (
+                                    <ListItemText>
+                                        {course.name} - {course.code}
+                                    </ListItemText>
+                                ) : null}
+                            </ListItem>
                         </List>
                     </Grid>
                 </Grid>
@@ -360,6 +370,7 @@ function PostPage({
                 >
                     {numberOfComments} comments
                 </Typography>
+                <PostComments _id={_id} />
             </Card>
         </Container>
     );

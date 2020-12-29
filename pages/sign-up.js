@@ -13,7 +13,7 @@ import { FormHelperText, MenuItem } from "@material-ui/core";
 import validator from "../utils/validator";
 import axios from "axios";
 import LoadingSpinner from "../components/LoadingSpinner";
-
+import ImageUpload from "../components/ImageUpload";
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -51,7 +51,7 @@ export default function SignIn({ courses, skills }) {
         skills: [],
         currentCourses: [],
     });
-
+    const [image, setImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState({
         school: "",
         major: "",
@@ -91,15 +91,33 @@ export default function SignIn({ courses, skills }) {
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
         setIsLoading(true);
+        let avatar;
+        if (image) {
+            const formData = new FormData();
+            formData.append("file", image);
+            formData.append("upload_preset", "iiyg1094");
+            try {
+                const response = await axios.post(
+                    "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
+                    formData
+                );
+                avatar = response.data.secure_url;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const body = {
+            ...input,
+            email: auth.authData.account.userName,
+            studentNumber: auth.authData.account.userName.split("@")[0],
+            microsoftUniqueId: auth.authData.uniqueId,
+        };
+        console.log(avatar);
+        if (avatar) body.avatar = avatar;
         try {
             const response = await axios.post(
                 "https://aim4hd.herokuapp.com/api/v1/users/signup",
-                {
-                    ...input,
-                    email: auth.authData.account.userName,
-                    studentNumber: auth.authData.account.userName.split("@")[0],
-                    microsoftUniqueId: auth.authData.uniqueId,
-                }
+                body
             );
             if (`${response.status}`.startsWith("2")) {
                 setIsLoading(false);
@@ -108,7 +126,7 @@ export default function SignIn({ courses, skills }) {
                     user: response.data.data.user,
                     token: response.data.data.token,
                 });
-                router.push("/");
+                // router.push("/");
             }
         } catch (error) {
             setIsLoading(false);
@@ -265,6 +283,7 @@ export default function SignIn({ courses, skills }) {
                                 {errorMsg.currentCourses}
                             </FormHelperText>
                         )}
+                        <ImageUpload image={image} setImage={setImage} />
                         <Button
                             type="submit"
                             fullWidth
@@ -291,7 +310,6 @@ export async function getStaticProps(context) {
     );
     try {
         const result = await Promise.all([skillsResponse, coursesResponse]);
-        console.log(result);
         return {
             props: {
                 skills: result[0].data.skills,

@@ -130,6 +130,7 @@ const AccordionSummary = withStyles({
 const AccordionDetails = withStyles((theme2) => ({
     root: {
         padding: theme2.spacing(2),
+        flexWrap: "wrap",
     },
 }))(MuiAccordionDetails);
 

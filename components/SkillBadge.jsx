@@ -4,67 +4,81 @@ import { makeStyles } from "@material-ui/core/styles";
 import { green, purple } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
-    root: {
-        marginRight: "5px",
-        marginBottom: "3px",
-    },
+	root: {
+		marginRight: "5px",
+		marginBottom: "3px",
+	},
 });
 
 function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+	return Math.floor(Math.random() * (max - min)) + min;
 }
 
 const generateRandomColor = () => {
-    switch (getRndInteger(1, 6)) {
-        case 1:
-            return {
-                color: "primary",
-                style: {},
-            };
-            break;
-        case 2:
-            return {
-                color: "secondary",
-                style: {},
-            };
-            break;
-        case 3:
-            return {
-                color: null,
-                style: { borderColor: "violet", color: "violet" },
-            };
-            break;
-        case 4:
-            return {
-                color: null,
-                style: { borderColor: green[600], color: green[600] },
-            };
-            break;
-        case 5:
-            return {
-                color: null,
-                style: { borderColor: purple[600], color: purple[600] },
-            };
-            break;
-        default:
-            return {
-                color: "primary",
-                style: {},
-            };
-            break;
-    }
+	switch (getRndInteger(1, 6)) {
+		case 1:
+			return {
+				style: {
+					borderColor: "lightcoral",
+					color: "white",
+					backgroundColor: "lightcoral",
+				},
+			};
+			break;
+		case 2:
+			return {
+				style: {
+					borderColor: "	mediumpurple",
+					color: "white",
+					backgroundColor: "	mediumpurple",
+				},
+			};
+			break;
+		case 3:
+			return {
+				style: {
+					borderColor: "	tomato",
+					color: "white",
+					backgroundColor: "	tomato",
+				},
+			};
+			break;
+		case 4:
+			return {
+				style: {
+					borderColor: "	cornflowerblue",
+					color: "white",
+					backgroundColor: "	cornflowerblue",
+				},
+			};
+			break;
+		case 5:
+			return {
+				style: {
+					borderColor: "darkturquoise",
+					color: "white",
+					backgroundColor: "darkturquoise",
+				},
+			};
+			break;
+		default:
+			return {
+				color: "primary",
+				style: {},
+			};
+			break;
+	}
 };
 
 export default function SkillBadge({ label }) {
-    const classes = useStyles();
-    return (
-        <Chip
-            className={classes.root}
-            // color={green}
-            // color={generateRandomColor().color}
-            style={generateRandomColor().style}
-            variant="outlined"
-            label={label}
-        />
-    );
+	const classes = useStyles();
+	return (
+		<Chip
+			className={classes.root}
+			// color={green}
+			// color={generateRandomColor().color}
+			style={generateRandomColor().style}
+			label={label}
+		/>
+	);
 }

@@ -19,7 +19,7 @@ const generateRandomColor = () => {
 		case 1:
 			return {
 				style: {
-					borderColor: "lightcoral",
+					borderColor: "	darkgray",
 					color: "white",
 					backgroundColor: "lightcoral",
 				},
@@ -28,7 +28,7 @@ const generateRandomColor = () => {
 		case 2:
 			return {
 				style: {
-					borderColor: "	mediumpurple",
+					borderColor: "	darkgray",
 					color: "white",
 					backgroundColor: "	mediumpurple",
 				},
@@ -37,7 +37,7 @@ const generateRandomColor = () => {
 		case 3:
 			return {
 				style: {
-					borderColor: "	tomato",
+					borderColor: "	darkgray",
 					color: "white",
 					backgroundColor: "	tomato",
 				},
@@ -46,7 +46,7 @@ const generateRandomColor = () => {
 		case 4:
 			return {
 				style: {
-					borderColor: "	cornflowerblue",
+					borderColor: "	darkgray",
 					color: "white",
 					backgroundColor: "	cornflowerblue",
 				},
@@ -55,7 +55,7 @@ const generateRandomColor = () => {
 		case 5:
 			return {
 				style: {
-					borderColor: "darkturquoise",
+					borderColor: "	darkgray",
 					color: "white",
 					backgroundColor: "darkturquoise",
 				},
@@ -79,6 +79,7 @@ export default function SkillBadge({ label }) {
 			// color={generateRandomColor().color}
 			style={generateRandomColor().style}
 			label={label}
+			variant="outlined"
 		/>
 	);
 }

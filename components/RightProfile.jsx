@@ -58,10 +58,8 @@ export default function RightProfile({ history }) {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
-	const handleOpen = () => {
-		setimgPath(
-			"https://cdn.slidesharecdn.com/ss_thumbnails/d8b0f189-3db0-4cf3-9691-ce34a7d0f9b0-150714050544-lva1-app6891-thumbnail-4.jpg?cb=1436850363"
-		);
+	const handleOpen = (e) => {
+		setimgPath(e.target.src);
 		setOpen(true);
 	};
 

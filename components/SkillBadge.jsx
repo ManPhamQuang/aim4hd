@@ -15,7 +15,7 @@ function getRndInteger(min, max) {
 }
 
 const generateRandomColor = () => {
-	switch (getRndInteger(1, 6)) {
+	switch (getRndInteger(1, 11)) {
 		case 1:
 			return {
 				style: {
@@ -61,6 +61,51 @@ const generateRandomColor = () => {
 				},
 			};
 			break;
+		case 6:
+			return {
+				style: {
+					borderColor: "	darkgray",
+					color: "white",
+					backgroundColor: "	rosybrown",
+				},
+			};
+			break;
+		case 7:
+			return {
+				style: {
+					borderColor: "	darkgray",
+					color: "white",
+					backgroundColor: "sandybrown",
+				},
+			};
+			break;
+		case 8:
+			return {
+				style: {
+					borderColor: "	darkgray",
+					color: "white",
+					backgroundColor: "palevioletred",
+				},
+			};
+			break;
+		case 9:
+			return {
+				style: {
+					borderColor: "	darkgray",
+					color: "white",
+					backgroundColor: "mediumslateblue",
+				},
+			};
+			break;
+		case 10:
+			return {
+				style: {
+					borderColor: "	darkgray",
+					color: "white",
+					backgroundColor: "indianred",
+				},
+			};
+			break;
 		default:
 			return {
 				color: "primary",
@@ -79,7 +124,7 @@ export default function SkillBadge({ label }) {
 			// color={generateRandomColor().color}
 			style={generateRandomColor().style}
 			label={label}
-			variant="outlined"
+			clickable
 		/>
 	);
 }

@@ -72,8 +72,8 @@ export default function AimBadge({ aiming }) {
 		<Chip
 			className={classes.root}
 			style={BadgeColor(aiming).style}
-			variant="outlined"
 			label={aiming}
+			clickable
 		/>
 	);
 }

@@ -2,6 +2,7 @@ import React from "react";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import { green, purple } from "@material-ui/core/colors";
+import StarRoundedIcon from "@material-ui/icons/StarRounded";
 
 const useStyles = makeStyles({
 	root: {
@@ -74,6 +75,7 @@ export default function AimBadge({ aiming }) {
 			style={BadgeColor(aiming).style}
 			label={aiming}
 			clickable
+			icon={<StarRoundedIcon style={{ color: "white" }} />}
 		/>
 	);
 }

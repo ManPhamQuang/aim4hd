@@ -73,7 +73,7 @@ const ColorLine = ({ color }) => (
     />
 );
 
-export default function UserProfile({ user }) {
+export default function LeftProfile({ user }) {
     const classes = useStyles();
     return (
         <div className={classes.container}>

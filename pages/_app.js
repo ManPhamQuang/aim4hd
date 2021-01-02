@@ -12,6 +12,7 @@ export default function MyApp(props) {
     const [user, setUser] = useState(null);
     const [authData, setAuthData] = useState(null);
     const [token, setToken] = useState(null);
+    const [post, setPost] = useState(null);
     useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector("#jss-server-side");

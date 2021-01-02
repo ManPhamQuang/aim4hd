@@ -8,6 +8,7 @@ import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import SkillBadge from "./SkillBadge";
 import CourseBadge from "./CourseBadge";
 import Chip from "@material-ui/core/Chip";
+
 //*Styling import
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/core/styles";
@@ -29,6 +30,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
+import UserFeedback from "./UserFeedback";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -138,8 +140,6 @@ export default function CenterProfile({ user, feedback }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [expanded, setExpanded] = React.useState(false);
-    const [aiming, setAiming] = useState(["HD"]);
-    const [loading, setLoading] = useState(false);
 
     const getPost = async (_id) => {
         let post = await axios.get(
@@ -307,6 +307,8 @@ export default function CenterProfile({ user, feedback }) {
                 <ColorLine color="gray[900]" />
 
                 <div style={{ marginBottom: "3px" }}>
+                    <UserFeedback id={user.id} />
+                    <Divider variant="middle" />
                     <div className={classes.review}>
                         <div>
                             <Typography

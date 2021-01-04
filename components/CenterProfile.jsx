@@ -1,6 +1,6 @@
 //* Components import
+import MyPost from "./MyPost";
 import Head from "next/head";
-import Posts from "../components/Posts";
 import Filter from "../components/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import SkillBadge from "./SkillBadge";
 import CourseBadge from "./CourseBadge";
 import Chip from "@material-ui/core/Chip";
+
 //*Styling import
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/core/styles";
@@ -29,6 +30,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
+import UserFeedback from "./UserFeedback";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -130,6 +132,7 @@ const AccordionSummary = withStyles({
 const AccordionDetails = withStyles((theme2) => ({
     root: {
         padding: theme2.spacing(2),
+        flexWrap: "wrap",
     },
 }))(MuiAccordionDetails);
 
@@ -145,6 +148,7 @@ export default function CenterProfile({ user, feedback }) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -212,6 +216,7 @@ export default function CenterProfile({ user, feedback }) {
                 >
                     <Tab label="Overview" />
                     <Tab label="Groups" />
+                    <Tab label="Posts" />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -290,6 +295,8 @@ export default function CenterProfile({ user, feedback }) {
                 <ColorLine color="gray[900]" />
 
                 <div style={{ marginBottom: "3px" }}>
+                    <UserFeedback id={user.id} />
+                    <Divider variant="middle" />
                     <div className={classes.review}>
                         <div>
                             <Typography
@@ -519,138 +526,8 @@ export default function CenterProfile({ user, feedback }) {
                         : null}
                 </div>
             </TabPanel>
-        </div>
-    );
-
-    return (
-        <div className={classes.root}>
-            <AppBar position="static">
-                <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="simple tabs example"
-                >
-                    <Tab label="Overview" />
-                    <Tab label="Groups" />
-                </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold" }}
-                    >
-                        About
-                    </Typography>
-                </div>
-                <div className={classes.content}>
-                    <Typography value={value}>{user.description}</Typography>
-                </div>
-                <ColorLine color="gray[900]" />
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold" }}
-                    >
-                        Skill
-                    </Typography>
-                </div>
-                <div className={classes.content}>
-                    {/* desktop */}
-                    {user.skills
-                        ? user.skills.map((skill, idx) => {
-                              if (idx < 4) {
-                                  return (
-                                      <Chip
-                                          className={classes.chipTest}
-                                          icon={<FavoriteIcon />}
-                                          clickable
-                                          label={skill.name}
-                                          // color="primary"
-                                          // style={{ backgroundColor: randomColor() }}
-                                      />
-                                  );
-                              }
-                          })
-                        : null}
-                </div>
-                <ColorLine color="gray[900]" />
-                <div style={{ marginBottom: "3px" }}>
-                    <div className={classes.about}>
-                        <Typography
-                            variant="h5"
-                            component="h2"
-                            style={{ fontWeight: "bold" }}
-                        >
-                            Current Courses
-                        </Typography>
-                    </div>
-                    <div className={classes.content}>
-                        {/* desktop */}
-                        {user.currentCourses
-                            ? user.currentCourses.map((course, idx) => {
-                                  if (idx < 4) {
-                                      return (
-                                          <Chip
-                                              className={classes.chipTest}
-                                              icon={<MenuBookIcon />}
-                                              label={course.name}
-                                              // color="primary"
-                                              clickable
-                                              // style={{ backgroundColor: randomColor() }}
-                                          />
-                                      );
-                                  }
-                              })
-                            : null}
-                    </div>
-                </div>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <div>
-                    {user.groups
-                        ? user.groups.map((group) => {
-                              return (
-                                  <Accordion>
-                                      <AccordionSummary
-                                          expandIcon={<ExpandMoreIcon />}
-                                          aria-controls={group.id + "-content"}
-                                          id={group.id + "-header"}
-                                      >
-                                          <Typography variant="h6">
-                                              {group.course.name}
-                                          </Typography>
-                                      </AccordionSummary>
-                                      <AccordionDetails>
-                                          {group.members
-                                              ? group.members.map((member) => {
-                                                    return (
-                                                        <Chip
-                                                            className={
-                                                                classes.chipTest
-                                                            }
-                                                            label={member.name}
-                                                            clickable
-                                                            avatar={
-                                                                <Avatar
-                                                                    src={
-                                                                        member.avatar
-                                                                    }
-                                                                />
-                                                            }
-                                                        />
-                                                    );
-                                                })
-                                              : null}
-                                      </AccordionDetails>
-                                  </Accordion>
-                              );
-                          })
-                        : null}
-                </div>
+            <TabPanel value={value} index={2}>
+                <MyPost userId={user._id} />
             </TabPanel>
         </div>
     );

@@ -24,232 +24,224 @@ import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
 import ProgressButton from "./ApplyButton";
 import AuthContext from "../utils/authContext";
+import AimBadge from "./AimBadge";
 const useStyles = makeStyles((theme) => ({
-    root: {
-        // maxWidth: 400,
-        // maxWidth: 700,
-        borderRadius: 7,
-    },
-    userCard: theme.userCard,
-    media: {
-        height: 0,
-        paddingTop: "56.25%", // 16:9
-    },
-    expand: {
-        transform: "rotate(0deg)",
-        marginLeft: "auto",
-        transition: theme.transitions.create("transform", {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: "rotate(180deg)",
-    },
-    avatar: {
-        backgroundColor: red[500],
-        width: theme.spacing(8),
-        height: theme.spacing(8),
-        "&:hover": {
-            cursor: "pointer",
-        },
-    },
-    content: {
-        paddingTop: "0px",
-    },
-    action: {
-        // backgroundColor: "red",
-        // display: "inline-block",
-        // flex: "0 1 auto",
-        flexWrap: "wrap",
-        justifyContent: "flex-end",
-        flex: "0 1 auto",
-    },
-    title: {
-        fontWeight: 400,
-        fontSize: 19,
-        minWidth: 130,
-        "&:hover": {
-            textDecoration: "underline",
-            cursor: "pointer",
-        },
-    },
-    bottom: {
-        flexWrap: "wrap",
-        // overflowX: "hidden",
-        justifyContent: "flex-end",
-    },
-    button: {
-        // color: theme.color.prim
-        // [theme.breakpoints.up("md")]: {
-        //     maxWidth: 250,
-        // },
-        // flexGrow: 1,
-        // maxWidth: 200,
-        // minWidth: 145,
-        width: "100%",
-    },
-    bottomAction: {
-        // flex: "0 1 auto",
-        display: "flex",
-        width: "100%",
-        // paddingLeft: "8px",
-        justifyContent: "space-around",
-        paddingLeft: "0.6rem",
-        paddingRight: "0.6rem",
-        paddingBottom: "0.6rem",
-    },
-    buttonsContainer: {
-        padding: theme.spacing(2),
-        // paddingLeft: theme.spacing(3),
-        // paddingRight: theme.spacing(3),
-        // marginBottom: theme.spacing(3),
-    },
-    commentText: {
-        fontSize: "16px",
-        padding: "16px",
-        paddingBottom: "0px",
-        paddingTop: "0px",
-        "&:hover": {
-            cursor: "pointer",
-            textDecoration: "underline",
-        },
-    },
-    titleLink: {
-        color: theme.palette.primary,
-        backgroundColor: theme.palette.primary,
-    },
+	root: {
+		// maxWidth: 400,
+		// maxWidth: 700,
+		borderRadius: 7,
+	},
+	userCard: theme.userCard,
+	media: {
+		height: 0,
+		paddingTop: "56.25%", // 16:9
+	},
+	expand: {
+		transform: "rotate(0deg)",
+		marginLeft: "auto",
+		transition: theme.transitions.create("transform", {
+			duration: theme.transitions.duration.shortest,
+		}),
+	},
+	expandOpen: {
+		transform: "rotate(180deg)",
+	},
+	avatar: {
+		backgroundColor: red[500],
+		width: theme.spacing(8),
+		height: theme.spacing(8),
+		"&:hover": {
+			cursor: "pointer",
+		},
+	},
+	content: {
+		paddingTop: "0px",
+	},
+	action: {
+		// backgroundColor: "red",
+		// display: "inline-block",
+		// flex: "0 1 auto",
+		flexWrap: "wrap",
+		justifyContent: "flex-end",
+		flex: "0 1 auto",
+	},
+	title: {
+		fontWeight: 400,
+		fontSize: 19,
+		minWidth: 130,
+		"&:hover": {
+			textDecoration: "underline",
+			cursor: "pointer",
+		},
+	},
+	bottom: {
+		flexWrap: "wrap",
+		// overflowX: "hidden",
+		justifyContent: "flex-end",
+	},
+	button: {
+		// color: theme.color.prim
+		// [theme.breakpoints.up("md")]: {
+		//     maxWidth: 250,
+		// },
+		// flexGrow: 1,
+		// maxWidth: 200,
+		// minWidth: 145,
+		width: "100%",
+	},
+	bottomAction: {
+		// flex: "0 1 auto",
+		display: "flex",
+		width: "100%",
+		// paddingLeft: "8px",
+		justifyContent: "space-around",
+		paddingLeft: "0.6rem",
+		paddingRight: "0.6rem",
+		paddingBottom: "0.6rem",
+	},
+	buttonsContainer: {
+		padding: theme.spacing(2),
+		// paddingLeft: theme.spacing(3),
+		// paddingRight: theme.spacing(3),
+		// marginBottom: theme.spacing(3),
+	},
+	commentText: {
+		fontSize: "16px",
+		padding: "16px",
+		paddingBottom: "0px",
+		paddingTop: "0px",
+		"&:hover": {
+			cursor: "pointer",
+			textDecoration: "underline",
+		},
+	},
+	titleLink: {
+		color: theme.palette.primary,
+		backgroundColor: theme.palette.primary,
+	},
 }));
 
 export default function PostCard({
-    isOpen,
-    createdAt,
-    _id,
-    author,
-    title,
-    content,
-    aiming,
-    currentMember,
-    maximumMember,
-    course,
-    numberOfComments,
-    appliedStudents,
-    requiredSkills,
+	isOpen,
+	createdAt,
+	_id,
+	author,
+	title,
+	content,
+	aiming,
+	currentMember,
+	maximumMember,
+	course,
+	numberOfComments,
+	appliedStudents,
+	requiredSkills,
 }) {
-    const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-    const context = useContext(AuthContext);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+	const classes = useStyles();
+	const [expanded, setExpanded] = React.useState(false);
+	const context = useContext(AuthContext);
+	const handleExpandClick = () => {
+		setExpanded(!expanded);
+	};
 
-    const skillBadges = () => {
-        return (
-            <Hidden xsDown>
-                {skills.map((skill) => (
-                    <SkillBadge key={skill.name} label={skill.name} />
-                ))}
-            </Hidden>
-        );
-    };
+	const skillBadges = () => {
+		return (
+			<Hidden xsDown>
+				{skills.map((skill) => (
+					<SkillBadge key={skill.name} label={skill.name} />
+				))}
+			</Hidden>
+		);
+	};
 
-    return (
-        <Card className={classes.root}>
-            <CardHeader
-                classes={{
-                    action: classes.action,
-                    title: classes.title,
-                }}
-                avatar={
-                    <Link href={`/users/${author._id}`}>
-                        <Avatar
-                            alt={author.name}
-                            src={author.avatar}
-                            className={classes.avatar}
-                        />
-                    </Link>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                action={
-                    <Hidden xsDown>
-                        {/* desktop */}
-                        {requiredSkills.map((skill, idx) => {
-                            if (idx < 4) {
-                                return (
-                                    <SkillBadge
-                                        key={skill.name}
-                                        label={skill.name}
-                                    />
-                                );
-                            }
-                        })}
-                    </Hidden>
-                }
-                title={
-                    <Link href={`/users/${author._id}`}>
-                        <Typography variant="h6">{author.name}</Typography>
-                    </Link>
-                }
-                subheader={author.school}
-            />
-            <CardContent className={classes.content}>
-                <Typography variant="h5" component="h2">
-                    {title}
-                </Typography>
-                <Chip
-                    label={aiming}
-                    color="primary"
-                    icon={<HighlightOffIcon />}
-                />
-                <Typography variant="body2" color="textSecondary" component="p">
-                    {content}
-                </Typography>
-                <Link href={`/posts/${_id}`} className={classes.titleLink}>
-                    read more
-                </Link>
-            </CardContent>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "0px",
-                }}
-            >
-                <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
-                    >
-                        {numberOfComments} comments
-                    </Typography>
-                </Link>
+	return (
+		<Card className={classes.root}>
+			<CardHeader
+				classes={{
+					action: classes.action,
+					title: classes.title,
+				}}
+				avatar={
+					<Link href={`/users/${author._id}`}>
+						<Avatar
+							alt={author.name}
+							src={author.avatar}
+							className={classes.avatar}
+						/>
+					</Link>
+				}
+				action={
+					<IconButton aria-label="settings">
+						<MoreVertIcon />
+					</IconButton>
+				}
+				action={
+					<Hidden xsDown>
+						{/* desktop */}
+						{requiredSkills.map((skill, idx) => {
+							if (idx < 4) {
+								return <SkillBadge key={skill.name} label={skill.name} />;
+							}
+						})}
+					</Hidden>
+				}
+				title={
+					<Link href={`/users/${author._id}`}>
+						<Typography variant="h6">{author.name}</Typography>
+					</Link>
+				}
+				subheader={author.school}
+			/>
+			<CardContent className={classes.content}>
+				<Typography variant="h5" component="h2">
+					{title} - <AimBadge aiming={aiming} />
+				</Typography>
 
-                <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
-                    >
-                        recruiting {maximumMember - currentMember}/{""}
-                        {maximumMember} members
-                    </Typography>
-                </Link>
-            </div>
-            {/* <MUILink
+				<Typography variant="body2" color="textSecondary" component="p">
+					{content}
+				</Typography>
+				<Link href={`/posts/${_id}`} className={classes.titleLink}>
+					read more
+				</Link>
+			</CardContent>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "space-between",
+					padding: "0px",
+				}}
+			>
+				<Link href={`/posts/${_id}`}>
+					<Typography
+						variant="caption"
+						align="right"
+						className={classes.commentText}
+						component="a"
+					>
+						{numberOfComments} comments
+					</Typography>
+				</Link>
+
+				<Link href={`/posts/${_id}`}>
+					<Typography
+						variant="caption"
+						align="right"
+						className={classes.commentText}
+						component="a"
+					>
+						recruiting {maximumMember - currentMember}/{""}
+						{maximumMember} members
+					</Typography>
+				</Link>
+			</div>
+			{/* <MUILink
                 component={Link}
                 href="/about"
                 className={classes.commentText}
             >
                 3 comments
             </MUILink> */}
-            <CardActions className={classes.bottom} disableSpacing>
-                {/* <IconButton aria-label="add to favorites">
+			<CardActions className={classes.bottom} disableSpacing>
+				{/* <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
                 <IconButton aria-label="share">
@@ -265,45 +257,36 @@ export default function PostCard({
                 >
                     <ExpandMoreIcon />
                 </IconButton> */}
-                <Hidden smUp>
-                    {/* mobile */}
-                    {requiredSkills.map((skill, idx) => {
-                        if (idx < 4) {
-                            return (
-                                <SkillBadge
-                                    key={skill.name}
-                                    label={skill.name}
-                                />
-                            );
-                        }
-                    })}
-                </Hidden>
-            </CardActions>
-            {context.user ? (
-                <Grid
-                    container
-                    spacing={3}
-                    className={classes.buttonsContainer}
-                >
-                    <Grid item xs={6}>
-                        <Button
-                            variant="contained"
-                            className={classes.button}
-                            startIcon={<BookmarkIcon />}
-                        >
-                            Save It
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ProgressButton
-                            postId={_id}
-                            appliedStudents={appliedStudents}
-                            isOpen={isOpen}
-                        />
-                    </Grid>
-                </Grid>
-            ) : null}
-            {/* <Box className={classes.bottomAction}>
+				<Hidden smUp>
+					{/* mobile */}
+					{requiredSkills.map((skill, idx) => {
+						if (idx < 4) {
+							return <SkillBadge key={skill.name} label={skill.name} />;
+						}
+					})}
+				</Hidden>
+			</CardActions>
+			{context.user ? (
+				<Grid container spacing={3} className={classes.buttonsContainer}>
+					<Grid item xs={6}>
+						<Button
+							variant="contained"
+							className={classes.button}
+							startIcon={<BookmarkIcon />}
+						>
+							Save It
+						</Button>
+					</Grid>
+					<Grid item xs={6}>
+						<ProgressButton
+							postId={_id}
+							appliedStudents={appliedStudents}
+							isOpen={isOpen}
+						/>
+					</Grid>
+				</Grid>
+			) : null}
+			{/* <Box className={classes.bottomAction}>
                 <Button variant="contained" className={classes.button}>
                     Save It
                 </Button>
@@ -315,7 +298,7 @@ export default function PostCard({
                     Apply
                 </Button>
             </Box> */}
-            {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+			{/* <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <Typography paragraph>Method:</Typography>
                     <Typography paragraph>
@@ -350,6 +333,6 @@ export default function PostCard({
                     </Typography>
                 </CardContent>
             </Collapse> */}
-        </Card>
-    );
+		</Card>
+	);
 }

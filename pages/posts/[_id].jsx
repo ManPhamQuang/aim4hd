@@ -295,7 +295,7 @@ function PostPage({
                         >
                             Current members:
                         </Typography>
-                        {appliedStudents.length > 0 ? (
+                        {appliedStudents? (
                             <List className={classes.studentList}>
                                 {appliedStudents.map((student) => (
                                     <UserCard

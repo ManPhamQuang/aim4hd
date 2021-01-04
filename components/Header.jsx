@@ -22,6 +22,7 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Image from 'next/image'
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -247,13 +248,15 @@ export default function DesktopHeader(props) {
                     {isLoading && <LoadingSpinner isLoading={isLoading} />}
 
                     <Toolbar className={classes.toolbar} spacing={3}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                        <Link href="/">
+                            <Image
+                                src="/logo.png"
+                                alt="aim4hd - RMIT Logo"
+                                width={50*3.14}
+                                height={50}
+                            />
+                        </Link>
+                        
                         <Typography
                             variant="h6"
                             className={classes.title}

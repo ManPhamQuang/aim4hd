@@ -141,13 +141,6 @@ export default function CenterProfile({ user, feedback }) {
     const [value, setValue] = React.useState(0);
     const [expanded, setExpanded] = React.useState(false);
 
-    const getPost = async (_id) => {
-        let post = await axios.get(
-            `https://aim4hd.herokuapp.com/api/v1/posts?author=${_id}`
-        );
-        return post;
-    };
-
     const handleChange2 = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     };
@@ -155,12 +148,7 @@ export default function CenterProfile({ user, feedback }) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    // const getPosts = async () => {
-    //     let posts = await axios.get(
-    //         "https://aim4hd.herokuapp.com/api/v1/posts?limit=300"
-    //     );
-    //     return posts.data.data.posts;
-    // };
+
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -539,11 +527,7 @@ export default function CenterProfile({ user, feedback }) {
                 </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <MyPost
-                    loading={loading}
-                    setLoading={setLoading}
-                    aiming={aiming.join()}
-                />
+                <MyPost userId={user._id} />
             </TabPanel>
         </div>
     );

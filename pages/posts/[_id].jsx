@@ -280,14 +280,14 @@ function PostPage({
                         >
                             Required Skills:{" "}
                         </Typography>
-                        {requiredSkills.map((skill, idx) => {
+                        {requiredSkills? requiredSkills.map((skill, idx) => {
                             return (
                                 <SkillBadge
                                     key={skill.name}
                                     label={skill.name}
                                 />
                             );
-                        })}
+                        }): null}
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Typography

@@ -25,8 +25,6 @@ import Switch from "@material-ui/core/Switch";
 const useStyles = makeStyles((theme) => ({
 	root: {
 		padding: theme.spacing(2),
-		display: "flex",
-		flexWrap: "wrap",
 	},
 	comment: {
 		padding: "20px 20px",
@@ -34,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	titleContainer: {
 		display: "flex",
-		justifyContent: "space-between",
-		flexWrap: "wrap",
+		justifyContent: "flex-end",
 	},
 	button: {
 		minWidth: "70px",
@@ -50,8 +47,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	wrapper: {
 		position: "relative",
-		display: "flex",
-		flexWrap: "wrap",
 	},
 	buttonProgress: {
 		color: green[500],
@@ -138,86 +133,65 @@ export default function UserFeedback(user) {
 	// };
 	return (
 		<div className={classes.root}>
-			<Grid
-				container
-				direction="row"
-				justify="center"
-				alignItems="center"
-				spacing={2}
-			>
-				<Grid item xs={9}>
-					<form className={classes.textField} noValidate autoComplete="off">
-						{context.user ? (
-							<TextField
-								label="Your Comments"
-								multiline
-								variant="outlined"
-								value={user}
-							/>
-						) : (
-							<TextField
-								label="Sign In To Comment"
-								disabled
-								multiline
-								variant="outlined"
-								value={user}
-							/>
+			<form className={classes.textField} noValidate autoComplete="off">
+				{context.user ? (
+					<TextField
+						label="Your Comments"
+						multiline
+						variant="outlined"
+						value={user}
+					/>
+				) : (
+					<TextField
+						label="Sign In To Comment"
+						disabled
+						multiline
+						variant="outlined"
+						value={user}
+					/>
+				)}
+			</form>
+			<div className={classes.titleContainer}>
+				<FormControlLabel
+					style={{ paddingRight: "7px" }}
+					control={
+						<Switch
+							checked={isAnonymous}
+							onChange={toggleAnonymous}
+							name="checkedAno"
+						/>
+					}
+					labelPlacement="start"
+					label="Anonymous"
+				/>
+				{context.user ? (
+					<div className={classes.wrapper}>
+						<Button
+							variant="contained"
+							color="primary"
+							disabled={postingComment}
+							className={classes.button}
+							endIcon={<SendIcon />}
+							onClick={handleSend}
+						>
+							Send
+						</Button>
+						{postingComment && (
+							<CircularProgress size={24} className={classes.buttonProgress} />
 						)}
-					</form>
-				</Grid>
-
-				<Grid container item xs={3} className={classes.titleContainer}>
-					<Grid
-						container
-						direction="column"
-						justify="center"
-						alignItems="flex-start"
+					</div>
+				) : (
+					<Button
+						variant="contained"
+						color="primary"
+						disabled
+						className={classes.button}
+						endIcon={<SendIcon />}
 					>
-						<Grid item>
-							<FormGroup>
-								<FormControlLabel
-									control={
-										<Switch checked={isAnonymous} onChange={toggleAnonymous} />
-									}
-									labelPlacement="top"
-									label="Anonymous"
-								/>
-							</FormGroup>
-						</Grid>
-						<Grid container item>
-							{context.user ? (
-								<div className={classes.wrapper}>
-									<Button
-										variant="contained"
-										color="primary"
-										disabled={postingComment}
-										className={classes.button}
-										endIcon={<SendIcon />}
-									>
-										Send
-									</Button>
-									{postingComment && (
-										<CircularProgress
-											size={24}
-											className={classes.buttonProgress}
-										/>
-									)}
-								</div>
-							) : (
-								<Button
-									variant="contained"
-									color="primary"
-									disabled
-									className={classes.button}
-									endIcon={<SendIcon />}
-								>
-									Send
-								</Button>
-							)}
-						</Grid>
-					</Grid>
-				</Grid>
-			</Grid>
+						Send
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

@@ -147,7 +147,7 @@ export default function PostCard({
 		return (
 			<Hidden xsDown>
 				{skills.map((skill) => (
-					<SkillBadge key={skill.name} label={skill.name} />
+					<SkillBadge key={skill._id} label={skill.name} />
 				))}
 			</Hidden>
 		);
@@ -179,7 +179,7 @@ export default function PostCard({
 						{/* desktop */}
 						{requiredSkills.map((skill, idx) => {
 							if (idx < 4) {
-								return <SkillBadge key={skill.name} label={skill.name} />;
+								return <SkillBadge key={skill._id} label={skill.name} />;
 							}
 						})}
 					</Hidden>
@@ -261,7 +261,7 @@ export default function PostCard({
 					{/* mobile */}
 					{requiredSkills.map((skill, idx) => {
 						if (idx < 4) {
-							return <SkillBadge key={skill.name} label={skill.name} />;
+							return <SkillBadge key={skill._id} label={skill.name} />;
 						}
 					})}
 				</Hidden>
@@ -278,11 +278,11 @@ export default function PostCard({
 						</Button>
 					</Grid>
 					<Grid item xs={6}>
-						{/* <ProgressButton
+						<ProgressButton
 							postId={_id}
 							appliedStudents={appliedStudents}
 							isOpen={isOpen}
-						/> */}
+						/>
 					</Grid>
 				</Grid>
 			) : null}

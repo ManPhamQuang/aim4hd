@@ -64,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         height: "80px",
+        [theme.breakpoints.down('sm')]: {
+            padding: "0px"
+        },
     },
     button: {
         minWidth: "100px",
@@ -82,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     },
     login: {
         width: "150px",
+        [theme.breakpoints.down('sm')]: {
+            width: "100px"
+        },
         marginLeft: "10px",
     },
     avatar: {
@@ -321,7 +327,25 @@ export default function DesktopHeader(props) {
                                                 </a>
                                             </Link>
                                             <div className={classes.cardBody}>
-                                                <Link href="/team">
+                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        Your Posts
+                                                    </a>
+                                                </Link>
+                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        Saved Posts
+                                                    </a>
+                                                </Link>
+                                                {/* <Link href="/team">
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -329,7 +353,7 @@ export default function DesktopHeader(props) {
                                                     >
                                                         My team
                                                     </a>
-                                                </Link>
+                                                </Link> */}
                                                 <Link href="/profile">
                                                     <a
                                                         className={

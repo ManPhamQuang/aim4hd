@@ -344,11 +344,11 @@ function PostPage({
                             </Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <ProgressButton
+                            {/* <ProgressButton
                                 postId={_id}
                                 appliedStudents={appliedStudents}
                                 isOpen={isOpen}
-                            />
+                            /> */}
                         </Grid>
                     </Grid>
                 ) : null}

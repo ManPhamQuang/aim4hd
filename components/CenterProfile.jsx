@@ -30,7 +30,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
-import UserFeedback from "./UserFeedback";
+// import UserFeedback from "./UserFeedback";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -295,7 +295,7 @@ export default function CenterProfile({ user, feedback }) {
                 <ColorLine color="gray[900]" />
 
                 <div style={{ marginBottom: "3px" }}>
-                    <UserFeedback id={user.id} />
+                    {/* <UserFeedback id={user.id} /> */}
                     <Divider variant="middle" />
                     <div className={classes.review}>
                         <div>

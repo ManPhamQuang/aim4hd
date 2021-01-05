@@ -140,6 +140,11 @@ const useStyles = makeStyles((theme) => ({
             borderBottom: "1px solid #dcdacb",
         },
     },
+    logoButton: {
+        "&:hover": {
+			cursor: "pointer",
+		},
+    }
 }));
 
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
@@ -202,24 +207,6 @@ export default function DesktopHeader(props) {
         setOpen((prevOpen) => !prevOpen);
     };
     const loginWithMicrosoft = (
-        <>
-            <MicrosoftLogin
-                clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
-                authCallback={(error, authData, msal) =>
-                    handleOnAuth(error, authData, msal)
-                }
-                prompt="select_account"
-                children={
-                    <Button
-                        variant="contained"
-                        color="inherit"
-                        className={classes.login}
-                    >
-                        Login
-                    </Button>
-                }
-                buttonTheme="light_short"
-            />
             <MicrosoftLogin
                 clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
                 authCallback={(error, authData, msal) =>
@@ -233,12 +220,11 @@ export default function DesktopHeader(props) {
                         color="primary"
                         className={classes.login}
                     >
-                        Sign Up
+                        Login
                     </Button>
                 }
                 buttonTheme="light_short"
             />
-        </>
     );
 
     return (
@@ -250,6 +236,7 @@ export default function DesktopHeader(props) {
                     <Toolbar className={classes.toolbar} spacing={3}>
                         <Link href="/">
                             <Image
+                                className={classes.logoButton}
                                 src="/logo.png"
                                 alt="aim4hd - RMIT Logo"
                                 width={50*3.14}
@@ -261,7 +248,7 @@ export default function DesktopHeader(props) {
                             variant="h6"
                             className={classes.title}
                         ></Typography>
-                        <Button
+                        {/* <Button
                             aria-describedby={id}
                             onClick={handleClick}
                             className={classes.button}
@@ -277,7 +264,7 @@ export default function DesktopHeader(props) {
                         </Popper>
                         <Button className={classes.button} color="inherit">
                             About
-                        </Button>
+                        </Button> */}
                         {/* <Button className={classes.button} color="inherit">
                                 Profile
                             </Button> */}

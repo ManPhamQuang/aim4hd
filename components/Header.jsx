@@ -383,7 +383,7 @@ export default function DesktopHeader(props) {
                 </AppBar>
             </ElevationScroll>
 
-            <Toolbar className={classes.toolbar} />
+            <Toolbar style={{height: "120px"}} />
         </div>
     );
 }

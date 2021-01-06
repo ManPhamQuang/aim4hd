@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "2%",
         marginRight: "2%",
         borderRadius: "0px 0px 8px 8px",
-        display: "flex",
-        flexWrap: "wrap",
-        // overflow: "hidden",
         paddingBottom: "20px",
     },
     title: {

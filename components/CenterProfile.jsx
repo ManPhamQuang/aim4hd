@@ -327,7 +327,7 @@ export default function CenterProfile({ user, feedback }) {
                                     fontSize="inherit"
                                     style={{
                                         marginLeft: "5px",
-                                        fill: "#d6072b",
+                                        color: "cornflowerblue",
                                     }}
                                 />
                             </Typography>
@@ -371,8 +371,8 @@ export default function CenterProfile({ user, feedback }) {
                                                                               style={{
                                                                                   marginLeft:
                                                                                       "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
+                                                                                  color:
+                                                                                      "cornflowerblue",
                                                                               }}
                                                                           />
                                                                       ) : (
@@ -435,8 +435,8 @@ export default function CenterProfile({ user, feedback }) {
                                                                               style={{
                                                                                   marginLeft:
                                                                                       "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
+                                                                                  color:
+                                                                                      "deepskyblue",
                                                                               }}
                                                                           />
                                                                       ) : (
@@ -500,7 +500,7 @@ export default function CenterProfile({ user, feedback }) {
                                           >
                                               {group.course
                                                   ? group.course.name
-                                                  : ""}
+                                                  : "Unnamed Group"}
                                           </Typography>
                                       </AccordionSummary>
                                       <AccordionDetails>

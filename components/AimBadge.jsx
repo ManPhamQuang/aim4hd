@@ -18,7 +18,7 @@ const BadgeColor = (aiming) => {
                 style: {
                     borderColor: "	darkgray",
                     color: "white",
-                    backgroundColor: "red",
+                    backgroundColor: "firebrick",
                 },
             };
             break;

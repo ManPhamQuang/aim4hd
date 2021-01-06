@@ -276,7 +276,7 @@ export default function PostCard({
                         if (idx < 4) {
                             return (
                                 <SkillBadge
-                                    key={skill.name}
+                                    key={skill._id}
                                     label={skill.name}
                                 />
                             );

@@ -22,6 +22,7 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Image from 'next/image'
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -63,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         height: "80px",
+        [theme.breakpoints.down('sm')]: {
+            padding: "0px"
+        },
     },
     button: {
         minWidth: "100px",
@@ -81,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
     },
     login: {
         width: "150px",
+        [theme.breakpoints.down('sm')]: {
+            width: "100px"
+        },
         marginLeft: "10px",
     },
     avatar: {
@@ -139,6 +146,11 @@ const useStyles = makeStyles((theme) => ({
             borderBottom: "1px solid #dcdacb",
         },
     },
+    logoButton: {
+        "&:hover": {
+			cursor: "pointer",
+		},
+    }
 }));
 
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
@@ -201,24 +213,6 @@ export default function DesktopHeader(props) {
         setOpen((prevOpen) => !prevOpen);
     };
     const loginWithMicrosoft = (
-        <>
-            <MicrosoftLogin
-                clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
-                authCallback={(error, authData, msal) =>
-                    handleOnAuth(error, authData, msal)
-                }
-                prompt="select_account"
-                children={
-                    <Button
-                        variant="contained"
-                        color="inherit"
-                        className={classes.login}
-                    >
-                        Login
-                    </Button>
-                }
-                buttonTheme="light_short"
-            />
             <MicrosoftLogin
                 clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
                 authCallback={(error, authData, msal) =>
@@ -232,12 +226,11 @@ export default function DesktopHeader(props) {
                         color="primary"
                         className={classes.login}
                     >
-                        Sign Up
+                        Login
                     </Button>
                 }
                 buttonTheme="light_short"
             />
-        </>
     );
 
     return (
@@ -247,18 +240,21 @@ export default function DesktopHeader(props) {
                     {isLoading && <LoadingSpinner isLoading={isLoading} />}
 
                     <Toolbar className={classes.toolbar} spacing={3}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                        <Link href="/">
+                            <Image
+                                className={classes.logoButton}
+                                src="/logo.png"
+                                alt="aim4hd - RMIT Logo"
+                                width={50*3.14}
+                                height={50}
+                            />
+                        </Link>
+                        
                         <Typography
                             variant="h6"
                             className={classes.title}
                         ></Typography>
-                        <Button
+                        {/* <Button
                             aria-describedby={id}
                             onClick={handleClick}
                             className={classes.button}
@@ -274,7 +270,7 @@ export default function DesktopHeader(props) {
                         </Popper>
                         <Button className={classes.button} color="inherit">
                             About
-                        </Button>
+                        </Button> */}
                         {/* <Button className={classes.button} color="inherit">
                                 Profile
                             </Button> */}
@@ -331,7 +327,25 @@ export default function DesktopHeader(props) {
                                                 </a>
                                             </Link>
                                             <div className={classes.cardBody}>
-                                                <Link href="/team">
+                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        Your Posts
+                                                    </a>
+                                                </Link>
+                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        Saved Posts
+                                                    </a>
+                                                </Link>
+                                                {/* <Link href="/team">
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -339,7 +353,7 @@ export default function DesktopHeader(props) {
                                                     >
                                                         My team
                                                     </a>
-                                                </Link>
+                                                </Link> */}
                                                 <Link href="/profile">
                                                     <a
                                                         className={

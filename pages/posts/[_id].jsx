@@ -198,138 +198,194 @@ function PostPage({
 	maximumMember,
 	course,
 	numberOfComments,
-	appliedStudents,
+    approvedMembers
 }) {
-	const classes = useStyles();
-	const context = useContext(AuthContext);
-	const UserCard = ({ student }) => {
-		return (
-			<Link href={`/users/${student._id}`}>
-				<ListItem className={classes.userCard}>
-					<ListItemAvatar>
-						<Avatar alt={student.name} src={student.avatar}></Avatar>
-					</ListItemAvatar>
-					<ListItemText>{student.name}</ListItemText>
-				</ListItem>
-			</Link>
-		);
-	};
-	return (
-		<Container maxWidth="lg">
-			<Card className={classes.root}>
-				<CardHeader
-					classes={{ action: classes.action, title: classes.title }}
-					avatar={
-						<Avatar
-							alt={author.name}
-							src={author.avatar}
-							className={classes.avatar}
-						></Avatar>
-					}
-					action={
-						<IconButton aria-label="settings">
-							<MoreVertIcon />
-						</IconButton>
-					}
-					action={
-						<Typography className={classes.date} paragraph>
-							{moment(createdAt).format("DD-MM-YYYY")} {"  "}
-							{isOpen ? (
-								<Tooltip title="This post is open for apply">
-									<CheckCircleOutlineIcon
-										className={classes.icon}
-										color="primary"
-									/>
-								</Tooltip>
-							) : (
-								<Tooltip title="This post is not open for apply">
-									<CheckCircleOutlineIcon
-										className={classes.icon}
-										color="disabled"
-									/>
-								</Tooltip>
-							)}
-						</Typography>
-					}
-					title={
-						<Link href={`/users/${author._id}`}>
-							<Typography variant="h6">{author.name}</Typography>
-						</Link>
-					}
-					subheader={author.school}
-				/>
-				<Grid container className={classes.infoContainer}>
-					<Grid item xs={12} md={4}>
-						<Typography variant="h6" style={{ marginBottom: "10px" }}>
-							Aiming: <AimBadge aiming={aiming} />
-						</Typography>
-						<Typography variant="h6" style={{ marginBottom: "10px" }}>
-							Required Skills:{" "}
-						</Typography>
-						{requiredSkills.map((skill, idx) => {
-							return <SkillBadge key={skill.name} label={skill.name} />;
-						})}
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Typography variant="h6" style={{ marginBottom: "10px" }}>
-							Current members:
-						</Typography>
-						{appliedStudents.length > 0 ? (
-							<List className={classes.studentList}>
-								{appliedStudents.map((student) => (
-									<UserCard student={student} key={student._id} />
-								))}
-							</List>
-						) : (
-							<Typography variant="h7">No member yet</Typography>
-						)}
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Typography variant="h6" style={{ marginBottom: "10px" }}>
-							Course:
-						</Typography>
-						<List className={classes.studentList}>
-							<ListItem>
-								{course ? (
-									<ListItemText>
-										{course.name} - {course.code}
-									</ListItemText>
-								) : null}
-							</ListItem>
-						</List>
-					</Grid>
-				</Grid>
-				<Breaker />
-				{context.user ? (
-					<Grid container spacing={3} className={classes.buttonsContainer}>
-						<Grid item xs={6}>
-							<Button
-								variant="contained"
-								className={classes.button}
-								startIcon={<BookmarkIcon />}
-							>
-								Save It
-							</Button>
-						</Grid>
-						<Grid item xs={6}>
-							<ProgressButton
-								postId={_id}
-								appliedStudents={appliedStudents}
-								isOpen={isOpen}
-							/>
-						</Grid>
-					</Grid>
-				) : null}
-				<CardContent className={classes.content}>
-					<Typography variant="h4" component="h2">
-						{title}
-					</Typography>
-					<Typography paragraph variant="body1" component="p">
-						{content}
-					</Typography>
-				</CardContent>
-				<Breaker />
-				{/* member list */}
+    const classes = useStyles();
+    const context = useContext(AuthContext);
+    const isAuthor = () => {
+        if(context.user !== null){
+            if(context.user._id == author._id){
+                return true
+            }
+        }
+        return false
+        
+    }
+    const UserCard = ({ student }) => {
+        return (
+            <Link href={`/users/${student._id}`}>
+                <ListItem className={classes.userCard}>
+                    <ListItemAvatar>
+                        <Avatar
+                            alt={student.name}
+                            src={student.avatar}
+                        ></Avatar>
+                    </ListItemAvatar>
+                    <ListItemText>{student.name}</ListItemText>
+                </ListItem>
+            </Link>
+        );
+    };
+    return (
+        <Container maxWidth="lg">
+            <Card className={classes.root}>
+                <CardHeader
+                    classes={{ action: classes.action, title: classes.title }}
+                    avatar={
+                        <Avatar
+                            alt={author.name}
+                            src={author.avatar}
+                            className={classes.avatar}
+                        ></Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                    action={
+                        <Typography className={classes.date} paragraph>
+                            {moment(createdAt).format("DD-MM-YYYY")} {"  "}
+                            {isOpen ? (
+                                <Tooltip title="This post is open for apply">
+                                    <CheckCircleOutlineIcon
+                                        className={classes.icon}
+                                        color="primary"
+                                    />
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="This post is not open for apply">
+                                    <CheckCircleOutlineIcon
+                                        className={classes.icon}
+                                        color="disabled"
+                                    />
+                                </Tooltip>
+                            )}
+                        </Typography>
+                    }
+                    title={
+                        <Link href={`/users/${author._id}`}>
+                            <Typography variant="h6">{author.name}</Typography>
+                        </Link>
+                    }
+                    subheader={author.school}
+                />
+                <Grid container className={classes.infoContainer}>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Aiming:
+                        </Typography>
+                        <Chip
+                            label={aiming}
+                            color="primary"
+                            icon={<HighlightOffIcon />}
+                        />
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Required Skills:{" "}
+                        </Typography>
+                        {requiredSkills? requiredSkills.map((skill, idx) => {
+                            return (
+                                <SkillBadge
+                                    key={skill.name}
+                                    label={skill.name}
+                                />
+                            );
+                        }): null}
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Course:
+                        </Typography>
+                        <List className={classes.studentList}>
+                            <ListItem>
+                                {course ? (
+                                    <ListItemText>
+                                        {course.name} - {course.code}
+                                    </ListItemText>
+                                ) : null}
+                            </ListItem>
+                        </List>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Apporved Members
+                        </Typography>
+                        {approvedMembers? (
+                            <List className={classes.studentList}>
+                                {approvedMembers.map((student) => (
+                                    <UserCard
+                                        student={student}
+                                        key={student._id}
+                                    />
+                                ))}
+                            </List>
+                        ) : (
+                            <Typography variant="h7">No member yet</Typography>
+                        )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            is author?: {isAuthor() ? "yes!" : "no!"}
+                        </Typography>
+                        <List className={classes.studentList}>
+                            <ListItem>
+                                {course ? (
+                                    <ListItemText>
+                                        {course.name} - {course.code}
+                                    </ListItemText>
+                                ) : null}
+                            </ListItem>
+                        </List>
+                    </Grid>
+                </Grid>
+                <Breaker />
+                {context.user ? (
+                    <Grid
+                        container
+                        spacing={3}
+                        className={classes.buttonsContainer}
+                    >
+                        <Grid item xs={6}>
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                startIcon={<BookmarkIcon />}
+                            >
+                                Save It
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            {/* <ProgressButton
+                                postId={_id}
+                                appliedStudents={appliedStudents}
+                                isOpen={isOpen}
+                            /> */}
+                        </Grid>
+                    </Grid>
+                ) : null}
+                <CardContent className={classes.content}>
+                    <Typography variant="h4" component="h2">
+                        {title}
+                    </Typography>
+                    <Typography paragraph variant="body1" component="p">
+                        {content}
+                    </Typography>
+                </CardContent>
+                <Breaker />
+                {/* member list */}
 
 				<Typography
 					variant="caption"

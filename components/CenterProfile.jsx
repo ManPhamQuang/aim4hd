@@ -5,11 +5,12 @@ import Filter from "../components/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
+import { useRouter } from 'next/router'
+
+//*Styling import
 import SkillBadge from "./SkillBadge";
 import CourseBadge from "./CourseBadge";
 import Chip from "@material-ui/core/Chip";
-
-//*Styling import
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -30,7 +31,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
-import UserFeedback from "./UserFeedback";
+
+// import UserFeedback from "./UserFeedback";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -138,7 +140,8 @@ const AccordionDetails = withStyles((theme2) => ({
 
 export default function CenterProfile({ user, feedback }) {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const router = useRouter()
+    const [value, setValue] = React.useState(router.query.viewPosts? parseInt(router.query.viewPosts, 10) : 0);
     const [expanded, setExpanded] = React.useState(false);
     const [posts, setPosts] = useState([]);
     useEffect(() => {
@@ -147,6 +150,7 @@ export default function CenterProfile({ user, feedback }) {
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) => console.log(err));
     }, []);
+
 
     const handleChange2 = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
@@ -302,7 +306,7 @@ export default function CenterProfile({ user, feedback }) {
                 <ColorLine color="gray[900]" />
 
                 <div style={{ marginBottom: "3px" }}>
-                    <UserFeedback id={user.id} />
+                    {/* <UserFeedback id={user.id} /> */}
                     <Divider variant="middle" />
                     <div className={classes.review}>
                         <div>

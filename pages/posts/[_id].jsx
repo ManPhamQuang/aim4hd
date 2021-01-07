@@ -198,10 +198,19 @@ function PostPage({
 	maximumMember,
 	course,
 	numberOfComments,
-	appliedStudents,
+    approvedMembers
 }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
+    const isAuthor = () => {
+        if(context.user !== null){
+            if(context.user._id == author._id){
+                return true
+            }
+        }
+        return false
+        
+    }
     const UserCard = ({ student }) => {
         return (
             <Link href={`/users/${student._id}`}>
@@ -288,17 +297,32 @@ function PostPage({
                                 />
                             );
                         }): null}
+                        <Typography
+                            variant="h6"
+                            style={{ marginBottom: "10px" }}
+                        >
+                            Course:
+                        </Typography>
+                        <List className={classes.studentList}>
+                            <ListItem>
+                                {course ? (
+                                    <ListItemText>
+                                        {course.name} - {course.code}
+                                    </ListItemText>
+                                ) : null}
+                            </ListItem>
+                        </List>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Typography
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Current members:
+                            Apporved Members
                         </Typography>
-                        {appliedStudents? (
+                        {approvedMembers? (
                             <List className={classes.studentList}>
-                                {appliedStudents.map((student) => (
+                                {approvedMembers.map((student) => (
                                     <UserCard
                                         student={student}
                                         key={student._id}
@@ -314,7 +338,7 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Course:
+                            is author?: {isAuthor() ? "yes!" : "no!"}
                         </Typography>
                         <List className={classes.studentList}>
                             <ListItem>
@@ -344,11 +368,11 @@ function PostPage({
                             </Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <ProgressButton
+                            {/* <ProgressButton
                                 postId={_id}
                                 appliedStudents={appliedStudents}
                                 isOpen={isOpen}
-                            />
+                            /> */}
                         </Grid>
                     </Grid>
                 ) : null}

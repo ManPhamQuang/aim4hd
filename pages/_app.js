@@ -39,6 +39,14 @@ export default function MyApp(props) {
                 })
             );
         }
+        if (status === "update") {
+            setUser(data.user);
+            const storage = {
+                ...JSON.parse(localStorage.getItem("user")),
+                user: data.user,
+            };
+            localStorage.setItem("user", JSON.stringify(storage));
+        }
     });
 
     const logout = useCallback(() => {

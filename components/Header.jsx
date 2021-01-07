@@ -22,7 +22,7 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Image from 'next/image'
+import Image from "next/image";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         height: "80px",
-        [theme.breakpoints.down('sm')]: {
-            padding: "0px"
+        [theme.breakpoints.down("sm")]: {
+            padding: "0px",
         },
     },
     button: {
@@ -85,8 +85,8 @@ const useStyles = makeStyles((theme) => ({
     },
     login: {
         width: "150px",
-        [theme.breakpoints.down('sm')]: {
-            width: "100px"
+        [theme.breakpoints.down("sm")]: {
+            width: "100px",
         },
         marginLeft: "10px",
     },
@@ -148,9 +148,9 @@ const useStyles = makeStyles((theme) => ({
     },
     logoButton: {
         "&:hover": {
-			cursor: "pointer",
-		},
-    }
+            cursor: "pointer",
+        },
+    },
 }));
 
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
@@ -213,24 +213,24 @@ export default function DesktopHeader(props) {
         setOpen((prevOpen) => !prevOpen);
     };
     const loginWithMicrosoft = (
-            <MicrosoftLogin
-                clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
-                authCallback={(error, authData, msal) =>
-                    handleOnAuth(error, authData, msal)
-                }
-                prompt="select_account"
-                children={
-                    <Button
-                        variant="contained"
-                        size="large"
-                        color="primary"
-                        className={classes.login}
-                    >
-                        Login
-                    </Button>
-                }
-                buttonTheme="light_short"
-            />
+        <MicrosoftLogin
+            clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
+            authCallback={(error, authData, msal) =>
+                handleOnAuth(error, authData, msal)
+            }
+            prompt="select_account"
+            children={
+                <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    className={classes.login}
+                >
+                    Login
+                </Button>
+            }
+            buttonTheme="light_short"
+        />
     );
 
     return (
@@ -245,11 +245,11 @@ export default function DesktopHeader(props) {
                                 className={classes.logoButton}
                                 src="/logo.png"
                                 alt="aim4hd - RMIT Logo"
-                                width={50*3.14}
+                                width={50 * 3.14}
                                 height={50}
                             />
                         </Link>
-                        
+
                         <Typography
                             variant="h6"
                             className={classes.title}
@@ -274,9 +274,7 @@ export default function DesktopHeader(props) {
                         {/* <Button className={classes.button} color="inherit">
                                 Profile
                             </Button> */}
-                        {typeof window !== "undefined" &&
-                            !auth.user &&
-                            loginWithMicrosoft}
+                        {!auth.user && loginWithMicrosoft}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}
@@ -327,7 +325,9 @@ export default function DesktopHeader(props) {
                                                 </a>
                                             </Link>
                                             <div className={classes.cardBody}>
-                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                <Link
+                                                    href={`/users/${auth.user._id}?viewPosts=2`}
+                                                >
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -336,7 +336,9 @@ export default function DesktopHeader(props) {
                                                         Your Posts
                                                     </a>
                                                 </Link>
-                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                <Link
+                                                    href={`/users/${auth.user._id}?viewPosts=2`}
+                                                >
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -354,7 +356,9 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
-                                                <Link href="/profile">
+                                                <Link
+                                                    href={`/profiles/${auth.user.id}`}
+                                                >
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -383,7 +387,7 @@ export default function DesktopHeader(props) {
                 </AppBar>
             </ElevationScroll>
 
-            <Toolbar style={{height: "120px"}} />
+            <Toolbar style={{ height: "120px" }} />
         </div>
     );
 }

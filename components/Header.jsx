@@ -274,9 +274,7 @@ export default function DesktopHeader(props) {
                         {/* <Button className={classes.button} color="inherit">
                                 Profile
                             </Button> */}
-                        {typeof window !== "undefined" &&
-                            !auth.user &&
-                            loginWithMicrosoft}
+                        {!auth.user && loginWithMicrosoft}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}
@@ -360,7 +358,9 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
-                                                <Link href="/profile">
+                                                <Link
+                                                    href={`/profiles/${auth.user.id}`}
+                                                >
                                                     <a
                                                         className={
                                                             classes.cardBodyLink

@@ -293,7 +293,7 @@ export default function DesktopHeader(props) {
                                     <span>{auth.user.name}</span>
                                     {open && (
                                         <div className={classes.dropdown}>
-                                            <Link href="/my-profile">
+                                            <Link href="/profile">
                                                 <a className={classes.card}>
                                                     <Avatar
                                                         className={`${classes.avatar} ${classes.avatarLink}`}
@@ -356,9 +356,7 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
-                                                <Link
-                                                    href={`/profiles/${auth.user.id}`}
-                                                >
+                                                <Link href={`/profile`}>
                                                     <a
                                                         className={
                                                             classes.cardBodyLink

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import UserProfile from "../../components/UserProfile";
-import axios from "axios";
-import AuthContext from "../../utils/authContext";
+import UserProfile from "../components/UserProfile";
+import Feedback from "../components/Feedback";
+import AuthContext from "../utils/authContext";
+import { useRouter } from "next/router";
 import {
     Grid,
     Container,
@@ -43,12 +44,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfilePage = ({ user }) => {
     const classes = useStyles();
-    const [value, setValue] = useState(0);
     const auth = useContext(AuthContext);
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
+    const router = useRouter();
+    const isMainPage = !router.query.page;
     return (
         auth.user && (
             <Container fixed style={{ marginTop: "1rem" }}>
@@ -74,22 +72,27 @@ const ProfilePage = ({ user }) => {
                             <List component="ul">
                                 <ListItem
                                     button
-                                    component="a"
                                     className={classes.listItem}
+                                    onClick={() => router.push("/profile")}
                                 >
                                     <ListItemText primary="My Profile" />
                                 </ListItem>
                                 <ListItem
                                     button
-                                    component="a"
                                     className={classes.listItem}
+                                    onClick={() =>
+                                        router.push("/profile?page=feedback")
+                                    }
                                 >
                                     <ListItemText primary="My feedback" />
                                 </ListItem>
                                 <ListItem
                                     button
-                                    component="a"
                                     className={classes.listItem}
+                                    onClick={() => {
+                                        auth.logout();
+                                        router.push("/");
+                                    }}
                                 >
                                     <ListItemText primary="Sign out" />
                                 </ListItem>
@@ -99,14 +102,22 @@ const ProfilePage = ({ user }) => {
                     <Grid item md={9} sm={12} xs={12}>
                         <div className={classes.container}>
                             <div className={classes.menu}>
-                                <Typography variant="h6">My Profile</Typography>
+                                <Typography variant="h6">
+                                    {isMainPage ? "My Profile" : "My Feedback"}
+                                </Typography>
                                 <Typography style={{ margin: "8px 0" }}>
-                                    Edit information about yourself
+                                    {isMainPage
+                                        ? "Edit information about yourself"
+                                        : "Provide feedback to your teammate"}
                                 </Typography>
                             </div>
 
                             <div>
-                                <UserProfile user={auth.user} />
+                                {isMainPage ? (
+                                    <UserProfile user={auth.user} />
+                                ) : (
+                                    <Feedback user={auth.user} />
+                                )}
                             </div>
                         </div>
                     </Grid>

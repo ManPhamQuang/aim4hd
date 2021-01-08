@@ -41,8 +41,7 @@ export default function PostingPage() {
         title: "",
         content: "",
         aiming: "",
-        currentMember: [],
-        course: "",
+        course: null,
         requiredSkills: [],
         isOpen: true,
         maximumMember: 4,
@@ -90,13 +89,25 @@ export default function PostingPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = {
-            ...input,
+            // ...input,
             author: auth.user._id,
         };
+        for (const key in input) {
+            if (input[key] !== null && input[key] !== [] && input[key] !== "") {
+                Object.assign(formData, { [key]: input[key] });
+            }
+        }
+        console.log(formData);
         axios
             .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
+
+        // axios({
+        //     method: 'post',
+        //     url: "https://aim4hd.herokuapp.com/api/v1/posts",
+        //     data: formData
+        // })
     };
     return (
         <Container>

@@ -241,13 +241,15 @@ export default function DesktopHeader(props) {
 
                     <Toolbar className={classes.toolbar} spacing={3}>
                         <Link href="/">
-                            <Image
-                                className={classes.logoButton}
-                                src="/logo.png"
-                                alt="aim4hd - RMIT Logo"
-                                width={50 * 3.14}
-                                height={50}
-                            />
+                            <a>
+                                <Image
+                                    className={classes.logoButton}
+                                    src="/logo.png"
+                                    alt="aim4hd - RMIT Logo"
+                                    width={50 * 3.14}
+                                    height={50}
+                                />
+                            </a>
                         </Link>
 
                         <Typography

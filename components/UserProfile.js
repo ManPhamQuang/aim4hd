@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -49,7 +49,7 @@ export default function UserProfile({ user }) {
     const [image, setImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-
+    const component = useRef(null);
     const handleOnInputChange = (event) => {
         if (
             event.target.name === "skills" ||
@@ -76,7 +76,10 @@ export default function UserProfile({ user }) {
         }
     };
     useEffect(() => {
+        console.log(component);
+        let source = axios.CancelToken.source();
         const getAllCoursesAndSkills = async () => {
+            console.log(component);
             const skillsResponse = axios.get(
                 "https://aim4hd.herokuapp.com/api/v1/skills"
             );
@@ -84,10 +87,11 @@ export default function UserProfile({ user }) {
                 "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
             );
             try {
-                const result = await Promise.all([
-                    skillsResponse,
-                    coursesResponse,
-                ]);
+                const result = await axios.all(
+                    [skillsResponse, coursesResponse],
+                    { cancelToken: source.token }
+                );
+                if (!component.current) return;
                 setSkills(result[0].data.skills);
                 setCourses(result[1].data.data.courses);
             } catch (error) {
@@ -95,6 +99,9 @@ export default function UserProfile({ user }) {
             }
         };
         getAllCoursesAndSkills();
+        return () => {
+            source.cancel();
+        };
     }, []);
 
     const handleSubmitSignin = async (event) => {
@@ -141,7 +148,7 @@ export default function UserProfile({ user }) {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" ref={component}>
             {isLoading && <LoadingSpinner isLoading={isLoading} />}
             <CssBaseline />
             <div className={classes.paper}>

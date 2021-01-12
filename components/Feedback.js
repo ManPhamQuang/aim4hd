@@ -9,7 +9,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
+import FeedbackDialog from "./FeedbackDialog";
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -17,13 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
-        // flexBasis: "50%",
-        // flexShrink: 0,
     },
-    // secondaryHeading: {
-    //     fontSize: theme.typography.pxToRem(15),
-    //     color: theme.palette.text.secondary,
-    // },
     summary: {
         flexWrap: "wrap",
         "& > div": {
@@ -36,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
     },
+    info: { marginBottom: "10px", color: "red", textAlign: "right" },
 }));
 
 const Feedback = ({ user }) => {
@@ -43,6 +40,7 @@ const Feedback = ({ user }) => {
     const [posts, setPosts] = useState([]);
     const [expanded, setExpanded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [chosenStudent, setChosenStudent] = useState(null);
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -64,26 +62,29 @@ const Feedback = ({ user }) => {
         getAllPostsAdmitted();
     }, [user]);
     console.log(posts);
+
     return (
         <div className={classes.root}>
-            <div
-                style={{
-                    textAlign: "right",
-                    marginBottom: "10px",
-                    color: "red",
-                }}
-            >
+            <Container className={classes.info} fixed>
                 Note: *Feeback will be available after you or your teammates
                 closed post and 3 weeks have passed since then.
-            </div>
+            </Container>
             {isLoading && (
                 <div className={classes.progress}>
                     <CircularProgress />
                 </div>
             )}
+            <FeedbackDialog
+                author={user}
+                user={chosenStudent}
+                open={!!chosenStudent}
+                setOpen={setChosenStudent}
+            />
             {posts.length > 0 &&
+                !isLoading &&
                 posts.map((post) => (
                     <Accordion
+                        key={post.id}
                         expanded={expanded === post.id}
                         onChange={handleChange(post.id)}
                     >
@@ -95,20 +96,18 @@ const Feedback = ({ user }) => {
                             <Typography className={classes.heading}>
                                 {post.course.name}
                             </Typography>
-                            {/* <Typography className={classes.secondaryHeading}>
-                                {post.title}
-                            </Typography> */}
                         </AccordionSummary>
                         <AccordionDetails className={classes.summary}>
                             {post.approvedMembers
                                 .filter((member) => member.id !== user.id)
                                 .map((member) => (
                                     <Chip
+                                        key={member.id}
                                         variant="outlined"
                                         avatar={<Avatar src={member.avatar} />}
                                         label={member.name}
                                         onDelete={(e) =>
-                                            console.log("I was clicked")
+                                            setChosenStudent(member)
                                         }
                                         deleteIcon={<FeedbackOutlinedIcon />}
                                     />

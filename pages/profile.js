@@ -89,10 +89,7 @@ const ProfilePage = ({ user }) => {
                                 <ListItem
                                     button
                                     className={classes.listItem}
-                                    onClick={() => {
-                                        auth.logout();
-                                        router.push("/");
-                                    }}
+                                    onClick={auth.logout}
                                 >
                                     <ListItemText primary="Sign out" />
                                 </ListItem>

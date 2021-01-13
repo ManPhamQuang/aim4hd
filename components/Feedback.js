@@ -87,6 +87,7 @@ const Feedback = ({ user }) => {
                         key={post.id}
                         expanded={expanded === post.id}
                         onChange={handleChange(post.id)}
+                        disabled={!!!post.closedAt}
                     >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}

@@ -36,7 +36,7 @@ export default function Posts({ aiming, loading, setLoading }) {
             .get(
                 `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
                     aiming != "" ? `&aiming=${aiming}` : ""
-                }`
+                }&sort=-createdAt`
             )
             .then((res) => {
                 if (res.data.length != 0) {

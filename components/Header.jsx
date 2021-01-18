@@ -300,7 +300,9 @@ export default function DesktopHeader(props) {
                                     <span>{auth.user.name}</span>
                                     {open && (
                                         <div className={classes.dropdown}>
-                                            <Link href="/profile">
+                                            <Link
+                                                href={`/users/${auth.user._id}`}
+                                            >
                                                 <a className={classes.card}>
                                                     <Avatar
                                                         className={`${classes.avatar} ${classes.avatarLink}`}

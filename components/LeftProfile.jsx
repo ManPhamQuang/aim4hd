@@ -22,6 +22,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
+import School from "./School";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,10 +94,15 @@ export default function LeftProfile({ user }) {
                     {user.name}
                 </Typography>
             </div>
-            <div className={classes.root}>
-                <Typography variant="h6" align="center">
-                    {user.major} - {user.school}
+            <div>
+                <Typography
+                    variant="h6"
+                    align="center"
+                    style={{ fontWeight: "500" }}
+                >
+                    {user.major}
                 </Typography>
+                <School school={user.school} />
             </div>
 
             <div className={classes.root}>

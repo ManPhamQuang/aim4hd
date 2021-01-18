@@ -143,6 +143,13 @@ export default function CenterProfile({ user, feedback }) {
     const router = useRouter()
     const [value, setValue] = React.useState(router.query.viewPosts? parseInt(router.query.viewPosts, 10) : 0);
     const [expanded, setExpanded] = React.useState(false);
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        axios
+            .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
+            .then((res) => setPosts(res.data.data.posts))
+            .catch((err) => console.log(err));
+    }, []);
 
 
     const handleChange2 = (panel) => (event, newExpanded) => {
@@ -230,7 +237,7 @@ export default function CenterProfile({ user, feedback }) {
                         component="h2"
                         style={{ fontWeight: "bold" }}
                     >
-                        About
+                        ABOUT
                     </Typography>
                 </div>
                 <div className={classes.content}>
@@ -243,7 +250,7 @@ export default function CenterProfile({ user, feedback }) {
                         component="h2"
                         style={{ fontWeight: "bold" }}
                     >
-                        Skill
+                        SKILLS
                     </Typography>
                 </div>
                 <div className={classes.content}>
@@ -324,7 +331,7 @@ export default function CenterProfile({ user, feedback }) {
                                     fontSize="inherit"
                                     style={{
                                         marginLeft: "5px",
-                                        fill: "#d6072b",
+                                        color: "cornflowerblue",
                                     }}
                                 />
                             </Typography>
@@ -368,8 +375,8 @@ export default function CenterProfile({ user, feedback }) {
                                                                               style={{
                                                                                   marginLeft:
                                                                                       "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
+                                                                                  color:
+                                                                                      "cornflowerblue",
                                                                               }}
                                                                           />
                                                                       ) : (
@@ -432,8 +439,8 @@ export default function CenterProfile({ user, feedback }) {
                                                                               style={{
                                                                                   marginLeft:
                                                                                       "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
+                                                                                  color:
+                                                                                      "deepskyblue",
                                                                               }}
                                                                           />
                                                                       ) : (
@@ -479,8 +486,8 @@ export default function CenterProfile({ user, feedback }) {
 
             <TabPanel value={value} index={1}>
                 <div>
-                    {user.groups
-                        ? user.groups.map((group) => {
+                    {posts
+                        ? posts.map((group) => {
                               return (
                                   <Accordion
                                       square
@@ -495,33 +502,39 @@ export default function CenterProfile({ user, feedback }) {
                                           <Typography
                                               style={{ fontWeight: "bold" }}
                                           >
-                                              {group.course.name}
+                                              {group.course
+                                                  ? group.course.name
+                                                  : "Unnamed Group"}
                                           </Typography>
                                       </AccordionSummary>
                                       <AccordionDetails>
-                                          {group.members
-                                              ? group.members.map((member) => {
-                                                    return (
-                                                        <Chip
-                                                            className={
-                                                                classes.chipTest
-                                                            }
-                                                            label={member.name}
-                                                            style={{
-                                                                fontSize:
-                                                                    "100%",
-                                                            }}
-                                                            clickable
-                                                            avatar={
-                                                                <Avatar
-                                                                    src={
-                                                                        member.avatar
-                                                                    }
-                                                                />
-                                                            }
-                                                        />
-                                                    );
-                                                })
+                                          {group.approvedMembers
+                                              ? group.approvedMembers.map(
+                                                    (member) => {
+                                                        return (
+                                                            <Chip
+                                                                className={
+                                                                    classes.chipTest
+                                                                }
+                                                                label={
+                                                                    member.name
+                                                                }
+                                                                style={{
+                                                                    fontSize:
+                                                                        "100%",
+                                                                }}
+                                                                clickable
+                                                                avatar={
+                                                                    <Avatar
+                                                                        src={
+                                                                            member.avatar
+                                                                        }
+                                                                    />
+                                                                }
+                                                            />
+                                                        );
+                                                    }
+                                                )
                                               : null}
                                       </AccordionDetails>
                                   </Accordion>

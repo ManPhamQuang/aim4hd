@@ -15,7 +15,6 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import { makeStyles } from "@material-ui/core/styles";
 import Checkbox from "@material-ui/core/Checkbox";
-import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     iconStyle: {
@@ -28,49 +27,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ResponsiveDialog({ author, user, open, setOpen }) {
+export default function ResponsiveDialog({
+    user,
+    open,
+    setOpen,
+    content,
+    setContent,
+    handleSubmitFeedback,
+}) {
     const theme = useTheme();
     const classes = useStyles();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-    const [isRecommended, setIsRecommended] = useState(true);
-    const [isAnonymous, setIsAnonymous] = useState(false);
-    const [feedback, setFeedback] = useState("");
-    console.log({ author, user });
-    const handleSubmitFeedback = async () => {
-        const data = {
-            comment: feedback,
-            isAnonymous,
-            isRecommended,
-            author: author.id,
-            user: user.id,
-        };
-        try {
-            const response = await axios.post(
-                `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/feedbacks`,
-                data
-            );
-            const responseData = response.data;
-            console.log(responseData);
-            if (responseData.status === "success") {
-                setIsRecommended(true);
-                setIsAnonymous(false);
-                setFeedback("");
-                setOpen(false);
-                setTimeout(
-                    () => alert("Successfully provide feedback to user"),
-                    0
-                );
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    const { feedback, isAnonymous, isRecommended } = content;
+    const handleCloseModal = (e) => {
+        setOpen(false);
     };
+
+    const handleOnChange = (e) => {
+        if (e.target.name === "isAnonymous")
+            setContent({ ...content, isAnonymous: !isAnonymous });
+        else setContent({ ...content, [e.target.name]: e.target.value });
+    };
+
     return (
         user && (
             <Dialog
                 fullScreen={fullScreen}
                 open={open}
-                onClose={() => setOpen(null)}
+                onClose={handleCloseModal}
                 aria-labelledby="responsive-dialog-title"
             >
                 <DialogTitle id="responsive-dialog-title">
@@ -89,14 +73,24 @@ export default function ResponsiveDialog({ author, user, open, setOpen }) {
                             <ThumbUpIcon
                                 fontSize="large"
                                 color={isRecommended ? "primary" : "disabled"}
-                                onClick={(e) => setIsRecommended(true)}
+                                onClick={() =>
+                                    setContent({
+                                        ...content,
+                                        isRecommended: true,
+                                    })
+                                }
                             />
                         </div>
                         <div className={classes.iconStyle}>
                             <ThumbDownIcon
                                 fontSize="large"
                                 color={isRecommended ? "disabled" : "primary"}
-                                onClick={(e) => setIsRecommended(false)}
+                                onClick={() =>
+                                    setContent({
+                                        ...content,
+                                        isRecommended: false,
+                                    })
+                                }
                             />
                         </div>
                         <div>{isRecommended ? "YES" : "NO"}</div>
@@ -111,16 +105,15 @@ export default function ResponsiveDialog({ author, user, open, setOpen }) {
                         name="feedback"
                         rows={4}
                         value={feedback}
-                        onChange={(e) => setFeedback(e.target.value)}
+                        onChange={handleOnChange}
                     />
                     <Grid container alignItems="center">
                         <FormControlLabel
                             control={
                                 <Checkbox
+                                    name="isAnonymous"
                                     checked={isAnonymous}
-                                    onChange={() =>
-                                        setIsAnonymous(!isAnonymous)
-                                    }
+                                    onChange={handleOnChange}
                                     color="primary"
                                 />
                             }
@@ -136,7 +129,7 @@ export default function ResponsiveDialog({ author, user, open, setOpen }) {
                     >
                         Submit
                     </Button>
-                    <Button onClick={() => setOpen(null)} variant="contained">
+                    <Button onClick={handleCloseModal} variant="contained">
                         Cancel
                     </Button>
                 </DialogActions>

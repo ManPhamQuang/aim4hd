@@ -12,6 +12,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import FeedbackDialog from "./FeedbackDialog";
+import LoadingSpinner from "./LoadingSpinner";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -39,49 +41,103 @@ const Feedback = ({ user }) => {
     const classes = useStyles();
     const [posts, setPosts] = useState([]);
     const [expanded, setExpanded] = useState(false);
+    const [isFetching, setIsFetching] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [chosenStudent, setChosenStudent] = useState(null);
+    const [content, setContent] = useState({
+        isRecommended: true,
+        isAnonymous: false,
+        feedback: "",
+    });
+
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
+
+    const handleChangeStudent = (student) => {
+        setContent({
+            isRecommended: true,
+            isAnonymous: false,
+            feedback: "",
+        });
+        setChosenStudent(student);
+    };
+
+    const handleSubmitFeedback = async () => {
+        const data = {
+            ...content,
+            author: user.id,
+            user: chosenStudent.id,
+        };
+        setIsLoading(true);
+        try {
+            const response = await axios.post(
+                `https://aim4hd.herokuapp.com/api/v1/users/${chosenStudent.id}/feedbacks`,
+                data
+            );
+            const responseData = response.data;
+            if (responseData.status === "success") {
+                const newPosts = [...posts].map((post) => {
+                    post.approvedMembers = post.approvedMembers.filter(
+                        (member) => member.id !== chosenStudent.id
+                    );
+                    return post;
+                });
+                setIsLoading(false);
+                setPosts(newPosts);
+                handleChangeStudent(null);
+                setTimeout(
+                    () => alert("Successfully provide feedback to user"),
+                    0
+                );
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         const getAllPostsAdmitted = async () => {
-            setIsLoading(true);
+            setIsFetching(true);
             try {
                 const response = await axios.get(
                     `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/posts`
                 );
-                console.log(response);
                 setPosts(response.data.data.posts);
             } catch (error) {
                 console.log(error);
             } finally {
-                setIsLoading(false);
+                setIsFetching(false);
             }
         };
         getAllPostsAdmitted();
     }, [user]);
-    console.log(posts);
 
+    console.log(posts);
     return (
         <div className={classes.root}>
             <Container className={classes.info} fixed>
                 Note: *Feeback will be available after you or your teammates
                 closed post and 3 weeks have passed since then.
             </Container>
-            {isLoading && (
+            {isFetching && (
                 <div className={classes.progress}>
                     <CircularProgress />
                 </div>
             )}
+            <LoadingSpinner isLoading={isLoading} />
             <FeedbackDialog
                 author={user}
                 user={chosenStudent}
                 open={!!chosenStudent}
-                setOpen={setChosenStudent}
+                setOpen={handleChangeStudent}
+                content={content}
+                setContent={setContent}
+                handleSubmitFeedback={handleSubmitFeedback}
             />
             {posts.length > 0 &&
-                !isLoading &&
+                !isFetching &&
                 posts.map((post) => (
                     <Accordion
                         key={post.id}
@@ -107,8 +163,8 @@ const Feedback = ({ user }) => {
                                         variant="outlined"
                                         avatar={<Avatar src={member.avatar} />}
                                         label={member.name}
-                                        onDelete={(e) =>
-                                            setChosenStudent(member)
+                                        onDelete={() =>
+                                            handleChangeStudent(member)
                                         }
                                         deleteIcon={<FeedbackOutlinedIcon />}
                                     />

@@ -16,6 +16,7 @@ import {
     ListItemText,
     CircularProgress,
 } from "@material-ui/core";
+import MySavedPosts from "../components/MySavedPosts";
 const useStyles = makeStyles((theme) => ({
     container: {
         border: `1px solid #dee2e7`,
@@ -48,7 +49,6 @@ const ProfilePage = ({ user }) => {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
-    const isMainPage = !router.query.page;
     const [courses, setCourses] = useState([]);
     const [skills, setSkills] = useState([]);
 
@@ -77,6 +77,8 @@ const ProfilePage = ({ user }) => {
             source.cancel();
         };
     }, []);
+
+    useEffect(() => {}, []);
 
     return (
         auth.user && (
@@ -120,6 +122,15 @@ const ProfilePage = ({ user }) => {
                                 <ListItem
                                     button
                                     className={classes.listItem}
+                                    onClick={() =>
+                                        router.push("/profile?page=saved-post")
+                                    }
+                                >
+                                    <ListItemText primary="My saved post" />
+                                </ListItem>
+                                <ListItem
+                                    button
+                                    className={classes.listItem}
                                     onClick={auth.logout}
                                 >
                                     <ListItemText primary="Sign out" />
@@ -131,24 +142,35 @@ const ProfilePage = ({ user }) => {
                         <div className={classes.container}>
                             <div className={classes.menu}>
                                 <Typography variant="h6">
-                                    {isMainPage ? "My Profile" : "My Feedback"}
+                                    {Object.keys(router.query).length === 0 &&
+                                        "My Profile"}
+                                    {router.query.page === "feedback" &&
+                                        "My Feedback"}
+                                    {router.query.page === "saved-post" &&
+                                        "My Saved Post"}
                                 </Typography>
                                 <Typography style={{ margin: "8px 0" }}>
-                                    {isMainPage
-                                        ? "Edit information about yourself"
-                                        : "Provide feedback to your teammate"}
+                                    {Object.keys(router.query).length === 0 &&
+                                        "Edit information about yourself"}
+                                    {router.query.page === "feedback" &&
+                                        "Provide feedback to your teammate"}
+                                    {router.query.page === "saved-post" &&
+                                        "Your saved post in one place"}
                                 </Typography>
                             </div>
-
                             <div>
-                                {isMainPage ? (
+                                {Object.keys(router.query).length === 0 && (
                                     <UserProfile
                                         user={auth.user}
                                         courses={courses}
                                         skills={skills}
                                     />
-                                ) : (
+                                )}
+                                {router.query.page === "feedback" && (
                                     <Feedback user={auth.user} />
+                                )}
+                                {router.query.page === "saved-post" && (
+                                    <MySavedPosts user={auth.user} />
                                 )}
                             </div>
                         </div>

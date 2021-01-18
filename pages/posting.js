@@ -41,7 +41,7 @@ export default function PostingPage() {
         title: "",
         content: "",
         aiming: "",
-        course: null,
+        course: "",
         isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
@@ -49,6 +49,7 @@ export default function PostingPage() {
     });
     const [courses, setCourses] = useState([]);
     const [skills, setSkills] = useState([]);
+    const [users, setUsers] = useState([]);
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
@@ -71,6 +72,15 @@ export default function PostingPage() {
         return data;
     };
 
+    const fetchUsers = async () => {
+        const usersResponse = axios.get(
+            "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
+        );
+        const data = await (await usersResponse).data.data.user;
+        console.log(data);
+        return data;
+    };
+
     useEffect(() => {
         const getCoursesData = async () => {
             let courses = await fetchCourses();
@@ -80,8 +90,13 @@ export default function PostingPage() {
             let skills = await fetchSkills();
             setSkills(skills);
         };
+        const getUsersData = async () => {
+            let users = await fetchUsers();
+            setUsers(users);
+        };
         getSkillsData();
         getCoursesData();
+        getUsersData();
     }, []);
 
     const handleInputChange = (event) => {
@@ -275,6 +290,26 @@ export default function PostingPage() {
                         value={input.approvedMembers}
                         onChange={handleInputChange}
                     />
+                    <TextField
+                        color="secondary"
+                        select
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label="Approved Members"
+                        name="approvedMembers"
+                        SelectProps={{
+                            multiple: true,
+                            value: input.approvedMembers,
+                            onChange: handleInputChange,
+                        }}
+                    >
+                        {users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                                {user.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                     <TextField
                         required
                         id="content"

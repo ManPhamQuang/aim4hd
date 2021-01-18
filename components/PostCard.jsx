@@ -235,15 +235,26 @@ export default function PostCard({
                 </Link>
 
                 <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
-                    >
-                        recruiting {maximumMember - currentMember}/{""}
-                        {maximumMember} members
-                    </Typography>
+                    {currentMember ? (
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                            component="a"
+                        >
+                            recruiting {maximumMember - currentMember}/{""}
+                            {maximumMember} members
+                        </Typography>
+                    ) : (
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                            component="a"
+                        >
+                            recruiting {maximumMember} members
+                        </Typography>
+                    )}
                 </Link>
             </div>
             {/* <MUILink

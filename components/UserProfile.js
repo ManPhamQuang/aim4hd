@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserProfile({ user }) {
+export default function UserProfile({ user, courses, skills }) {
     const classes = useStyles();
     const [input, setInput] = useState({
         name: user.name,
@@ -44,12 +44,10 @@ export default function UserProfile({ user }) {
         currentCourses: user.currentCourses,
     });
     const auth = useContext(AuthContext);
-    const [courses, setCourses] = useState([]);
-    const [skills, setSkills] = useState([]);
     const [image, setImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const component = useRef(null);
+
     const handleOnInputChange = (event) => {
         if (
             event.target.name === "skills" ||
@@ -75,34 +73,6 @@ export default function UserProfile({ user }) {
             setErrorMsg(newErrorMsg);
         }
     };
-    useEffect(() => {
-        console.log(component);
-        let source = axios.CancelToken.source();
-        const getAllCoursesAndSkills = async () => {
-            console.log(component);
-            const skillsResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/skills"
-            );
-            const coursesResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
-            );
-            try {
-                const result = await axios.all(
-                    [skillsResponse, coursesResponse],
-                    { cancelToken: source.token }
-                );
-                if (!component.current) return;
-                setSkills(result[0].data.skills);
-                setCourses(result[1].data.data.courses);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getAllCoursesAndSkills();
-        return () => {
-            source.cancel();
-        };
-    }, []);
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
@@ -148,8 +118,8 @@ export default function UserProfile({ user }) {
     };
 
     return (
-        <Container component="main" maxWidth="xs" ref={component}>
-            {isLoading && <LoadingSpinner isLoading={isLoading} />}
+        <Container component="main" maxWidth="xs">
+            <LoadingSpinner isLoading={isLoading} />
             <CssBaseline />
             <div className={classes.paper}>
                 <form className={classes.form} onSubmit={handleSubmitSignin}>

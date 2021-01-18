@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import UserProfile from "../components/UserProfile";
 import Feedback from "../components/Feedback";
 import AuthContext from "../utils/authContext";
+import axios from "axios";
+
 import { useRouter } from "next/router";
 import {
     Grid,
@@ -47,6 +49,35 @@ const ProfilePage = ({ user }) => {
     const auth = useContext(AuthContext);
     const router = useRouter();
     const isMainPage = !router.query.page;
+    const [courses, setCourses] = useState([]);
+    const [skills, setSkills] = useState([]);
+
+    useEffect(() => {
+        let source = axios.CancelToken.source();
+        const getAllCoursesAndSkills = async () => {
+            const skillsResponse = axios.get(
+                "https://aim4hd.herokuapp.com/api/v1/skills"
+            );
+            const coursesResponse = axios.get(
+                "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
+            );
+            try {
+                const result = await axios.all(
+                    [skillsResponse, coursesResponse],
+                    { cancelToken: source.token }
+                );
+                setSkills(result[0].data.skills);
+                setCourses(result[1].data.data.courses);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getAllCoursesAndSkills();
+        return () => {
+            source.cancel();
+        };
+    }, []);
+
     return (
         auth.user && (
             <Container fixed style={{ marginTop: "1rem" }}>
@@ -111,7 +142,11 @@ const ProfilePage = ({ user }) => {
 
                             <div>
                                 {isMainPage ? (
-                                    <UserProfile user={auth.user} />
+                                    <UserProfile
+                                        user={auth.user}
+                                        courses={courses}
+                                        skills={skills}
+                                    />
                                 ) : (
                                     <Feedback user={auth.user} />
                                 )}

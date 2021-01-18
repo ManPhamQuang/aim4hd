@@ -4,6 +4,7 @@ import {
     Container,
     FormControlLabel,
     FormHelperText,
+    Grid,
     makeStyles,
     MenuItem,
     Paper,
@@ -25,11 +26,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(5),
     },
     aiming: {
-        width: "80px",
+        minWidth: "80px",
     },
-    course: {
-        width: "85%",
-    },
+    course: {},
 }));
 export default function PostingPage() {
     const classes = useStyles();
@@ -119,17 +118,6 @@ export default function PostingPage() {
             delete newErrorMsg[event.target.name];
             setErrorMsg(newErrorMsg);
         }
-        // if(e.target.name == "aiming"){
-        //     setInput((input) => ({
-        //         ...input,
-        //         [e.target.name]: e.target.value,
-        //     }));
-        // }else{
-        //     setInput((input) => ({
-        //         ...input,
-        //         [e.target.name]: e.target.value,
-        //     }));
-        // }
     };
 
     const handleSubmit = (e) => {
@@ -185,50 +173,52 @@ export default function PostingPage() {
                         }
                         label="Opened"
                     />
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <TextField
-                            required
-                            id="aiming"
-                            label="Aiming"
-                            name="aiming"
-                            className={classes.aiming}
-                            value={input.aiming}
-                            onChange={handleInputChange}
-                            select
-                        >
-                            <MenuItem value="HD">HD</MenuItem>
-                            <MenuItem value="DI">DI</MenuItem>
-                            <MenuItem value="CR">CR</MenuItem>
-                            <MenuItem value="PA">PA</MenuItem>
-                            <MenuItem value="NN">NN</MenuItem>
-                        </TextField>
-                        <TextField
-                            color="secondary"
-                            select
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            label="Current courses"
-                            className={classes.course}
-                            name="course"
-                            SelectProps={{
-                                multiple: false,
-                                value: input.course,
-                                onChange: handleInputChange,
-                            }}
-                        >
-                            {courses.map((course) => (
-                                <MenuItem key={course.id} value={course.id}>
-                                    {course.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        {/* <TextField
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={2}>
+                            <TextField
+                                required
+                                id="aiming"
+                                label="Aiming"
+                                name="aiming"
+                                className={classes.aiming}
+                                value={input.aiming}
+                                fullWidth
+                                onChange={handleInputChange}
+                                select
+                            >
+                                <MenuItem value="HD">HD</MenuItem>
+                                <MenuItem value="DI">DI</MenuItem>
+                                <MenuItem value="CR">CR</MenuItem>
+                                <MenuItem value="PA">PA</MenuItem>
+                                <MenuItem value="NN">NN</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12} md={10}>
+                            <TextField
+                                color="secondary"
+                                select
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Current courses"
+                                className={classes.course}
+                                name="course"
+                                SelectProps={{
+                                    multiple: false,
+                                    value: input.course,
+                                    onChange: handleInputChange,
+                                }}
+                            >
+                                {courses.map((course) => (
+                                    <MenuItem key={course.id} value={course.id}>
+                                        {course.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                    {/* <TextField
                             id="course"
                             label="Course"
                             name="course"
@@ -236,44 +226,46 @@ export default function PostingPage() {
                             value={input.course}
                             onChange={handleInputChange}
                         /> */}
-                    </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <TextField
-                            id="maximumMember"
-                            label="Members"
-                            name="maximumMember"
-                            className={classes.aiming}
-                            fullWidth
-                            value={input.maximumMember}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            color="secondary"
-                            select
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            label="Skills"
-                            className={classes.course}
-                            name="requiredSkills"
-                            SelectProps={{
-                                multiple: true,
-                                value: input.requiredSkills,
-                                onChange: handleInputChange,
-                            }}
-                        >
-                            {skills.map((skill) => (
-                                <MenuItem key={skill.id} value={skill.id}>
-                                    {skill.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </div>
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={2}>
+                            <TextField
+                                id="maximumMember"
+                                label="Members"
+                                name="maximumMember"
+                                type="number"
+                                className={classes.aiming}
+                                fullWidth
+                                value={input.maximumMember}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={10}>
+                            <TextField
+                                color="secondary"
+                                select
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Skills"
+                                className={classes.course}
+                                name="requiredSkills"
+                                SelectProps={{
+                                    multiple: true,
+                                    value: input.requiredSkills,
+                                    onChange: handleInputChange,
+                                }}
+                            >
+                                {skills.map((skill) => (
+                                    <MenuItem key={skill.id} value={skill.id}>
+                                        {skill.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
+
                     {/* <TextField
                         id="approved-students"
                         label="Skills Required"

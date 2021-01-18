@@ -10,7 +10,7 @@ import {
     TextField,
     Typography,
 } from "@material-ui/core";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import validator from "../utils/postValidator";
 import axios from "axios";
 import AuthContext from "../utils/authContext";
@@ -42,17 +42,48 @@ export default function PostingPage() {
         content: "",
         aiming: "",
         course: null,
-        requiredSkills: [],
         isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
         approvedMembers: [],
     });
+    const [courses, setCourses] = useState([]);
+    const [skills, setSkills] = useState([]);
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
         aiming: "",
     });
+
+    const fetchCourses = async () => {
+        const response = await axios.get(
+            "https://aim4hd.herokuapp.com/api/v1/courses?limit=1000"
+        );
+        const data = await response.data.data.courses;
+        return data;
+    };
+
+    const fetchSkills = async () => {
+        const skillsResponse = axios.get(
+            "https://aim4hd.herokuapp.com/api/v1/skills"
+        );
+        const data = await (await skillsResponse).data.skills;
+        return data;
+    };
+
+    useEffect(() => {
+        const getCoursesData = async () => {
+            let courses = await fetchCourses();
+            setCourses(courses);
+        };
+        const getSkillsData = async () => {
+            let skills = await fetchSkills();
+            setSkills(skills);
+        };
+        getSkillsData();
+        getCoursesData();
+    }, []);
+
     const handleInputChange = (event) => {
         if (event.target.name == "isOpen") {
             setInput((input) => ({
@@ -162,13 +193,34 @@ export default function PostingPage() {
                             <MenuItem value="NN">NN</MenuItem>
                         </TextField>
                         <TextField
+                            color="secondary"
+                            select
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Current courses"
+                            className={classes.course}
+                            name="course"
+                            SelectProps={{
+                                multiple: false,
+                                value: input.course,
+                                onChange: handleInputChange,
+                            }}
+                        >
+                            {courses.map((course) => (
+                                <MenuItem key={course.id} value={course.id}>
+                                    {course.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        {/* <TextField
                             id="course"
                             label="Course"
                             name="course"
                             className={classes.course}
                             value={input.course}
                             onChange={handleInputChange}
-                        />
+                        /> */}
                     </div>
                     <TextField
                         id="maximumMember"
@@ -179,13 +231,34 @@ export default function PostingPage() {
                         onChange={handleInputChange}
                     />
                     <TextField
+                        color="secondary"
+                        select
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label="Skills"
+                        className={classes.course}
+                        name="requiredSkills"
+                        SelectProps={{
+                            multiple: true,
+                            value: input.requiredSkills,
+                            onChange: handleInputChange,
+                        }}
+                    >
+                        {skills.map((skill) => (
+                            <MenuItem key={skill.id} value={skill.id}>
+                                {skill.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    {/* <TextField
                         id="approved-students"
                         label="Skills Required"
                         name="requiredSkills"
                         fullWidth
                         value={input.requiredSkills}
                         onChange={handleInputChange}
-                    />
+                    /> */}
                     <TextField
                         id="approved-students"
                         label="Approved Members"

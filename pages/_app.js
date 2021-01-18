@@ -6,12 +6,14 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
+import { useRouter } from "next/router";
 let timer;
 export default function MyApp(props) {
     const { Component, pageProps } = props;
     const [user, setUser] = useState(null);
     const [authData, setAuthData] = useState(null);
     const [token, setToken] = useState(null);
+    const router = useRouter();
     const [post, setPost] = useState(null);
     useEffect(() => {
         // Remove the server-side injected CSS.
@@ -39,13 +41,24 @@ export default function MyApp(props) {
                 })
             );
         }
+        if (status === "update") {
+            setUser(data.user);
+            const storage = {
+                ...JSON.parse(localStorage.getItem("user")),
+                user: data.user,
+            };
+            localStorage.setItem("user", JSON.stringify(storage));
+        }
     });
 
-    const logout = useCallback(() => {
+    const logout = useCallback((state) => {
         setUser(null);
         setAuthData(null);
         localStorage.removeItem("user");
         clearTimeout(timer);
+        router.push("/");
+        if (!state)
+            setTimeout(() => alert("Session expired. Please login again"), 0);
     }, []);
 
     useEffect(() => {
@@ -56,7 +69,7 @@ export default function MyApp(props) {
                 setUser(data.user);
                 setToken(data.token);
                 timer = setTimeout(logout, remainningTime);
-            } else logout();
+            } else logout("autoLogout");
         }
     }, []);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserProfile({ user }) {
+export default function UserProfile({ user, courses, skills }) {
     const classes = useStyles();
     const [input, setInput] = useState({
         name: user.name,
@@ -44,8 +44,6 @@ export default function UserProfile({ user }) {
         currentCourses: user.currentCourses,
     });
     const auth = useContext(AuthContext);
-    const [courses, setCourses] = useState([]);
-    const [skills, setSkills] = useState([]);
     const [image, setImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -75,27 +73,6 @@ export default function UserProfile({ user }) {
             setErrorMsg(newErrorMsg);
         }
     };
-    useEffect(() => {
-        const getAllCoursesAndSkills = async () => {
-            const skillsResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/skills"
-            );
-            const coursesResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
-            );
-            try {
-                const result = await Promise.all([
-                    skillsResponse,
-                    coursesResponse,
-                ]);
-                setSkills(result[0].data.skills);
-                setCourses(result[1].data.data.courses);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getAllCoursesAndSkills();
-    }, []);
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
@@ -142,7 +119,7 @@ export default function UserProfile({ user }) {
 
     return (
         <Container component="main" maxWidth="xs">
-            {isLoading && <LoadingSpinner isLoading={isLoading} />}
+            <LoadingSpinner isLoading={isLoading} />
             <CssBaseline />
             <div className={classes.paper}>
                 <form className={classes.form} onSubmit={handleSubmitSignin}>

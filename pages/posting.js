@@ -222,35 +222,43 @@ export default function PostingPage() {
                             onChange={handleInputChange}
                         /> */}
                     </div>
-                    <TextField
-                        id="maximumMember"
-                        label="Maximum Member"
-                        name="maximumMember"
-                        fullWidth
-                        value={input.maximumMember}
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Skills"
-                        className={classes.course}
-                        name="requiredSkills"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.requiredSkills,
-                            onChange: handleInputChange,
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
                         }}
                     >
-                        {skills.map((skill) => (
-                            <MenuItem key={skill.id} value={skill.id}>
-                                {skill.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                        <TextField
+                            id="maximumMember"
+                            label="Members"
+                            name="maximumMember"
+                            className={classes.aiming}
+                            fullWidth
+                            value={input.maximumMember}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            color="secondary"
+                            select
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Skills"
+                            className={classes.course}
+                            name="requiredSkills"
+                            SelectProps={{
+                                multiple: true,
+                                value: input.requiredSkills,
+                                onChange: handleInputChange,
+                            }}
+                        >
+                            {skills.map((skill) => (
+                                <MenuItem key={skill.id} value={skill.id}>
+                                    {skill.name}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </div>
                     {/* <TextField
                         id="approved-students"
                         label="Skills Required"

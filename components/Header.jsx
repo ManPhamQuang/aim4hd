@@ -219,6 +219,11 @@ export default function DesktopHeader(props) {
                 handleOnAuth(error, authData, msal)
             }
             prompt="select_account"
+            redirectUri={
+                process.env.NODE_ENV === "production"
+                    ? "https://aim4hd.vercel.app/"
+                    : "http://localhost:3000/"
+            }
             children={
                 <Button
                     variant="contained"

@@ -1,6 +1,9 @@
 import {
+    Avatar,
     Button,
+    CardHeader,
     Checkbox,
+    Chip,
     Container,
     FormControlLabel,
     FormHelperText,
@@ -28,8 +31,15 @@ const useStyles = makeStyles((theme) => ({
     aiming: {
         minWidth: "80px",
     },
+    cardHeader: {
+        // height: "50px",
+        padding: "0px",
+    },
+    usersList: {},
     course: {},
 }));
+
+const ITEM_HEIGHT = 52;
 export default function PostingPage() {
     const classes = useStyles();
     const auth = useContext(AuthContext);
@@ -208,6 +218,13 @@ export default function PostingPage() {
                                     multiple: false,
                                     value: input.course,
                                     onChange: handleInputChange,
+                                    MenuProps: {
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: ITEM_HEIGHT * 4.5,
+                                            },
+                                        },
+                                    },
                                 }}
                             >
                                 {courses.map((course) => (
@@ -255,6 +272,13 @@ export default function PostingPage() {
                                     multiple: true,
                                     value: input.requiredSkills,
                                     onChange: handleInputChange,
+                                    MenuProps: {
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: ITEM_HEIGHT * 4.5,
+                                            },
+                                        },
+                                    },
                                 }}
                             >
                                 {skills.map((skill) => (
@@ -265,23 +289,6 @@ export default function PostingPage() {
                             </TextField>
                         </Grid>
                     </Grid>
-
-                    {/* <TextField
-                        id="approved-students"
-                        label="Skills Required"
-                        name="requiredSkills"
-                        fullWidth
-                        value={input.requiredSkills}
-                        onChange={handleInputChange}
-                    /> */}
-                    <TextField
-                        id="approved-students"
-                        label="Approved Members"
-                        name="approvedMembers"
-                        fullWidth
-                        value={input.approvedMembers}
-                        onChange={handleInputChange}
-                    />
                     <TextField
                         color="secondary"
                         select
@@ -294,11 +301,43 @@ export default function PostingPage() {
                             multiple: true,
                             value: input.approvedMembers,
                             onChange: handleInputChange,
+                            renderValue: (selected) => {
+                                const result = users.filter((user) =>
+                                    selected.includes(user._id)
+                                );
+                                return (
+                                    <div>
+                                        {result.map((user) => (
+                                            <Chip
+                                                style={{ marginRight: "5px" }}
+                                                label={user.name}
+                                                avatar={
+                                                    <Avatar
+                                                        alt={user.name}
+                                                        src={user.avatar}
+                                                    />
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+                                );
+                            },
+                            MenuProps: {
+                                PaperProps: {
+                                    style: {
+                                        maxHeight: ITEM_HEIGHT * 4.5,
+                                    },
+                                },
+                            },
                         }}
                     >
                         {users.map((user) => (
                             <MenuItem key={user.id} value={user.id}>
-                                {user.name}
+                                <CardHeader
+                                    className={classes.cardHeader}
+                                    avatar={<Avatar src={user.avatar} />}
+                                    title={`${user.name} - ${user.school}`}
+                                />
                             </MenuItem>
                         ))}
                     </TextField>

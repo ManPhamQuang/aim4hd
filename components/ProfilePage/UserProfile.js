@@ -6,13 +6,13 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import AuthContext from "../utils/authContext";
+import AuthContext from "../../utils/authContext";
 import { useRouter } from "next/router";
 import { FormHelperText, MenuItem } from "@material-ui/core";
-import validator from "../utils/validator";
+import validator from "../../utils/validator";
 import axios from "axios";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import ImageUpload from "../components/ImageUpload";
+import LoadingSpinner from "../common/LoadingSpinner";
+import ImageUpload from "../common/ImageUpload";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import UserProfile from "../components/UserProfile";
-import Feedback from "../components/Feedback";
+import UserProfile from "../components/ProfilePage/UserProfile";
+import Feedback from "../components/ProfilePage/Feedback";
+import MySavedPosts from "../components/ProfilePage/MySavedPosts";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
-
 import { useRouter } from "next/router";
 import {
     Grid,
@@ -16,7 +16,7 @@ import {
     ListItemText,
     CircularProgress,
 } from "@material-ui/core";
-import MySavedPosts from "../components/MySavedPosts";
+
 const useStyles = makeStyles((theme) => ({
     container: {
         border: `1px solid #dee2e7`,

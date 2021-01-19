@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import PostCard from "./PostCard";
+import PostCard from "../common/PostCard";
 import { Typography } from "@material-ui/core";
 
 const getInterestedPosts = async (id) => {

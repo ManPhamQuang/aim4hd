@@ -23,7 +23,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
 import ProgressButton from "./ApplyButton";
-import AuthContext from "../utils/authContext";
+import AuthContext from "../../utils/authContext";
 import AimBadge from "./AimBadge";
 const useStyles = makeStyles((theme) => ({
     root: {

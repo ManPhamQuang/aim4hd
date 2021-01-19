@@ -1,10 +1,8 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../../components/Posts";
-import Filter from "../../components/Filter";
-import LeftProfile from "../../components/LeftProfile";
-import CenterProfile from "../../components/CenterProfile";
-import RightProfile from "../../components/RightProfile";
+import LeftProfile from "../../components/UserPage/LeftProfile";
+import CenterProfile from "../../components/UserPage/CenterProfile";
+import RightProfile from "../../components/UserPage/RightProfile";
 //* Styling import
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";

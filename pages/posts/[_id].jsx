@@ -26,16 +26,16 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import SkillBadge from "../../components/SkillBadge";
-import AimBadge from "../../components/AimBadge";
-import ProgressButton from "../../components/ApplyButton";
+import SkillBadge from "../../components/common/SkillBadge";
+import AimBadge from "../../components/common/AimBadge";
+import ProgressButton from "../../components/common/ApplyButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
-import Breaker from "../../components/Breaker";
+import Breaker from "../../components/common/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import PostComments from "../../components/PostComments";
+import PostComments from "../../components/PostPage/PostComments";
 import { useRouter } from "next/router";
 
 export async function getStaticPaths() {

@@ -20,7 +20,7 @@ import {
 import { useContext } from "react";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {

@@ -36,13 +36,14 @@ import Breaker from "../../components/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import PostComments from "../../components/PostComments";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
     let posts = await getPosts();
     let paths = posts.map((post) => `/posts/${post._id}`);
     return {
-        paths,
+        paths: paths,
         fallback: true,
     };
 }
@@ -200,6 +201,7 @@ function PostPage({
     numberOfComments,
     approvedMembers,
 }) {
+    const { isFallback } = useRouter();
     const classes = useStyles();
     const context = useContext(AuthContext);
     const isAuthor = () => {
@@ -225,6 +227,9 @@ function PostPage({
             </Link>
         );
     };
+    if (isFallback) {
+        return <></>;
+    }
     return (
         <Container maxWidth="lg">
             <Card className={classes.root}>

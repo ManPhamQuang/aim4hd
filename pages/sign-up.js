@@ -13,7 +13,7 @@ import { FormHelperText, MenuItem } from "@material-ui/core";
 import validator from "../utils/validator";
 import axios from "axios";
 import LoadingSpinner from "../components/common/LoadingSpinner";
-import ImageUpload from "../components/ImageUpload";
+import ImageUpload from "../components/common/ImageUpload";
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),

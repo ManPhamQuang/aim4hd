@@ -10,6 +10,7 @@ import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import FeedbackDialog from "./FeedbackDialog";
 import LoadingSpinner from "./LoadingSpinner";
@@ -49,7 +50,6 @@ const Feedback = ({ user }) => {
         isAnonymous: false,
         feedback: "",
     });
-
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -64,8 +64,11 @@ const Feedback = ({ user }) => {
     };
 
     const handleSubmitFeedback = async () => {
+        const { isRecommended, isAnonymous, feedback } = content;
         const data = {
-            ...content,
+            comment: feedback,
+            isRecommended,
+            isAnonymous,
             author: user.id,
             user: chosenStudent.id,
         };
@@ -98,13 +101,39 @@ const Feedback = ({ user }) => {
     };
 
     useEffect(() => {
+        let source = axios.CancelToken.source();
         const getAllPostsAdmitted = async () => {
             setIsFetching(true);
             try {
-                const response = await axios.get(
+                const getPostsAdmitted = axios.get(
                     `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/posts`
                 );
-                setPosts(response.data.data.posts);
+                const getFeedbacksOfUser = axios.get(
+                    `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/feedbacks?author=true`
+                );
+                const result = await axios.all(
+                    [getPostsAdmitted, getFeedbacksOfUser],
+                    { cancelToken: source.token }
+                );
+                const posts = result[0].data.data.posts;
+                const feedbacks = result[1].data.data.feedbacks;
+                let data = posts.map((post) => {
+                    post.approvedMembers = post.approvedMembers.filter(
+                        (member) => member.id !== user.id
+                    );
+                    return post;
+                });
+                if (feedbacks.length > 0) {
+                    console.log(data);
+                    feedbacks.forEach((feedback) =>
+                        data.forEach((post) => {
+                            post.approvedMembers = post.approvedMembers.filter(
+                                (member) => member.id !== feedback.user
+                            );
+                        })
+                    );
+                }
+                setPosts(data);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -112,9 +141,11 @@ const Feedback = ({ user }) => {
             }
         };
         getAllPostsAdmitted();
+        return () => {
+            source.cancel();
+        };
     }, [user]);
 
-    console.log(posts);
     return (
         <div className={classes.root}>
             <Container className={classes.info} fixed>
@@ -155,9 +186,8 @@ const Feedback = ({ user }) => {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails className={classes.summary}>
-                            {post.approvedMembers
-                                .filter((member) => member.id !== user.id)
-                                .map((member) => (
+                            {post.approvedMembers.length > 0 ? (
+                                post.approvedMembers.map((member) => (
                                     <Chip
                                         key={member.id}
                                         variant="outlined"
@@ -168,7 +198,12 @@ const Feedback = ({ user }) => {
                                         }
                                         deleteIcon={<FeedbackOutlinedIcon />}
                                     />
-                                ))}
+                                ))
+                            ) : (
+                                <Grid container justify="center">
+                                    Done
+                                </Grid>
+                            )}
                         </AccordionDetails>
                     </Accordion>
                 ))}

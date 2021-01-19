@@ -43,7 +43,7 @@ export async function getStaticPaths() {
     let paths = posts.map((post) => `/posts/${post._id}`);
     return {
         paths,
-        fallback: false,
+        fallback: true,
     };
 }
 

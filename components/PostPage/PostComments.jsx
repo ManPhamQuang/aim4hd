@@ -13,7 +13,7 @@ import {
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import SendIcon from "@material-ui/icons/Send";
-import authContext from "../utils/authContext";
+import authContext from "../../utils/authContext";
 import { green } from "@material-ui/core/colors";
 import Router from "next/router";
 import moment from "moment";

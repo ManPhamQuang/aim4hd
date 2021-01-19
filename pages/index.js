@@ -1,7 +1,7 @@
 import { Grid, Hidden } from "@material-ui/core";
-import Posts from "../components/Posts";
-import Filter from "../components/Filter";
-import RecommendedUsers from "../components/RecommendUsers";
+import Posts from "../components/Newsfeed/Posts";
+import Filter from "../components/Newsfeed/Filter";
+import RecommendedUsers from "../components/Newsfeed/RecommendUsers";
 import { useEffect, useState } from "react";
 
 export default function Home() {

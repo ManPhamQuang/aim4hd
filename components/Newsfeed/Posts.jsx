@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PostCard from "./PostCard";
+import PostCard from "../common/PostCard";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";

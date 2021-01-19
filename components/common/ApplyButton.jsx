@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
-import AuthContext from "../utils/authContext";
+import AuthContext from "../../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",

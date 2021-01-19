@@ -1,15 +1,12 @@
 //* Components import
 import MyPost from "./MyPost";
-import Head from "next/head";
-import Filter from "../components/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
-import { useRouter } from 'next/router'
+import { Box, Hidden } from "@material-ui/core";
+import { useRouter } from "next/router";
 
 //*Styling import
-import SkillBadge from "./SkillBadge";
-import CourseBadge from "./CourseBadge";
+import SkillBadge from "../common/SkillBadge";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/core/styles";
@@ -140,8 +137,10 @@ const AccordionDetails = withStyles((theme2) => ({
 
 export default function CenterProfile({ user, feedback }) {
     const classes = useStyles();
-    const router = useRouter()
-    const [value, setValue] = React.useState(router.query.viewPosts? parseInt(router.query.viewPosts, 10) : 0);
+    const router = useRouter();
+    const [value, setValue] = React.useState(
+        router.query.viewPosts ? parseInt(router.query.viewPosts, 10) : 0
+    );
     const [expanded, setExpanded] = React.useState(false);
     const [posts, setPosts] = useState([]);
     useEffect(() => {
@@ -150,7 +149,6 @@ export default function CenterProfile({ user, feedback }) {
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) => console.log(err));
     }, []);
-
 
     const handleChange2 = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);

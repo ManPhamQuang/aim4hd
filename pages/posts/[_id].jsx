@@ -26,24 +26,25 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import SkillBadge from "../../components/SkillBadge";
-import AimBadge from "../../components/AimBadge";
-import ProgressButton from "../../components/ApplyButton";
+import SkillBadge from "../../components/common/SkillBadge";
+import AimBadge from "../../components/common/AimBadge";
+import ProgressButton from "../../components/common/ApplyButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
-import Breaker from "../../components/Breaker";
+import Breaker from "../../components/common/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import PostComments from "../../components/PostComments";
+import PostComments from "../../components/PostPage/PostComments";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
     let posts = await getPosts();
     let paths = posts.map((post) => `/posts/${post._id}`);
     return {
-        paths,
-        fallback: false,
+        paths: paths,
+        fallback: true,
     };
 }
 
@@ -200,6 +201,7 @@ function PostPage({
     numberOfComments,
     approvedMembers,
 }) {
+    const { isFallback } = useRouter();
     const classes = useStyles();
     const context = useContext(AuthContext);
     const isAuthor = () => {
@@ -225,6 +227,9 @@ function PostPage({
             </Link>
         );
     };
+    if (isFallback) {
+        return <></>;
+    }
     return (
         <Container maxWidth="lg">
             <Card className={classes.root}>

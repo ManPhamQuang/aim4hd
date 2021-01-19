@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { FormHelperText, MenuItem } from "@material-ui/core";
 import validator from "../utils/validator";
 import axios from "axios";
-import LoadingSpinner from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 import ImageUpload from "../components/ImageUpload";
 
 const useStyles = makeStyles((theme) => ({

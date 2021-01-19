@@ -1,9 +1,13 @@
 import {
+    Avatar,
     Button,
+    CardHeader,
     Checkbox,
+    Chip,
     Container,
     FormControlLabel,
     FormHelperText,
+    Grid,
     makeStyles,
     MenuItem,
     Paper,
@@ -25,12 +29,17 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(5),
     },
     aiming: {
-        width: "80px",
+        minWidth: "80px",
     },
-    course: {
-        width: "85%",
+    cardHeader: {
+        // height: "50px",
+        padding: "0px",
     },
+    usersList: {},
+    course: {},
 }));
+
+const ITEM_HEIGHT = 52;
 export default function PostingPage() {
     const classes = useStyles();
     const auth = useContext(AuthContext);
@@ -41,7 +50,7 @@ export default function PostingPage() {
         title: "",
         content: "",
         aiming: "",
-        course: null,
+        course: "",
         isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
@@ -49,6 +58,7 @@ export default function PostingPage() {
     });
     const [courses, setCourses] = useState([]);
     const [skills, setSkills] = useState([]);
+    const [users, setUsers] = useState([]);
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
@@ -71,6 +81,15 @@ export default function PostingPage() {
         return data;
     };
 
+    const fetchUsers = async () => {
+        const usersResponse = axios.get(
+            "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
+        );
+        const data = await (await usersResponse).data.data.user;
+        console.log(data);
+        return data;
+    };
+
     useEffect(() => {
         const getCoursesData = async () => {
             let courses = await fetchCourses();
@@ -80,8 +99,13 @@ export default function PostingPage() {
             let skills = await fetchSkills();
             setSkills(skills);
         };
+        const getUsersData = async () => {
+            let users = await fetchUsers();
+            setUsers(users);
+        };
         getSkillsData();
         getCoursesData();
+        getUsersData();
     }, []);
 
     const handleInputChange = (event) => {
@@ -104,17 +128,6 @@ export default function PostingPage() {
             delete newErrorMsg[event.target.name];
             setErrorMsg(newErrorMsg);
         }
-        // if(e.target.name == "aiming"){
-        //     setInput((input) => ({
-        //         ...input,
-        //         [e.target.name]: e.target.value,
-        //     }));
-        // }else{
-        //     setInput((input) => ({
-        //         ...input,
-        //         [e.target.name]: e.target.value,
-        //     }));
-        // }
     };
 
     const handleSubmit = (e) => {
@@ -170,50 +183,59 @@ export default function PostingPage() {
                         }
                         label="Opened"
                     />
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <TextField
-                            required
-                            id="aiming"
-                            label="Aiming"
-                            name="aiming"
-                            className={classes.aiming}
-                            value={input.aiming}
-                            onChange={handleInputChange}
-                            select
-                        >
-                            <MenuItem value="HD">HD</MenuItem>
-                            <MenuItem value="DI">DI</MenuItem>
-                            <MenuItem value="CR">CR</MenuItem>
-                            <MenuItem value="PA">PA</MenuItem>
-                            <MenuItem value="NN">NN</MenuItem>
-                        </TextField>
-                        <TextField
-                            color="secondary"
-                            select
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            label="Current courses"
-                            className={classes.course}
-                            name="course"
-                            SelectProps={{
-                                multiple: false,
-                                value: input.course,
-                                onChange: handleInputChange,
-                            }}
-                        >
-                            {courses.map((course) => (
-                                <MenuItem key={course.id} value={course.id}>
-                                    {course.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        {/* <TextField
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={2}>
+                            <TextField
+                                required
+                                id="aiming"
+                                label="Aiming"
+                                name="aiming"
+                                className={classes.aiming}
+                                value={input.aiming}
+                                fullWidth
+                                onChange={handleInputChange}
+                                select
+                            >
+                                <MenuItem value="HD">HD</MenuItem>
+                                <MenuItem value="DI">DI</MenuItem>
+                                <MenuItem value="CR">CR</MenuItem>
+                                <MenuItem value="PA">PA</MenuItem>
+                                <MenuItem value="NN">NN</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12} md={10}>
+                            <TextField
+                                color="secondary"
+                                select
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Current courses"
+                                className={classes.course}
+                                name="course"
+                                SelectProps={{
+                                    multiple: false,
+                                    value: input.course,
+                                    onChange: handleInputChange,
+                                    MenuProps: {
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: ITEM_HEIGHT * 4.5,
+                                            },
+                                        },
+                                    },
+                                }}
+                            >
+                                {courses.map((course) => (
+                                    <MenuItem key={course.id} value={course.id}>
+                                        {course.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                    {/* <TextField
                             id="course"
                             label="Course"
                             name="course"
@@ -221,52 +243,104 @@ export default function PostingPage() {
                             value={input.course}
                             onChange={handleInputChange}
                         /> */}
-                    </div>
-                    <TextField
-                        id="maximumMember"
-                        label="Maximum Member"
-                        name="maximumMember"
-                        fullWidth
-                        value={input.maximumMember}
-                        onChange={handleInputChange}
-                    />
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={2}>
+                            <TextField
+                                id="maximumMember"
+                                label="Members"
+                                name="maximumMember"
+                                type="number"
+                                className={classes.aiming}
+                                fullWidth
+                                value={input.maximumMember}
+                                onChange={handleInputChange}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12} md={10}>
+                            <TextField
+                                color="secondary"
+                                select
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="Skills"
+                                className={classes.course}
+                                name="requiredSkills"
+                                SelectProps={{
+                                    multiple: true,
+                                    value: input.requiredSkills,
+                                    onChange: handleInputChange,
+                                    MenuProps: {
+                                        PaperProps: {
+                                            style: {
+                                                maxHeight: ITEM_HEIGHT * 4.5,
+                                            },
+                                        },
+                                    },
+                                }}
+                            >
+                                {skills.map((skill) => (
+                                    <MenuItem key={skill.id} value={skill.id}>
+                                        {skill.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
                     <TextField
                         color="secondary"
                         select
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        label="Skills"
-                        className={classes.course}
-                        name="requiredSkills"
+                        label="Approved Members"
+                        name="approvedMembers"
                         SelectProps={{
                             multiple: true,
-                            value: input.requiredSkills,
+                            value: input.approvedMembers,
                             onChange: handleInputChange,
+                            renderValue: (selected) => {
+                                const result = users.filter((user) =>
+                                    selected.includes(user._id)
+                                );
+                                return (
+                                    <div>
+                                        {result.map((user) => (
+                                            <Chip
+                                                style={{ marginRight: "5px" }}
+                                                label={user.name}
+                                                avatar={
+                                                    <Avatar
+                                                        alt={user.name}
+                                                        src={user.avatar}
+                                                    />
+                                                }
+                                            />
+                                        ))}
+                                    </div>
+                                );
+                            },
+                            MenuProps: {
+                                PaperProps: {
+                                    style: {
+                                        maxHeight: ITEM_HEIGHT * 4.5,
+                                    },
+                                },
+                            },
                         }}
                     >
-                        {skills.map((skill) => (
-                            <MenuItem key={skill.id} value={skill.id}>
-                                {skill.name}
+                        {users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                                <CardHeader
+                                    className={classes.cardHeader}
+                                    avatar={<Avatar src={user.avatar} />}
+                                    title={`${user.name} - ${user.school}`}
+                                />
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* <TextField
-                        id="approved-students"
-                        label="Skills Required"
-                        name="requiredSkills"
-                        fullWidth
-                        value={input.requiredSkills}
-                        onChange={handleInputChange}
-                    /> */}
-                    <TextField
-                        id="approved-students"
-                        label="Approved Members"
-                        name="approvedMembers"
-                        fullWidth
-                        value={input.approvedMembers}
-                        onChange={handleInputChange}
-                    />
                     <TextField
                         required
                         id="content"

@@ -198,7 +198,7 @@ export default function PostCard({
                                 }
                             })}
                         </Hidden>
-                        {context.user._id == author._id ? (
+                        {context.user && context.user._id == author._id ? (
                             <>
                                 <IconButton
                                     onClick={handleClick}

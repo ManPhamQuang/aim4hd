@@ -4,6 +4,7 @@ import {
     CardHeader,
     Checkbox,
     Chip,
+    CircularProgress,
     Container,
     FormControlLabel,
     FormHelperText,
@@ -18,7 +19,11 @@ import React, { useState, useContext, useEffect } from "react";
 import validator from "../utils/postValidator";
 import axios from "axios";
 import AuthContext from "../utils/authContext";
+import clsx from "clsx";
+import { green } from "@material-ui/core/colors";
 import { useRouter } from "next/router";
+import SendIcon from "@material-ui/icons/Send";
+import DoneIcon from "@material-ui/icons/Done";
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -27,6 +32,26 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         padding: theme.spacing(5),
+    },
+    wrapper: {
+        position: "relative",
+    },
+    buttonProgress: {
+        color: green[500],
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    button: {
+        width: "100%",
+    },
+    buttonSuccess: {
+        backgroundColor: green[500],
+        "&:hover": {
+            backgroundColor: green[700],
+        },
     },
     aiming: {
         minWidth: "80px",
@@ -59,6 +84,8 @@ export default function PostingPage() {
     const [courses, setCourses] = useState([]);
     const [skills, setSkills] = useState([]);
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = React.useState(false);
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
@@ -130,7 +157,13 @@ export default function PostingPage() {
         }
     };
 
+    const buttonClassname = clsx({
+        [classes.buttonSuccess]: success,
+        [classes.button]: true,
+    });
+
     const handleSubmit = (e) => {
+        setLoading(true);
         e.preventDefault();
         const formData = {
             // ...input,
@@ -144,7 +177,11 @@ export default function PostingPage() {
         console.log(formData);
         axios
             .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
-            .then((res) => console.log(res))
+            .then((res) => {
+                console.log(res);
+                setLoading(false);
+                setSuccess(true);
+            })
             .catch((err) => console.log(err));
 
         // axios({
@@ -352,16 +389,29 @@ export default function PostingPage() {
                         value={input.content}
                         onChange={handleInputChange}
                     />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        disabled={Object.keys(errorMsg).length > 0}
-                    >
-                        submit
-                    </Button>
+                    <div className={classes.wrapper}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            disabled={
+                                Object.keys(errorMsg).length > 0 ||
+                                loading ||
+                                success
+                            }
+                            className={buttonClassname}
+                            endIcon={success ? <DoneIcon /> : <SendIcon />}
+                        >
+                            {success ? "POSTED" : "Post"}
+                        </Button>
+                        {loading && (
+                            <CircularProgress
+                                size={24}
+                                className={classes.buttonProgress}
+                            />
+                        )}
+                    </div>
                     {console.log(Object.keys(errorMsg))}
                 </form>
             </Paper>

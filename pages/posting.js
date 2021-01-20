@@ -85,12 +85,21 @@ export default function PostingPage() {
     const [skills, setSkills] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = React.useState(false);
+    const [success, setSuccess] = useState(false);
+    const [postData, setPostData] = useState({});
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
         aiming: "",
     });
+
+    const fetchPostData = async (id) => {
+        const response = await axios.get(
+            `https://aim4hd.herokuapp.com/api/v1/posts/${id}`
+        );
+        const data = await response.data.data.post;
+        return data;
+    };
 
     const fetchCourses = async () => {
         const response = await axios.get(
@@ -113,7 +122,6 @@ export default function PostingPage() {
             "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
         );
         const data = await (await usersResponse).data.data.user;
-        console.log(data);
         return data;
     };
 
@@ -130,10 +138,37 @@ export default function PostingPage() {
             let users = await fetchUsers();
             setUsers(users);
         };
+        const getPostData = async (id) => {
+            let post = await fetchPostData(id);
+            setPostData(post);
+        };
+        if (router.query.postId) {
+            getPostData(router.query.postId);
+        }
         getSkillsData();
         getCoursesData();
         getUsersData();
     }, []);
+
+    useEffect(() => {
+        if (postData !== {}) {
+            console.log(postData);
+            setInput({
+                title: postData.title,
+                content: postData.content,
+                aiming: postData.aiming,
+                course: postData.course,
+                isOpen: postData.isOpen,
+                maximumMember: postData.maximumMember,
+                requiredSkills: postData.requiredSkills
+                    ? postData.requiredSkills
+                    : [],
+                approvedMembers: postData.approvedMembers
+                    ? postData.approvedMembers
+                    : [],
+            });
+        }
+    }, [postData]);
 
     const handleInputChange = (event) => {
         if (event.target.name == "isOpen") {

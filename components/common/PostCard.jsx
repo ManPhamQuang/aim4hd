@@ -18,7 +18,15 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
-import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
+import Menu from "@material-ui/core/Menu";
+import {
+    Box,
+    Button,
+    Container,
+    Grid,
+    Hidden,
+    MenuItem,
+} from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
@@ -145,18 +153,18 @@ export default function PostCard({
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const context = useContext(AuthContext);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    const handleToolbarClick = () => {
+        setToolbar(!toolbar);
     };
 
-    const skillBadges = () => {
-        return (
-            <Hidden xsDown>
-                {skills.map((skill) => (
-                    <SkillBadge key={skill.name} label={skill.name} />
-                ))}
-            </Hidden>
-        );
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
     return (
@@ -176,24 +184,47 @@ export default function PostCard({
                     </Link>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                action={
-                    <Hidden xsDown>
-                        {/* desktop */}
-                        {requiredSkills.map((skill, idx) => {
-                            if (idx < 4) {
-                                return (
-                                    <SkillBadge
-                                        key={skill.name}
-                                        label={skill.name}
-                                    />
-                                );
-                            }
-                        })}
-                    </Hidden>
+                    <>
+                        <Hidden xsDown>
+                            {/* desktop */}
+                            {requiredSkills.map((skill, idx) => {
+                                if (idx < 4) {
+                                    return (
+                                        <SkillBadge
+                                            key={skill.name}
+                                            label={skill.name}
+                                        />
+                                    );
+                                }
+                            })}
+                        </Hidden>
+                        {context.user._id == author._id ? (
+                            <>
+                                <IconButton
+                                    onClick={handleClick}
+                                    aria-label="settings"
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                    id="postcard-toolbar"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <MenuItem onClick={handleClose}>
+                                        <Link href={`/posting?postId=${_id}`}>
+                                            Edit Post
+                                        </Link>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        Delete Post
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        ) : null}
+                    </>
                 }
                 title={
                     <Link href={`/users/${author._id}`}>

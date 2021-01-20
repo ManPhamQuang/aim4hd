@@ -365,13 +365,22 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
+                                                <Link href={`/posting`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        New Post
+                                                    </a>
+                                                </Link>
                                                 <Link href={`/profile`}>
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
                                                         }
                                                     >
-                                                        Edit profile
+                                                        Edit Profile
                                                     </a>
                                                 </Link>
                                                 <Link href="/">
@@ -381,7 +390,7 @@ export default function DesktopHeader(props) {
                                                             classes.cardBodyLink
                                                         }
                                                     >
-                                                        Log out
+                                                        Log Out
                                                     </a>
                                                 </Link>
                                             </div>

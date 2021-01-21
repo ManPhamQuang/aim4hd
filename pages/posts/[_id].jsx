@@ -377,7 +377,7 @@ function PostPage({
                                 isOpen={isOpen}
                             />
                         </Grid>
-                        {isAuthor ? (
+                        {isAuthor() ? (
                             <Grid item xs={6}>
                                 <TogglePostButton
                                     postId={_id}

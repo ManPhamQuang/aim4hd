@@ -1,9 +1,10 @@
+import { Button, makeStyles } from "@material-ui/core";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+
 import React, { useContext } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { green } from "@material-ui/core/colors";
-import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
@@ -35,28 +36,29 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
+export default function SaveButton({ userId, postId, savedPosts }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
-    const user = context.user;
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
-    const isApplied = appliedStudents.find((student) => student._id == user._id)
+    const isSaved = savedPosts.find((post) => {
+        return post == postId;
+    })
         ? true
         : false;
 
     const ButtonText = () => {
-        if (isApplied) {
+        if (isSaved) {
             // already applied
-            return "Unapply";
+            return "Unsave";
         }
         if (success) {
             // applied successfuly
-            return "Applied";
+            return "Saved";
         } else {
             // not applied
-            return "Apply";
+            return "Save Post";
         }
     };
 
@@ -71,11 +73,14 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
         };
     }, []);
 
-    const applyToPost = () => {
+    const savePost = () => {
         axios
-            .post(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
-                userId: user._id,
-            })
+            .post(
+                `https://aim4hd.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
+                {
+                    userId: userId,
+                }
+            )
             .then((res) => {
                 if (res.status == 200) {
                     setSuccess(true);
@@ -92,7 +97,7 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
                 // if loading, button won't click
                 setSuccess(false);
                 setLoading(true);
-                applyToPost();
+                savePost();
             }
         }
     };
@@ -100,11 +105,10 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
         <div className={classes.wrapper}>
             <Button
                 variant="contained"
-                color="primary"
                 className={buttonClassname}
-                disabled={loading || !isOpen}
+                disabled={loading}
                 onClick={handleButtonClick}
-                endIcon={success ? <DoneIcon /> : <SendIcon />}
+                startIcon={success ? <DoneIcon /> : <BookmarkIcon />}
             >
                 {ButtonText()}
             </Button>

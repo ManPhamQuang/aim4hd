@@ -30,6 +30,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import SkillBadge from "../../components/common/SkillBadge";
 import AimBadge from "../../components/common/AimBadge";
 import ProgressButton from "../../components/common/ApplyButton";
+import TogglePostButton from "../../components/common/TogglePostButton";
+import SaveButton from "../../components/common/SaveButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
@@ -474,21 +476,27 @@ function PostPage({
                         className={classes.buttonsContainer}
                     >
                         <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                startIcon={<BookmarkIcon />}
-                            >
-                                Save It
-                            </Button>
+                            <SaveButton
+                                userId={context.user._id}
+                                postId={_id}
+                                savedPosts={context.user.savedPosts}
+                            />
                         </Grid>
                         <Grid item xs={6}>
-                            {/* <ProgressButton
+                            <ProgressButton
                                 postId={_id}
                                 appliedStudents={appliedStudents}
                                 isOpen={isOpen}
-                            /> */}
+                            />
                         </Grid>
+                        {isAuthor() ? (
+                            <Grid item xs={6}>
+                                <TogglePostButton
+                                    postId={_id}
+                                    isOpen={isOpen}
+                                />
+                            </Grid>
+                        ) : null}
                     </Grid>
                 ) : null}
                 <CardContent className={classes.content}>

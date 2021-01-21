@@ -90,7 +90,6 @@ export default function PostComments({ _id }) {
                 body
             )
             .then((res) => {
-                console.log(res);
                 setPostingComment(false);
                 setCommentText("");
                 Router.reload(window.location.pathname);
@@ -120,7 +119,6 @@ export default function PostComments({ _id }) {
                 `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
             )
             .then((res) => {
-                console.log(res);
                 Router.reload(window.location.pathname);
             })
             .catch((err) => console.log(err));

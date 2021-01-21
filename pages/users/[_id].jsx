@@ -82,7 +82,7 @@ export default function UserProfile({ user }) {
     useEffect(() => {
         axios
             .get(
-                `http://aim4hd.herokuapp.com/api/v1/users/${user._id}/feedbacks`
+                `https://aim4hd.herokuapp.com/api/v1/users/${user._id}/feedbacks`
             )
             .then((res) => setFeedback(res.data.data))
             .catch((err) => console.log(err));

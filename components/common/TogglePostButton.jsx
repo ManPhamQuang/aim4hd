@@ -6,6 +6,7 @@ import { green } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
 import axios from "axios";
 import AuthContext from "../../utils/authContext";
 const useStyles = makeStyles((theme) => ({
@@ -35,28 +36,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
+export default function TogglePostButton({ postId, isOpen }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const user = context.user;
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
-    const isApplied = appliedStudents.find((student) => student._id == user._id)
-        ? true
-        : false;
 
     const ButtonText = () => {
-        if (isApplied) {
+        if (isOpen) {
             // already applied
-            return "Unapply";
-        }
-        if (success) {
-            // applied successfuly
-            return "Applied";
+            return "Close Post";
         } else {
-            // not applied
-            return "Apply";
+            return "Open Post";
         }
     };
 
@@ -71,10 +64,10 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
         };
     }, []);
 
-    const applyToPost = () => {
+    const togglePost = () => {
         axios
-            .post(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
-                userId: user._id,
+            .patch(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
+                isOpen: !isOpen,
             })
             .then((res) => {
                 if (res.status == 200) {
@@ -92,7 +85,7 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
                 // if loading, button won't click
                 setSuccess(false);
                 setLoading(true);
-                applyToPost();
+                togglePost();
             }
         }
     };
@@ -102,9 +95,9 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
                 variant="contained"
                 color="primary"
                 className={buttonClassname}
-                disabled={loading || !isOpen}
+                disabled={loading}
                 onClick={handleButtonClick}
-                endIcon={success ? <DoneIcon /> : <SendIcon />}
+                endIcon={success ? <DoneIcon /> : <MenuBookIcon />}
             >
                 {ButtonText()}
             </Button>

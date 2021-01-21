@@ -377,9 +377,14 @@ function PostPage({
                                 isOpen={isOpen}
                             />
                         </Grid>
-                        <Grid item xs={6}>
-                            <TogglePostButton postId={_id} isOpen={isOpen} />
-                        </Grid>
+                        {isAuthor ? (
+                            <Grid item xs={6}>
+                                <TogglePostButton
+                                    postId={_id}
+                                    isOpen={isOpen}
+                                />
+                            </Grid>
+                        ) : null}
                     </Grid>
                 ) : null}
                 <CardContent className={classes.content}>

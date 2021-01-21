@@ -42,10 +42,9 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
-    const isApplied = appliedStudents.find((id) => id == user._id)
+    const isApplied = appliedStudents.find((student) => student._id == user._id)
         ? true
         : false;
-    // const isDisabled =
 
     const ButtonText = () => {
         if (isApplied) {

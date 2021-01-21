@@ -161,15 +161,16 @@ export default function PostingPage() {
     }, []);
 
     useEffect(() => {
+        // for editting
         if (!isEmpty(postData)) {
-            console.log("ran");
-            console.log(postData);
+            setErrorMsg({});
             setInput({
                 title: postData.title,
                 content: postData.content,
                 aiming: postData.aiming,
                 course: postData.course ? postData.course._id : "",
                 maximumMember: postData.maximumMember,
+                currentMember: postData.approvedMembers.length,
                 requiredSkills: postData.requiredSkills
                     ? postData.requiredSkills.map((skill) => skill._id)
                     : [],
@@ -216,17 +217,13 @@ export default function PostingPage() {
             currentMember: input.approvedMembers.length,
         };
         for (const key in input) {
-            if (
-                input[key] !== null &&
-                input[key] !== [] &&
-                input[key] !== "" &&
-                key !== "approvedMembers"
-            ) {
+            if (input[key] !== null && input[key] !== [] && input[key] !== "") {
                 Object.assign(formData, { [key]: input[key] });
             }
         }
         console.log(formData);
         if (isEdit) {
+            delete formData.approvedMembers;
             axios
                 .patch(
                     `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
@@ -396,8 +393,8 @@ export default function PostingPage() {
                         select
                         variant="outlined"
                         margin="normal"
-                        fullWidth
                         disabled={isEdit}
+                        fullWidth
                         label="Approved Members"
                         name="approvedMembers"
                         SelectProps={{

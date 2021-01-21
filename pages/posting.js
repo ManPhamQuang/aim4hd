@@ -236,6 +236,8 @@ export default function PostingPage() {
                 })
                 .catch((err) => console.log(err));
         } else {
+            formData.approvedMembers.push(auth.user._id);
+            formData.currentMember += 1;
             axios
                 .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
                 .then((res) => {
@@ -407,18 +409,26 @@ export default function PostingPage() {
                                 );
                                 return (
                                     <div>
-                                        {result.map((user) => (
-                                            <Chip
-                                                style={{ marginRight: "5px" }}
-                                                label={user.name}
-                                                avatar={
-                                                    <Avatar
-                                                        alt={user.name}
-                                                        src={user.avatar}
+                                        {result.map((user) => {
+                                            if (user._id !== auth.user._id) {
+                                                return (
+                                                    <Chip
+                                                        style={{
+                                                            marginRight: "5px",
+                                                        }}
+                                                        label={user.name}
+                                                        avatar={
+                                                            <Avatar
+                                                                alt={user.name}
+                                                                src={
+                                                                    user.avatar
+                                                                }
+                                                            />
+                                                        }
                                                     />
-                                                }
-                                            />
-                                        ))}
+                                                );
+                                            }
+                                        })}
                                     </div>
                                 );
                             },
@@ -431,15 +441,21 @@ export default function PostingPage() {
                             },
                         }}
                     >
-                        {users.map((user) => (
-                            <MenuItem key={user.id} value={user.id}>
-                                <CardHeader
-                                    className={classes.cardHeader}
-                                    avatar={<Avatar src={user.avatar} />}
-                                    title={`${user.name} - ${user.school}`}
-                                />
-                            </MenuItem>
-                        ))}
+                        {users.map((user) => {
+                            if (user._id !== auth.user._id) {
+                                return (
+                                    <MenuItem key={user.id} value={user.id}>
+                                        <CardHeader
+                                            className={classes.cardHeader}
+                                            avatar={
+                                                <Avatar src={user.avatar} />
+                                            }
+                                            title={`${user.name} - ${user.school}`}
+                                        />
+                                    </MenuItem>
+                                );
+                            }
+                        })}
                     </TextField>
                     <TextField
                         required

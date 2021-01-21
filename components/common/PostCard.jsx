@@ -25,7 +25,11 @@ import {
     Container,
     Grid,
     Hidden,
+    List,
     MenuItem,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
 } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
@@ -33,6 +37,12 @@ import Link from "next/link";
 import ProgressButton from "./ApplyButton";
 import AuthContext from "../../utils/authContext";
 import AimBadge from "./AimBadge";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { Edit } from "@material-ui/icons";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -133,6 +143,11 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    toolbar: {
+        // color: theme.palette.primary,
+        // backgroundColor: theme.palette.primary,
+        textDecoration: "none",
+    },
 }));
 
 export default function PostCard({
@@ -153,6 +168,7 @@ export default function PostCard({
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const context = useContext(AuthContext);
+    const router = useRouter();
     const handleToolbarClick = () => {
         setToolbar(!toolbar);
     };
@@ -163,8 +179,14 @@ export default function PostCard({
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (action) => {
         setAnchorEl(null);
+        if (action == "delete") {
+            axios
+                .delete(`https://aim4hd.herokuapp.com/api/v1/posts/${_id}`)
+                .then((res) => router.reload())
+                .catch((err) => console.log(err));
+        }
     };
 
     return (
@@ -213,12 +235,19 @@ export default function PostCard({
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <MenuItem onClick={handleClose}>
-                                        <Link href={`/posting?postId=${_id}`}>
+                                    <Link href={`/posting?postId=${_id}`}>
+                                        <MenuItem
+                                            className={classes.toolbar}
+                                            onClick={handleClose}
+                                        >
+                                            <EditIcon />
                                             Edit Post
-                                        </Link>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                        </MenuItem>
+                                    </Link>
+                                    <MenuItem
+                                        onClick={() => handleClose("delete")}
+                                    >
+                                        <DeleteIcon />
                                         Delete Post
                                     </MenuItem>
                                 </Menu>
@@ -326,6 +355,15 @@ export default function PostCard({
                     })}
                 </Hidden>
             </CardActions>
+            <List>
+                <ListItem>
+                    {course ? (
+                        <ListItemText>
+                            {course.name} - {course.code}
+                        </ListItemText>
+                    ) : null}
+                </ListItem>
+            </List>
             {context.user ? (
                 <Grid
                     container

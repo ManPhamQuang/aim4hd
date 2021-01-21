@@ -64,6 +64,15 @@ const useStyles = makeStyles((theme) => ({
     course: {},
 }));
 
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
 const ITEM_HEIGHT = 52;
 export default function PostingPage() {
     const classes = useStyles();
@@ -76,7 +85,7 @@ export default function PostingPage() {
         content: "",
         aiming: "",
         course: "",
-        isOpen: true,
+        // isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
         approvedMembers: [],
@@ -152,20 +161,21 @@ export default function PostingPage() {
     }, []);
 
     useEffect(() => {
-        if (postData !== {}) {
-            console.log(postData);
+        // for editting
+        if (!isEmpty(postData)) {
+            setErrorMsg({});
             setInput({
                 title: postData.title,
                 content: postData.content,
                 aiming: postData.aiming,
-                course: postData.course,
-                isOpen: postData.isOpen,
+                course: postData.course ? postData.course._id : "",
                 maximumMember: postData.maximumMember,
+                currentMember: postData.approvedMembers.length,
                 requiredSkills: postData.requiredSkills
-                    ? postData.requiredSkills
+                    ? postData.requiredSkills.map((skill) => skill._id)
                     : [],
                 approvedMembers: postData.approvedMembers
-                    ? postData.approvedMembers
+                    ? postData.approvedMembers.map((member) => member._id)
                     : [],
             });
         }
@@ -204,6 +214,7 @@ export default function PostingPage() {
         const formData = {
             // ...input,
             author: auth.user._id,
+            currentMember: input.approvedMembers.length,
         };
         for (const key in input) {
             if (input[key] !== null && input[key] !== [] && input[key] !== "") {
@@ -211,28 +222,31 @@ export default function PostingPage() {
             }
         }
         console.log(formData);
-        // if (isEdit) {
-        //     axios
-        //         .patch(
-        //             `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
-        //             formData
-        //         )
-        //         .then((res) => {
-        //             console.log(res);
-        //             setLoading(false);
-        //             setSuccess(true);
-        //         })
-        //         .catch((err) => console.log(err));
-        // } else {
-        //     axios
-        //         .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
-        //         .then((res) => {
-        //             console.log(res);
-        //             setLoading(false);
-        //             setSuccess(true);
-        //         })
-        //         .catch((err) => console.log(err));
-        // }
+        if (isEdit) {
+            delete formData.approvedMembers;
+            axios
+                .patch(
+                    `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
+                    formData
+                )
+                .then((res) => {
+                    console.log(res);
+                    setLoading(false);
+                    setSuccess(true);
+                })
+                .catch((err) => console.log(err));
+        } else {
+            formData.approvedMembers.push(auth.user._id);
+            formData.currentMember += 1;
+            axios
+                .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
+                .then((res) => {
+                    console.log(res);
+                    setLoading(false);
+                    setSuccess(true);
+                })
+                .catch((err) => console.log(err));
+        }
 
         // axios({
         //     method: 'post',
@@ -259,7 +273,7 @@ export default function PostingPage() {
                             {errorMsg.title}
                         </FormHelperText>
                     )}
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={
                             <Checkbox
                                 name="isOpen"
@@ -269,7 +283,7 @@ export default function PostingPage() {
                             />
                         }
                         label="Opened"
-                    />
+                    /> */}
 
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={2}>
@@ -381,6 +395,7 @@ export default function PostingPage() {
                         select
                         variant="outlined"
                         margin="normal"
+                        disabled={isEdit}
                         fullWidth
                         label="Approved Members"
                         name="approvedMembers"
@@ -394,18 +409,26 @@ export default function PostingPage() {
                                 );
                                 return (
                                     <div>
-                                        {result.map((user) => (
-                                            <Chip
-                                                style={{ marginRight: "5px" }}
-                                                label={user.name}
-                                                avatar={
-                                                    <Avatar
-                                                        alt={user.name}
-                                                        src={user.avatar}
+                                        {result.map((user) => {
+                                            if (user._id !== auth.user._id) {
+                                                return (
+                                                    <Chip
+                                                        style={{
+                                                            marginRight: "5px",
+                                                        }}
+                                                        label={user.name}
+                                                        avatar={
+                                                            <Avatar
+                                                                alt={user.name}
+                                                                src={
+                                                                    user.avatar
+                                                                }
+                                                            />
+                                                        }
                                                     />
-                                                }
-                                            />
-                                        ))}
+                                                );
+                                            }
+                                        })}
                                     </div>
                                 );
                             },
@@ -418,15 +441,21 @@ export default function PostingPage() {
                             },
                         }}
                     >
-                        {users.map((user) => (
-                            <MenuItem key={user.id} value={user.id}>
-                                <CardHeader
-                                    className={classes.cardHeader}
-                                    avatar={<Avatar src={user.avatar} />}
-                                    title={`${user.name} - ${user.school}`}
-                                />
-                            </MenuItem>
-                        ))}
+                        {users.map((user) => {
+                            if (user._id !== auth.user._id) {
+                                return (
+                                    <MenuItem key={user.id} value={user.id}>
+                                        <CardHeader
+                                            className={classes.cardHeader}
+                                            avatar={
+                                                <Avatar src={user.avatar} />
+                                            }
+                                            title={`${user.name} - ${user.school}`}
+                                        />
+                                    </MenuItem>
+                                );
+                            }
+                        })}
                     </TextField>
                     <TextField
                         required

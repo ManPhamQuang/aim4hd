@@ -1,5 +1,5 @@
 export default function checkInput(name, value) {
-    if (name === "name") {
+    if (name === "title") {
         if (value === "") return "Name is required";
     }
     // if (name === "course") {

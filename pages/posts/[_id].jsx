@@ -265,13 +265,14 @@ function PostPage({
                     approvedMembers: student.id,
                 }
             );
-            if (response.data.data.status === "success") {
+            console.log(response);
+            if (response.data.status === "success") {
                 setIsLoading(false);
                 setAppliedStudentsData(
                     appliedStudentsData.filter((s) => s.id !== student.id)
                 );
                 setapprovedMembersData([...approvedMembersData, student]);
-                alert("Successfully approve member");
+                setTimeout(() => alert("Successfully approve member"), 0);
             }
         } catch (error) {
             setIsLoading(false);
@@ -288,14 +289,14 @@ function PostPage({
                     removedMembers: student.id,
                 }
             );
-            if (response.data.data.status === "success") {
+            console.log(response);
+            if (response.data.status === "success") {
                 setIsLoading(false);
                 const data = approvedMembersData.filter(
                     (m) => m.id !== student.id
                 );
-                console.log(data);
                 setapprovedMembersData(data);
-                alert("Successfully remove member");
+                setTimeout(() => alert("Successfully remove member"), 0);
             }
         } catch (error) {
             setIsLoading(false);

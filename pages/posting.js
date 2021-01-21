@@ -87,6 +87,7 @@ export default function PostingPage() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [postData, setPostData] = useState({});
+    const isEdit = router.query.postId ? true : false;
     const [errorMsg, setErrorMsg] = useState({
         title: "",
         content: "",
@@ -210,14 +211,28 @@ export default function PostingPage() {
             }
         }
         console.log(formData);
-        axios
-            .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
-            .then((res) => {
-                console.log(res);
-                setLoading(false);
-                setSuccess(true);
-            })
-            .catch((err) => console.log(err));
+        if (isEdit) {
+            axios
+                .patch(
+                    `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
+                    formData
+                )
+                .then((res) => {
+                    console.log(res);
+                    setLoading(false);
+                    setSuccess(true);
+                })
+                .catch((err) => console.log(err));
+        } else {
+            axios
+                .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
+                .then((res) => {
+                    console.log(res);
+                    setLoading(false);
+                    setSuccess(true);
+                })
+                .catch((err) => console.log(err));
+        }
 
         // axios({
         //     method: 'post',

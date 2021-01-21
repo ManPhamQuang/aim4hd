@@ -64,6 +64,15 @@ const useStyles = makeStyles((theme) => ({
     course: {},
 }));
 
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
 const ITEM_HEIGHT = 52;
 export default function PostingPage() {
     const classes = useStyles();
@@ -76,7 +85,7 @@ export default function PostingPage() {
         content: "",
         aiming: "",
         course: "",
-        isOpen: true,
+        // isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
         approvedMembers: [],
@@ -152,20 +161,20 @@ export default function PostingPage() {
     }, []);
 
     useEffect(() => {
-        if (postData !== {}) {
+        if (!isEmpty(postData)) {
+            console.log("ran");
             console.log(postData);
             setInput({
                 title: postData.title,
                 content: postData.content,
                 aiming: postData.aiming,
-                course: postData.course,
-                isOpen: postData.isOpen,
+                course: postData.course ? postData.course._id : "",
                 maximumMember: postData.maximumMember,
                 requiredSkills: postData.requiredSkills
-                    ? postData.requiredSkills
+                    ? postData.requiredSkills.map((skill) => skill._id)
                     : [],
                 approvedMembers: postData.approvedMembers
-                    ? postData.approvedMembers
+                    ? postData.approvedMembers.map((member) => member._id)
                     : [],
             });
         }
@@ -204,9 +213,15 @@ export default function PostingPage() {
         const formData = {
             // ...input,
             author: auth.user._id,
+            currentMember: input.approvedMembers.length,
         };
         for (const key in input) {
-            if (input[key] !== null && input[key] !== [] && input[key] !== "") {
+            if (
+                input[key] !== null &&
+                input[key] !== [] &&
+                input[key] !== "" &&
+                key !== "approvedMembers"
+            ) {
                 Object.assign(formData, { [key]: input[key] });
             }
         }
@@ -259,7 +274,7 @@ export default function PostingPage() {
                             {errorMsg.title}
                         </FormHelperText>
                     )}
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={
                             <Checkbox
                                 name="isOpen"
@@ -269,7 +284,7 @@ export default function PostingPage() {
                             />
                         }
                         label="Opened"
-                    />
+                    /> */}
 
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={2}>
@@ -382,6 +397,7 @@ export default function PostingPage() {
                         variant="outlined"
                         margin="normal"
                         fullWidth
+                        disabled={isEdit}
                         label="Approved Members"
                         name="approvedMembers"
                         SelectProps={{

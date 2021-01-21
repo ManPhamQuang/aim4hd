@@ -80,7 +80,6 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
                 if (res.status == 200) {
                     setSuccess(true);
                     setLoading(false);
-                    console.log(res.data);
                 }
             })
             .catch((err) => console.log(err));

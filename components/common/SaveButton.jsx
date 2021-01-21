@@ -85,7 +85,6 @@ export default function SaveButton({ userId, postId, savedPosts }) {
                 if (res.status == 200) {
                     setSuccess(true);
                     setLoading(false);
-                    console.log(res.data);
                 }
             })
             .catch((err) => console.log(err));

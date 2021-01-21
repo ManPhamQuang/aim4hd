@@ -230,7 +230,6 @@ export default function PostingPage() {
                     formData
                 )
                 .then((res) => {
-                    console.log(res);
                     setLoading(false);
                     setSuccess(true);
                 })
@@ -241,7 +240,6 @@ export default function PostingPage() {
             axios
                 .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
                 .then((res) => {
-                    console.log(res);
                     setLoading(false);
                     setSuccess(true);
                 })

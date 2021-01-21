@@ -19,6 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
 import Menu from "@material-ui/core/Menu";
+import axios from "axios";
 import {
     Box,
     Button,
@@ -165,6 +166,20 @@ export default function PostCard({
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+    console.log(context);
+    const handleSavedPost = async (userId, postId) => {
+        console.log("ENTER");
+        try {
+            const response = await axios.post(
+                `https://aim4hd.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
+                { userId }
+            );
+            const user = response;
+            console.log(user);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -337,6 +352,9 @@ export default function PostCard({
                             variant="contained"
                             className={classes.button}
                             startIcon={<BookmarkIcon />}
+                            onClick={() =>
+                                handleSavedPost(context.user.id, _id)
+                            }
                         >
                             Save It
                         </Button>

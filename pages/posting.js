@@ -199,7 +199,7 @@ export default function PostingPage() {
     });
 
     const handleSubmit = (e) => {
-        setLoading(true);
+        // setLoading(true);
         e.preventDefault();
         const formData = {
             // ...input,
@@ -211,28 +211,28 @@ export default function PostingPage() {
             }
         }
         console.log(formData);
-        if (isEdit) {
-            axios
-                .patch(
-                    `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
-                    formData
-                )
-                .then((res) => {
-                    console.log(res);
-                    setLoading(false);
-                    setSuccess(true);
-                })
-                .catch((err) => console.log(err));
-        } else {
-            axios
-                .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
-                .then((res) => {
-                    console.log(res);
-                    setLoading(false);
-                    setSuccess(true);
-                })
-                .catch((err) => console.log(err));
-        }
+        // if (isEdit) {
+        //     axios
+        //         .patch(
+        //             `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
+        //             formData
+        //         )
+        //         .then((res) => {
+        //             console.log(res);
+        //             setLoading(false);
+        //             setSuccess(true);
+        //         })
+        //         .catch((err) => console.log(err));
+        // } else {
+        //     axios
+        //         .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
+        //         .then((res) => {
+        //             console.log(res);
+        //             setLoading(false);
+        //             setSuccess(true);
+        //         })
+        //         .catch((err) => console.log(err));
+        // }
 
         // axios({
         //     method: 'post',

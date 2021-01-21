@@ -37,6 +37,7 @@ import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import PostComments from "../../components/PostPage/PostComments";
 import { useRouter } from "next/router";
+import Checkbox from "@material-ui/core/Checkbox";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -200,10 +201,12 @@ function PostPage({
     course,
     numberOfComments,
     approvedMembers,
+    appliedStudents,
 }) {
     const { isFallback } = useRouter();
     const classes = useStyles();
     const context = useContext(AuthContext);
+    console.log(appliedStudents);
     const isAuthor = () => {
         if (context.user !== null) {
             if (context.user._id == author._id) {
@@ -212,7 +215,7 @@ function PostPage({
         }
         return false;
     };
-    const UserCard = ({ student }) => {
+    const UserCard = ({ student, children }) => {
         return (
             <Link href={`/users/${student._id}`}>
                 <ListItem className={classes.userCard}>
@@ -223,6 +226,7 @@ function PostPage({
                         ></Avatar>
                     </ListItemAvatar>
                     <ListItemText>{student.name}</ListItemText>
+                    {children}
                 </ListItem>
             </Link>
         );
@@ -315,6 +319,38 @@ function PostPage({
                             </ListItem>
                         </List>
                     </Grid>
+                    {context.user && context.user.id === author.id && (
+                        <Grid item xs={12} md={4}>
+                            <Typography
+                                variant="h6"
+                                style={{ marginBottom: "10px" }}
+                            >
+                                Applied Students{" "}
+                            </Typography>
+                            <List className={classes.studentList}>
+                                {appliedStudents.length === 0
+                                    ? "No applied students yet"
+                                    : appliedStudents.map((member) => (
+                                          <Grid container>
+                                              <UserCard
+                                                  student={member}
+                                                  key={member._id}
+                                              />
+                                              <Checkbox
+                                                  checked={true}
+                                                  onChange={(e) =>
+                                                      e.preventDefault()
+                                                  }
+                                                  inputProps={{
+                                                      "aria-label":
+                                                          "primary checkbox",
+                                                  }}
+                                              />
+                                          </Grid>
+                                      ))}
+                            </List>
+                        </Grid>
+                    )}
                     <Grid item xs={12} md={4}>
                         <Typography
                             variant="h6"
@@ -334,23 +370,6 @@ function PostPage({
                         ) : (
                             <Typography variant="h7">No member yet</Typography>
                         )}
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <Typography
-                            variant="h6"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            is author?: {isAuthor() ? "yes!" : "no!"}
-                        </Typography>
-                        <List className={classes.studentList}>
-                            <ListItem>
-                                {course ? (
-                                    <ListItemText>
-                                        {course.name} - {course.code}
-                                    </ListItemText>
-                                ) : null}
-                            </ListItem>
-                        </List>
                     </Grid>
                 </Grid>
                 <Breaker />

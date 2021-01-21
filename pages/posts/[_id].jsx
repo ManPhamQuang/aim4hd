@@ -20,10 +20,11 @@ import {
     ListItemText,
     GridListTileBar,
 } from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
+import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import DoneIcon from "@material-ui/icons/Done";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import SkillBadge from "../../components/common/SkillBadge";
@@ -37,8 +38,10 @@ import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import PostComments from "../../components/PostPage/PostComments";
 import { useRouter } from "next/router";
-import Checkbox from "@material-ui/core/Checkbox";
-
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
+import { green } from "@material-ui/core/colors";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 export async function getStaticPaths() {
     // get list of post to populate paths
     let posts = await getPosts();
@@ -184,7 +187,19 @@ const useStyles = makeStyles((theme) => ({
         },
         marginTop: "2px",
     },
-    userCard: theme.userCard,
+    userCard: {
+        boxShadow: "none",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: "220px",
+        borderColor: "",
+        "&:hover": {
+            boxShadow:
+                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            borderRadius: "7px",
+            cursor: "pointer",
+        },
+    },
 }));
 
 function PostPage({
@@ -204,9 +219,10 @@ function PostPage({
     appliedStudents,
 }) {
     const { isFallback } = useRouter();
+    const router = useRouter();
     const classes = useStyles();
     const context = useContext(AuthContext);
-    console.log(appliedStudents);
+    const [isLoading, setIsLoading] = useState(false);
     const isAuthor = () => {
         if (context.user !== null) {
             if (context.user._id == author._id) {
@@ -215,7 +231,13 @@ function PostPage({
         }
         return false;
     };
-    const UserCard = ({ student, children }) => {
+    const [approvedMembersData, setapprovedMembersData] = useState(
+        approvedMembers
+    );
+    const [appliedStudentsData, setAppliedStudentsData] = useState(
+        appliedStudents
+    );
+    const UserCard = ({ student }) => {
         return (
             <Link href={`/users/${student._id}`}>
                 <ListItem className={classes.userCard}>
@@ -226,7 +248,6 @@ function PostPage({
                         ></Avatar>
                     </ListItemAvatar>
                     <ListItemText>{student.name}</ListItemText>
-                    {children}
                 </ListItem>
             </Link>
         );
@@ -234,8 +255,57 @@ function PostPage({
     if (isFallback) {
         return <></>;
     }
+
+    const handleApprovedMember = async (student) => {
+        setIsLoading(true);
+        try {
+            const response = await axios.patch(
+                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`,
+                {
+                    approvedMembers: student.id,
+                }
+            );
+            if (response.data.data.status === "success") {
+                setIsLoading(false);
+                setAppliedStudentsData(
+                    appliedStudentsData.filter((s) => s.id !== student.id)
+                );
+                setapprovedMembersData([...approvedMembersData, student]);
+                alert("Successfully approve member");
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    };
+
+    const handleRemoveMember = async (student) => {
+        setIsLoading(true);
+        try {
+            const response = await axios.patch(
+                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`,
+                {
+                    removedMembers: student.id,
+                }
+            );
+            if (response.data.data.status === "success") {
+                setIsLoading(false);
+                const data = approvedMembersData.filter(
+                    (m) => m.id !== student.id
+                );
+                console.log(data);
+                setapprovedMembersData(data);
+                alert("Successfully remove member");
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    };
+
     return (
         <Container maxWidth="lg">
+            <LoadingSpinner isLoading={isLoading} />
             <Card className={classes.root}>
                 <CardHeader
                     classes={{ action: classes.action, title: classes.title }}
@@ -319,7 +389,7 @@ function PostPage({
                             </ListItem>
                         </List>
                     </Grid>
-                    {context.user && context.user.id === author.id && (
+                    {isAuthor() && (
                         <Grid item xs={12} md={4}>
                             <Typography
                                 variant="h6"
@@ -328,24 +398,26 @@ function PostPage({
                                 Applied Students{" "}
                             </Typography>
                             <List className={classes.studentList}>
-                                {appliedStudents.length === 0
+                                {appliedStudentsData.length === 0
                                     ? "No applied students yet"
-                                    : appliedStudents.map((member) => (
+                                    : appliedStudentsData.map((member) => (
                                           <Grid container>
                                               <UserCard
                                                   student={member}
-                                                  key={member._id}
+                                                  key={member.id}
                                               />
-                                              <Checkbox
-                                                  checked={true}
-                                                  onChange={(e) =>
-                                                      e.preventDefault()
-                                                  }
-                                                  inputProps={{
-                                                      "aria-label":
-                                                          "primary checkbox",
-                                                  }}
-                                              />
+                                              <IconButton
+                                                  onClick={handleApprovedMember.bind(
+                                                      this,
+                                                      member
+                                                  )}
+                                              >
+                                                  <CheckIcon
+                                                      style={{
+                                                          color: green[500],
+                                                      }}
+                                                  />
+                                              </IconButton>
                                           </Grid>
                                       ))}
                             </List>
@@ -358,14 +430,35 @@ function PostPage({
                         >
                             Apporved Members
                         </Typography>
-                        {approvedMembers ? (
+                        {approvedMembersData ? (
                             <List className={classes.studentList}>
-                                {approvedMembers.map((student) => (
-                                    <UserCard
-                                        student={student}
-                                        key={student._id}
-                                    />
-                                ))}
+                                {isAuthor()
+                                    ? approvedMembersData.map((student) => (
+                                          <Grid container>
+                                              <UserCard
+                                                  student={student}
+                                                  key={student._id}
+                                              />
+                                              <IconButton
+                                                  onClick={handleRemoveMember.bind(
+                                                      this,
+                                                      student
+                                                  )}
+                                              >
+                                                  <ClearIcon
+                                                      style={{
+                                                          color: red[500],
+                                                      }}
+                                                  />
+                                              </IconButton>
+                                          </Grid>
+                                      ))
+                                    : approvedMembersData.map((student) => (
+                                          <UserCard
+                                              student={student}
+                                              key={student._id}
+                                          />
+                                      ))}
                             </List>
                         ) : (
                             <Typography variant="h7">No member yet</Typography>

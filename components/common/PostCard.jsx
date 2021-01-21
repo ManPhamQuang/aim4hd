@@ -40,7 +40,6 @@ import AuthContext from "../../utils/authContext";
 import AimBadge from "./AimBadge";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { Edit } from "@material-ui/icons";
 

@@ -42,6 +42,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Edit } from "@material-ui/icons";
+import SaveButton from "./SaveButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -371,13 +372,18 @@ export default function PostCard({
                     className={classes.buttonsContainer}
                 >
                     <Grid item xs={6}>
-                        <Button
+                        {/* <Button
                             variant="contained"
                             className={classes.button}
                             startIcon={<BookmarkIcon />}
                         >
                             Save It
-                        </Button>
+                        </Button> */}
+                        <SaveButton
+                            userId={context.user._id}
+                            postId={_id}
+                            savedPosts={context.user.savedPosts}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <ProgressButton

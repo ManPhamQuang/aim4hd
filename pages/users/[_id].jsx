@@ -32,28 +32,7 @@ const getUser = async (_id) => {
     );
     return post.data.data;
 };
-const feedback = {
-    numberOfRecommended: "3",
-    reviewers: [
-        {
-            name: "Man Pham",
-            image:
-                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-            comment: "This girl working really hard. Highly recommended.",
-            isAnonymous: false,
-            isRecommended: true,
-        },
-        {
-            name: "Nguyen Dang Lam Phuong",
-            image:
-                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-            comment:
-                "It is not easy to communicate with this girl because she often has conflicts with teammates.",
-            isAnonymous: true,
-            isRecommended: false,
-        },
-    ],
-};
+
 const history = {
     images: [
         {
@@ -76,6 +55,15 @@ export async function getStaticProps({ params }) {
         revalidate: 1,
     };
 }
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
 
 export default function UserProfile({ user }) {
     // const [user, setUser] = useState({});
@@ -88,6 +76,17 @@ export default function UserProfile({ user }) {
     //         .catch((err) => console.log(err));
     // }, []);
     const { isFallback } = useRouter();
+    const [feedback, setFeedback] = useState({
+        feedbacks: [],
+    });
+    useEffect(() => {
+        axios
+            .get(
+                `http://aim4hd.herokuapp.com/api/v1/users/${user._id}/feedbacks`
+            )
+            .then((res) => setFeedback(res.data.data))
+            .catch((err) => console.log(err));
+    }, []);
 
     if (isFallback) {
         return <></>;

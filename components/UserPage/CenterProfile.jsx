@@ -143,6 +143,10 @@ export default function CenterProfile({ user, feedback }) {
     );
     const [expanded, setExpanded] = React.useState(false);
     const [posts, setPosts] = useState([]);
+    var numberOfRecommended = feedback.feedbacks.filter(
+        (feedback) => feedback.isRecommended == true
+    ).length;
+    console.log("number: " + numberOfRecommended);
     useEffect(() => {
         axios
             .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
@@ -324,7 +328,7 @@ export default function CenterProfile({ user, feedback }) {
                                 fontWeight="fontWeightLight"
                                 style={{ marginTop: "5px" }}
                             >
-                                {feedback.numberOfRecommended}
+                                {numberOfRecommended}
                                 <ThumbUpIcon
                                     fontSize="inherit"
                                     style={{
@@ -338,8 +342,8 @@ export default function CenterProfile({ user, feedback }) {
                 </div>
                 <div>
                     <List style={{ marginLeft: "2%" }}>
-                        {feedback.reviewers
-                            ? feedback.reviewers.map((reviewer) => {
+                        {feedback.feedbacks
+                            ? feedback.feedbacks.map((reviewer) => {
                                   return (
                                       <div>
                                           {reviewer.isAnonymous == false ? (
@@ -349,7 +353,9 @@ export default function CenterProfile({ user, feedback }) {
                                                           <Avatar
                                                               alt="avatar"
                                                               src={
-                                                                  reviewer.image
+                                                                  reviewer
+                                                                      .author
+                                                                      .avatar
                                                               }
                                                           />
                                                       </ListItemAvatar>
@@ -364,7 +370,9 @@ export default function CenterProfile({ user, feedback }) {
                                                                       }}
                                                                   >
                                                                       {
-                                                                          reviewer.name
+                                                                          reviewer
+                                                                              .author
+                                                                              .name
                                                                       }
                                                                       {reviewer.isRecommended ==
                                                                       true ? (

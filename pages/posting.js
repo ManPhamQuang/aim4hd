@@ -208,11 +208,16 @@ export default function PostingPage() {
         [classes.button]: true,
     });
 
+    const redirectToPostPage = (postId) => {
+        setTimeout(() => {
+            router.push(`/posts/${postId}`);
+        }, 1000);
+    };
+
     const handleSubmit = (e) => {
-        // setLoading(true);
+        setLoading(true);
         e.preventDefault();
         const formData = {
-            // ...input,
             author: auth.user._id,
             currentMember: input.approvedMembers.length,
         };
@@ -221,7 +226,7 @@ export default function PostingPage() {
                 Object.assign(formData, { [key]: input[key] });
             }
         }
-        console.log(formData);
+        // console.log(formData);
         if (isEdit) {
             delete formData.approvedMembers;
             axios
@@ -232,6 +237,7 @@ export default function PostingPage() {
                 .then((res) => {
                     setLoading(false);
                     setSuccess(true);
+                    redirectToPostPage(res.data.data.post._id);
                 })
                 .catch((err) => console.log(err));
         } else {
@@ -242,15 +248,10 @@ export default function PostingPage() {
                 .then((res) => {
                     setLoading(false);
                     setSuccess(true);
+                    redirectToPostPage(res.data.data.post._id);
                 })
                 .catch((err) => console.log(err));
         }
-
-        // axios({
-        //     method: 'post',
-        //     url: "https://aim4hd.herokuapp.com/api/v1/posts",
-        //     data: formData
-        // })
     };
     return (
         <Container>
@@ -489,7 +490,7 @@ export default function PostingPage() {
                             />
                         )}
                     </div>
-                    {console.log(Object.keys(errorMsg))}
+                    {/* {console.log(Object.keys(errorMsg))} */}
                 </form>
             </Paper>
         </Container>

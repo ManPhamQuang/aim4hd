@@ -44,15 +44,15 @@ import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import { green } from "@material-ui/core/colors";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
-export async function getStaticPaths() {
-    // get list of post to populate paths
-    let posts = await getPosts();
-    let paths = posts.map((post) => `/posts/${post._id}`);
-    return {
-        paths: paths,
-        fallback: true,
-    };
-}
+// export async function getStaticPaths() {
+//     // get list of post to populate paths
+//     let posts = await getPosts();
+//     let paths = posts.map((post) => `/posts/${post._id}`);
+//     return {
+//         paths: paths,
+//         fallback: true,
+//     };
+// }
 
 const getPosts = async () => {
     let posts = await axios.get(
@@ -68,11 +68,10 @@ const getPost = async (_id) => {
     return post.data.data.post;
 };
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
     let res = await getPost(params._id);
     return {
         props: res,
-        revalidate: 1,
     };
 }
 

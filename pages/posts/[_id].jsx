@@ -433,7 +433,7 @@ function PostPage({
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Apporved Members
+                            Approved Members
                         </Typography>
                         {approvedMembersData ? (
                             <List className={classes.studentList}>

@@ -400,28 +400,31 @@ function PostPage({
                                 Applied Students{" "}
                             </Typography>
                             <List className={classes.studentList}>
+                                {console.log(appliedStudentsData)}
                                 {appliedStudentsData.length === 0
                                     ? "No applied students yet"
-                                    : appliedStudentsData.map((member) => (
-                                          <Grid container>
-                                              <UserCard
-                                                  student={member}
-                                                  key={member.id}
-                                              />
-                                              <IconButton
-                                                  onClick={handleApprovedMember.bind(
-                                                      this,
-                                                      member
-                                                  )}
-                                              >
-                                                  <CheckIcon
-                                                      style={{
-                                                          color: green[500],
-                                                      }}
+                                    : appliedStudentsData.map((member) => {
+                                          return (
+                                              <Grid container>
+                                                  <UserCard
+                                                      student={member}
+                                                      key={member.id}
                                                   />
-                                              </IconButton>
-                                          </Grid>
-                                      ))}
+                                                  <IconButton
+                                                      onClick={handleApprovedMember.bind(
+                                                          this,
+                                                          member
+                                                      )}
+                                                  >
+                                                      <CheckIcon
+                                                          style={{
+                                                              color: green[500],
+                                                          }}
+                                                      />
+                                                  </IconButton>
+                                              </Grid>
+                                          );
+                                      })}
                             </List>
                         </Grid>
                     )}

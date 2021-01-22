@@ -146,7 +146,6 @@ export default function CenterProfile({ user, feedback }) {
     var numberOfRecommended = feedback.feedbacks.filter(
         (feedback) => feedback.isRecommended == true
     ).length;
-    console.log("number: " + numberOfRecommended);
     useEffect(() => {
         axios
             .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)

@@ -30,7 +30,6 @@ export default function Posts({ aiming, loading, setLoading }) {
         setVisible(isVisible);
     };
     const fetchPosts = () => {
-        console.log("fetching page: " + page);
         // setLoading(true);
         axios
             .get(

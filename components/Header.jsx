@@ -345,17 +345,7 @@ export default function DesktopHeader(props) {
                                                         Your Posts
                                                     </a>
                                                 </Link>
-                                                <Link
-                                                    href={`/users/${auth.user._id}?viewPosts=2`}
-                                                >
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        Saved Posts
-                                                    </a>
-                                                </Link>
+
                                                 {/* <Link href="/team">
                                                     <a
                                                         className={

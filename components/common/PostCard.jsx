@@ -189,7 +189,6 @@ export default function PostCard({
                 .catch((err) => console.log(err));
         }
     };
-    console.log(context);
     const handleSavedPost = async (userId, postId) => {
         console.log("ENTER");
         try {

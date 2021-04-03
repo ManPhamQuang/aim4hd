@@ -1,9 +1,11 @@
 //* Components import
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 //*Styling import
 import Tabs from "@material-ui/core/Tabs";
+import Avatar from "@material-ui/core/Avatar";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -24,6 +26,13 @@ import Modal from "@material-ui/core/Modal";
 import Grid from "@material-ui/core/Grid";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import MuiAccordion from "@material-ui/core/Accordion";
+import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
+import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,15 +82,74 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         overflow: "scroll",
     },
+    about: {
+        marginLeft: "4%",
+        marginTop: "3%",
+        marginRight: "20px",
+    },
 }));
 
-export default function RightProfile({ history }) {
+const Accordion = withStyles({
+    root: {
+        border: "1px solid rgba(0, 0, 0, .125)",
+        boxShadow: "none",
+        "&:not(:last-child)": {
+            borderBottom: 0,
+        },
+        "&:before": {
+            display: "none",
+        },
+        "&$expanded": {
+            margin: "auto",
+        },
+    },
+    expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+    root: {
+        backgroundColor: "rgba(0, 0, 0, .03)",
+        borderBottom: "1px solid rgba(0, 0, 0, .125)",
+        marginBottom: -1,
+        minHeight: 56,
+        "&$expanded": {
+            minHeight: 56,
+        },
+    },
+    content: {
+        "&$expanded": {
+            margin: "12px 0",
+        },
+    },
+    expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme2) => ({
+    root: {
+        padding: theme2.spacing(2),
+        flexWrap: "wrap",
+    },
+}))(MuiAccordionDetails);
+
+export default function RightProfile({ history, user }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [imgPath, setimgPath] = React.useState(0);
+    const [expanded, setExpanded] = React.useState(false);
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        axios
+            .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
+            .then((res) => setPosts(res.data.data.posts))
+            .catch((err) => console.log(err));
+    }, []);
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleChange2 = (panel) => (event, newExpanded) => {
+        setExpanded(newExpanded ? panel : false);
     };
     const handleOpen = (e) => {
         setimgPath(e.target.src);
@@ -104,6 +172,17 @@ export default function RightProfile({ history }) {
                 }}
             />
         </div>
+    );
+
+    const ColorLine = ({ color }) => (
+        <hr
+            style={{
+                borderStyle: "none",
+                backgroundColor: "#f2f2f2",
+                height: 4,
+                width: "100%",
+            }}
+        />
     );
 
     return (
@@ -165,6 +244,72 @@ export default function RightProfile({ history }) {
                         <Fade in={open}>{BigImage}</Fade>
                     </Modal>
                 </React.Fragment>
+            </div>
+            <ColorLine color="gray[900]" />
+
+            <div style={{ marginBottom: "3px" }}>
+                <div className={classes.about}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        style={{ fontWeight: "bold" }}
+                    >
+                        Groups
+                    </Typography>
+                </div>
+                {posts
+                    ? posts.map((group) => {
+                          return (
+                              <Accordion
+                                  square
+                                  expanded={expanded === group.id}
+                                  onChange={handleChange2(group.id)}
+                              >
+                                  <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls={group.id + "-content"}
+                                      id={group.id + "-header"}
+                                  >
+                                      <Typography
+                                          style={{ fontWeight: "bold" }}
+                                      >
+                                          {group.course
+                                              ? group.course.name
+                                              : "Unnamed Group"}
+                                      </Typography>
+                                  </AccordionSummary>
+                                  <AccordionDetails>
+                                      {group.approvedMembers
+                                          ? group.approvedMembers.map(
+                                                (member) => {
+                                                    return (
+                                                        <Chip
+                                                            className={
+                                                                classes.chipTest
+                                                            }
+                                                            label={member.name}
+                                                            style={{
+                                                                fontSize:
+                                                                    "100%",
+                                                            }}
+                                                            clickable
+                                                            avatar={
+                                                                <Avatar
+                                                                    src={
+                                                                        member.avatar
+                                                                    }
+                                                                />
+                                                            }
+                                                        />
+                                                    );
+                                                }
+                                            )
+                                          : null}
+                                  </AccordionDetails>
+                              </Accordion>
+                          );
+                      })
+                    : null}
             </div>
         </Paper>
     );

@@ -5,14 +5,13 @@ import Filter from "../components/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 //*Styling import
 import SkillBadge from "./SkillBadge";
 import CourseBadge from "./CourseBadge";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
-import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
@@ -22,10 +21,6 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -96,53 +91,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Accordion = withStyles({
-    root: {
-        border: "1px solid rgba(0, 0, 0, .125)",
-        boxShadow: "none",
-        "&:not(:last-child)": {
-            borderBottom: 0,
-        },
-        "&:before": {
-            display: "none",
-        },
-        "&$expanded": {
-            margin: "auto",
-        },
-    },
-    expanded: {},
-})(MuiAccordion);
-
-const AccordionSummary = withStyles({
-    root: {
-        backgroundColor: "rgba(0, 0, 0, .03)",
-        borderBottom: "1px solid rgba(0, 0, 0, .125)",
-        marginBottom: -1,
-        minHeight: 56,
-        "&$expanded": {
-            minHeight: 56,
-        },
-    },
-    content: {
-        "&$expanded": {
-            margin: "12px 0",
-        },
-    },
-    expanded: {},
-})(MuiAccordionSummary);
-
-const AccordionDetails = withStyles((theme2) => ({
-    root: {
-        padding: theme2.spacing(2),
-        flexWrap: "wrap",
-    },
-}))(MuiAccordionDetails);
-
 export default function CenterProfile({ user, feedback }) {
     const classes = useStyles();
-    const router = useRouter()
-    const [value, setValue] = React.useState(router.query.viewPosts? parseInt(router.query.viewPosts, 10) : 0);
-    const [expanded, setExpanded] = React.useState(false);
+    const router = useRouter();
+    const [value, setValue] = React.useState(
+        router.query.viewPosts ? parseInt(router.query.viewPosts, 10) : 0
+    );
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         axios
@@ -150,11 +104,6 @@ export default function CenterProfile({ user, feedback }) {
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) => console.log(err));
     }, []);
-
-
-    const handleChange2 = (panel) => (event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
-    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -226,8 +175,6 @@ export default function CenterProfile({ user, feedback }) {
                     aria-label="simple tabs example"
                 >
                     <Tab label="Overview" />
-                    <Tab label="Groups" />
-                    <Tab label="Posts" />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -304,247 +251,198 @@ export default function CenterProfile({ user, feedback }) {
                     </div>
                 </div>
                 <ColorLine color="gray[900]" />
-
                 <div style={{ marginBottom: "3px" }}>
-                    {/* <UserFeedback id={user.id} /> */}
-                    <Divider variant="middle" />
-                    <div className={classes.review}>
-                        <div>
-                            <Typography
-                                className={classes.about}
-                                variant="h5"
-                                component="h2"
-                                style={{ fontWeight: "bold" }}
-                            >
-                                Reviews
-                            </Typography>
-                        </div>
+                    <div className={classes.about}>
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            style={{ fontWeight: "bold" }}
+                        >
+                            My Post
+                        </Typography>
+                    </div>
+                    <div className={classes.content}>
+                        <MyPost userId={user._id} />
+                    </div>
+                    <ColorLine color="gray[900]" />
 
-                        <div>
-                            <Typography
-                                variant="h6"
-                                fontWeight="fontWeightLight"
-                                style={{ marginTop: "5px" }}
-                            >
-                                {feedback.numberOfRecommended}
-                                <ThumbUpIcon
-                                    fontSize="inherit"
-                                    style={{
-                                        marginLeft: "5px",
-                                        color: "cornflowerblue",
-                                    }}
-                                />
-                            </Typography>
+                    <div style={{ marginBottom: "3px" }}>
+                        {/* <UserFeedback id={user.id} /> */}
+                        <div className={classes.review}>
+                            <div>
+                                <Typography
+                                    className={classes.about}
+                                    variant="h5"
+                                    component="h2"
+                                    style={{ fontWeight: "bold" }}
+                                >
+                                    Reviews
+                                </Typography>
+                            </div>
+
+                            <div>
+                                <Typography
+                                    variant="h6"
+                                    fontWeight="fontWeightLight"
+                                    style={{ marginTop: "5px" }}
+                                >
+                                    {feedback.numberOfRecommended}
+                                    <ThumbUpIcon
+                                        fontSize="inherit"
+                                        style={{
+                                            marginLeft: "5px",
+                                            color: "cornflowerblue",
+                                        }}
+                                    />
+                                </Typography>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <List style={{ marginLeft: "2%" }}>
-                        {feedback.reviewers
-                            ? feedback.reviewers.map((reviewer) => {
-                                  return (
-                                      <div>
-                                          {reviewer.isAnonymous == false ? (
-                                              <React.Fragment>
-                                                  <ListItem>
-                                                      <ListItemAvatar>
-                                                          <Avatar
-                                                              alt="avatar"
-                                                              src={
-                                                                  reviewer.image
+                    <div>
+                        <List style={{ marginLeft: "2%" }}>
+                            {feedback.reviewers
+                                ? feedback.reviewers.map((reviewer) => {
+                                      return (
+                                          <div>
+                                              {reviewer.isAnonymous == false ? (
+                                                  <React.Fragment>
+                                                      <ListItem>
+                                                          <ListItemAvatar>
+                                                              <Avatar
+                                                                  alt="avatar"
+                                                                  src={
+                                                                      reviewer.image
+                                                                  }
+                                                              />
+                                                          </ListItemAvatar>
+                                                          <ListItemText
+                                                              primary={
+                                                                  <React.Fragment>
+                                                                      <Typography
+                                                                          variant="body1"
+                                                                          style={{
+                                                                              fontWeight:
+                                                                                  "bold",
+                                                                          }}
+                                                                      >
+                                                                          {
+                                                                              reviewer.name
+                                                                          }
+                                                                          {reviewer.isRecommended ==
+                                                                          true ? (
+                                                                              <ThumbUpIcon
+                                                                                  fontSize="inherit"
+                                                                                  style={{
+                                                                                      marginLeft:
+                                                                                          "10px",
+                                                                                      color:
+                                                                                          "cornflowerblue",
+                                                                                  }}
+                                                                              />
+                                                                          ) : (
+                                                                              <ThumbDownIcon
+                                                                                  fontSize="inherit"
+                                                                                  style={{
+                                                                                      marginLeft:
+                                                                                          "10px",
+                                                                                      fill:
+                                                                                          "#d6072b",
+                                                                                  }}
+                                                                              />
+                                                                          )}
+                                                                      </Typography>
+                                                                  </React.Fragment>
+                                                              }
+                                                              secondary={
+                                                                  <React.Fragment>
+                                                                      <Typography
+                                                                          style={{
+                                                                              fontWeight:
+                                                                                  "500",
+                                                                          }}
+                                                                      >
+                                                                          {
+                                                                              reviewer.comment
+                                                                          }
+                                                                      </Typography>
+                                                                  </React.Fragment>
                                                               }
                                                           />
-                                                      </ListItemAvatar>
-                                                      <ListItemText
-                                                          primary={
-                                                              <React.Fragment>
-                                                                  <Typography
-                                                                      variant="body1"
-                                                                      style={{
-                                                                          fontWeight:
-                                                                              "bold",
-                                                                      }}
-                                                                  >
-                                                                      {
-                                                                          reviewer.name
-                                                                      }
-                                                                      {reviewer.isRecommended ==
-                                                                      true ? (
-                                                                          <ThumbUpIcon
-                                                                              fontSize="inherit"
-                                                                              style={{
-                                                                                  marginLeft:
-                                                                                      "10px",
-                                                                                  color:
-                                                                                      "cornflowerblue",
-                                                                              }}
-                                                                          />
-                                                                      ) : (
-                                                                          <ThumbDownIcon
-                                                                              fontSize="inherit"
-                                                                              style={{
-                                                                                  marginLeft:
-                                                                                      "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
-                                                                              }}
-                                                                          />
-                                                                      )}
-                                                                  </Typography>
-                                                              </React.Fragment>
-                                                          }
-                                                          secondary={
-                                                              <React.Fragment>
-                                                                  <Typography
-                                                                      style={{
-                                                                          fontWeight:
-                                                                              "500",
-                                                                      }}
-                                                                  >
-                                                                      {
-                                                                          reviewer.comment
-                                                                      }
-                                                                  </Typography>
-                                                              </React.Fragment>
-                                                          }
-                                                      />
-                                                  </ListItem>
-                                                  <Divider variant="middle" />
-                                              </React.Fragment>
-                                          ) : (
-                                              <React.Fragment>
-                                                  <ListItem>
-                                                      <ListItemAvatar>
-                                                          <Avatar
-                                                              alt="avatar"
-                                                              src="https://i.stack.imgur.com/QBuke.gif"
+                                                      </ListItem>
+                                                      <Divider variant="middle" />
+                                                  </React.Fragment>
+                                              ) : (
+                                                  <React.Fragment>
+                                                      <ListItem>
+                                                          <ListItemAvatar>
+                                                              <Avatar
+                                                                  alt="avatar"
+                                                                  src="https://i.stack.imgur.com/QBuke.gif"
+                                                              />
+                                                          </ListItemAvatar>
+                                                          <ListItemText
+                                                              primary={
+                                                                  <React.Fragment>
+                                                                      <Typography
+                                                                          variant="body1"
+                                                                          style={{
+                                                                              fontWeight:
+                                                                                  "bold",
+                                                                          }}
+                                                                      >
+                                                                          Anonymous
+                                                                          User
+                                                                          {reviewer.isRecommended ==
+                                                                          true ? (
+                                                                              <ThumbUpIcon
+                                                                                  fontSize="inherit"
+                                                                                  style={{
+                                                                                      marginLeft:
+                                                                                          "10px",
+                                                                                      color:
+                                                                                          "deepskyblue",
+                                                                                  }}
+                                                                              />
+                                                                          ) : (
+                                                                              <ThumbDownIcon
+                                                                                  fontSize="inherit"
+                                                                                  style={{
+                                                                                      marginLeft:
+                                                                                          "10px",
+                                                                                      fill:
+                                                                                          "#d6072b",
+                                                                                  }}
+                                                                              />
+                                                                          )}
+                                                                      </Typography>
+                                                                  </React.Fragment>
+                                                              }
+                                                              secondary={
+                                                                  <React.Fragment>
+                                                                      <Typography
+                                                                          style={{
+                                                                              fontWeight:
+                                                                                  "500",
+                                                                          }}
+                                                                      >
+                                                                          {
+                                                                              reviewer.comment
+                                                                          }
+                                                                      </Typography>
+                                                                  </React.Fragment>
+                                                              }
                                                           />
-                                                      </ListItemAvatar>
-                                                      <ListItemText
-                                                          primary={
-                                                              <React.Fragment>
-                                                                  <Typography
-                                                                      variant="body1"
-                                                                      style={{
-                                                                          fontWeight:
-                                                                              "bold",
-                                                                      }}
-                                                                  >
-                                                                      Anonymous
-                                                                      User
-                                                                      {reviewer.isRecommended ==
-                                                                      true ? (
-                                                                          <ThumbUpIcon
-                                                                              fontSize="inherit"
-                                                                              style={{
-                                                                                  marginLeft:
-                                                                                      "10px",
-                                                                                  color:
-                                                                                      "deepskyblue",
-                                                                              }}
-                                                                          />
-                                                                      ) : (
-                                                                          <ThumbDownIcon
-                                                                              fontSize="inherit"
-                                                                              style={{
-                                                                                  marginLeft:
-                                                                                      "10px",
-                                                                                  fill:
-                                                                                      "#d6072b",
-                                                                              }}
-                                                                          />
-                                                                      )}
-                                                                  </Typography>
-                                                              </React.Fragment>
-                                                          }
-                                                          secondary={
-                                                              <React.Fragment>
-                                                                  <Typography
-                                                                      style={{
-                                                                          fontWeight:
-                                                                              "500",
-                                                                      }}
-                                                                  >
-                                                                      {
-                                                                          reviewer.comment
-                                                                      }
-                                                                  </Typography>
-                                                              </React.Fragment>
-                                                          }
-                                                      />
-                                                  </ListItem>
-                                                  <Divider variant="middle" />
-                                              </React.Fragment>
-                                          )}
-                                      </div>
-                                  );
-                              })
-                            : null}
-                    </List>
+                                                      </ListItem>
+                                                      <Divider variant="middle" />
+                                                  </React.Fragment>
+                                              )}
+                                          </div>
+                                      );
+                                  })
+                                : null}
+                        </List>
+                    </div>
                 </div>
-            </TabPanel>
-
-            <TabPanel value={value} index={1}>
-                <div>
-                    {posts
-                        ? posts.map((group) => {
-                              return (
-                                  <Accordion
-                                      square
-                                      expanded={expanded === group.id}
-                                      onChange={handleChange2(group.id)}
-                                  >
-                                      <AccordionSummary
-                                          expandIcon={<ExpandMoreIcon />}
-                                          aria-controls={group.id + "-content"}
-                                          id={group.id + "-header"}
-                                      >
-                                          <Typography
-                                              style={{ fontWeight: "bold" }}
-                                          >
-                                              {group.course
-                                                  ? group.course.name
-                                                  : "Unnamed Group"}
-                                          </Typography>
-                                      </AccordionSummary>
-                                      <AccordionDetails>
-                                          {group.approvedMembers
-                                              ? group.approvedMembers.map(
-                                                    (member) => {
-                                                        return (
-                                                            <Chip
-                                                                className={
-                                                                    classes.chipTest
-                                                                }
-                                                                label={
-                                                                    member.name
-                                                                }
-                                                                style={{
-                                                                    fontSize:
-                                                                        "100%",
-                                                                }}
-                                                                clickable
-                                                                avatar={
-                                                                    <Avatar
-                                                                        src={
-                                                                            member.avatar
-                                                                        }
-                                                                    />
-                                                                }
-                                                            />
-                                                        );
-                                                    }
-                                                )
-                                              : null}
-                                      </AccordionDetails>
-                                  </Accordion>
-                              );
-                          })
-                        : null}
-                </div>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <MyPost userId={user._id} />
             </TabPanel>
         </div>
     );

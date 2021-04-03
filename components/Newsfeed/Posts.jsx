@@ -33,7 +33,7 @@ export default function Posts({ aiming, loading, setLoading }) {
         // setLoading(true);
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
                     aiming != "" ? `&aiming=${aiming}` : ""
                 }&sort=-createdAt`
             )

@@ -184,7 +184,7 @@ export default function PostCard({
         setAnchorEl(null);
         if (action == "delete") {
             axios
-                .delete(`https://aim4hd.herokuapp.com/api/v1/posts/${_id}`)
+                .delete(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`)
                 .then((res) => router.reload())
                 .catch((err) => console.log(err));
         }
@@ -193,7 +193,7 @@ export default function PostCard({
         console.log("ENTER");
         try {
             const response = await axios.post(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
                 { userId }
             );
             const user = response;

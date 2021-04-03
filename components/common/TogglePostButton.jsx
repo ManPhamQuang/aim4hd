@@ -66,7 +66,7 @@ export default function TogglePostButton({ postId, isOpen }) {
 
     const togglePost = () => {
         axios
-            .patch(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
+            .patch(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`, {
                 isOpen: !isOpen,
             })
             .then((res) => {

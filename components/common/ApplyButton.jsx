@@ -73,7 +73,7 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
 
     const applyToPost = () => {
         axios
-            .post(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
+            .post(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`, {
                 userId: user._id,
             })
             .then((res) => {

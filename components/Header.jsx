@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
     try {
         const response = await axios.post(
-            "https://aim4hd.herokuapp.com/api/v1/users/check",
+            "https://aim4hd-backend.herokuapp.com/api/v1/users/check",
             { microsoftUniqueId: uniqueId }
         );
         return {

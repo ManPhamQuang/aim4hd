@@ -116,7 +116,7 @@ export default function SignIn({ courses, skills }) {
         if (avatar) body.avatar = avatar;
         try {
             const response = await axios.post(
-                "https://aim4hd.herokuapp.com/api/v1/users/signup",
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/signup",
                 body
             );
             if (`${response.status}`.startsWith("2")) {
@@ -302,10 +302,10 @@ export default function SignIn({ courses, skills }) {
 
 export async function getStaticProps(context) {
     const skillsResponse = axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/skills"
+        "https://aim4hd-backend.herokuapp.com/api/v1/skills"
     );
     const coursesResponse = axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
+        "https://aim4hd-backend.herokuapp.com/api/v1/courses?limit=100"
     );
     try {
         const result = await Promise.all([skillsResponse, coursesResponse]);

@@ -8,7 +8,7 @@ import { Typography } from "@material-ui/core";
 const getInterestedPosts = async (id) => {
     try {
         const response = await axios.get(
-            `https://aim4hd.herokuapp.com/api/v1/users/${id}/posts?savedPosts=true`
+            `https://aim4hd-backend.herokuapp.com/api/v1/users/${id}/posts?savedPosts=true`
         );
         if (response.data.status === "success") {
             return response.data.data.posts;

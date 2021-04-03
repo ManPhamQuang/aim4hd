@@ -105,7 +105,7 @@ export default function PostingPage() {
 
     const fetchPostData = async (id) => {
         const response = await axios.get(
-            `https://aim4hd.herokuapp.com/api/v1/posts/${id}`
+            `https://aim4hd-backend.herokuapp.com/api/v1/posts/${id}`
         );
         const data = await response.data.data.post;
         return data;
@@ -113,7 +113,7 @@ export default function PostingPage() {
 
     const fetchCourses = async () => {
         const response = await axios.get(
-            "https://aim4hd.herokuapp.com/api/v1/courses?limit=1000"
+            "https://aim4hd-backend.herokuapp.com/api/v1/courses?limit=1000"
         );
         const data = await response.data.data.courses;
         return data;
@@ -121,7 +121,7 @@ export default function PostingPage() {
 
     const fetchSkills = async () => {
         const skillsResponse = axios.get(
-            "https://aim4hd.herokuapp.com/api/v1/skills"
+            "https://aim4hd-backend.herokuapp.com/api/v1/skills"
         );
         const data = await (await skillsResponse).data.skills;
         return data;
@@ -129,7 +129,7 @@ export default function PostingPage() {
 
     const fetchUsers = async () => {
         const usersResponse = axios.get(
-            "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
+            "https://aim4hd-backend.herokuapp.com/api/v1/users?limit=10000"
         );
         const data = await (await usersResponse).data.data.user;
         return data;
@@ -231,7 +231,7 @@ export default function PostingPage() {
             delete formData.approvedMembers;
             axios
                 .patch(
-                    `https://aim4hd.herokuapp.com/api/v1/posts/${postData._id}`,
+                    `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postData._id}`,
                     formData
                 )
                 .then((res) => {
@@ -244,7 +244,7 @@ export default function PostingPage() {
             formData.approvedMembers.push(auth.user._id);
             formData.currentMember += 1;
             axios
-                .post("https://aim4hd.herokuapp.com/api/v1/posts", formData)
+                .post("https://aim4hd-backend.herokuapp.com/api/v1/posts", formData)
                 .then((res) => {
                     setLoading(false);
                     setSuccess(true);

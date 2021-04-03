@@ -148,7 +148,7 @@ export default function CenterProfile({ user, feedback }) {
     ).length;
     useEffect(() => {
         axios
-            .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
+            .get(`https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/posts`)
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) => console.log(err));
     }, []);

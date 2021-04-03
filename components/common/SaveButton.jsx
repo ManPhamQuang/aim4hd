@@ -76,7 +76,7 @@ export default function SaveButton({ userId, postId, savedPosts }) {
     const savePost = () => {
         axios
             .post(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
                 {
                     userId: userId,
                 }

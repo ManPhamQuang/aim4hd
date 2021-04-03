@@ -56,14 +56,14 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 const getPosts = async () => {
     let posts = await axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/posts?limit=300"
+        "https://aim4hd-backend.herokuapp.com/api/v1/posts?limit=300"
     );
     return posts.data.data.posts;
 };
 
 const getPost = async (_id) => {
     let post = await axios.get(
-        `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`
+        `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
     );
     return post.data.data.post;
 };
@@ -261,7 +261,7 @@ function PostPage({
         setIsLoading(true);
         try {
             const response = await axios.patch(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`,
                 {
                     approvedMembers: student.id,
                 }
@@ -285,7 +285,7 @@ function PostPage({
         setIsLoading(true);
         try {
             const response = await axios.patch(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`,
                 {
                     removedMembers: student.id,
                 }

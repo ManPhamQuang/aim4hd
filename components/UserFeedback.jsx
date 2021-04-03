@@ -76,7 +76,7 @@ export default function UserFeedback(user) {
 
     // useEffect(() => {
     // 	axios
-    // 		.get(`https://aim4hd.herokuapp.com/api/v1/users/${user}/feedbacks`)
+    // 		.get(`https://aim4hd-backend.herokuapp.com/api/v1/users/${user}/feedbacks`)
     // 		.then((res) => setFeedbacks(res.data.data.feedbacks))
     // 		.catch((err) => console.log(err));
     // }, []);
@@ -94,7 +94,7 @@ export default function UserFeedback(user) {
     // 		content: commentText,
     // 	};
     // 	axios
-    // 		.post(`https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments`, body)
+    // 		.post(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments`, body)
     // 		.then((res) => {
     // 			console.log(res);
     // 			setPostingComment(false);
@@ -123,7 +123,7 @@ export default function UserFeedback(user) {
     // const handleDelete = (commentId) => {
     // 	axios
     // 		.delete(
-    // 			`https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
+    // 			`https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
     // 		)
     // 		.then((res) => {
     // 			console.log(res);

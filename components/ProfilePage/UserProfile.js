@@ -99,7 +99,7 @@ export default function UserProfile({ user, courses, skills }) {
         if (avatar) body.avatar = avatar;
         try {
             const response = await axios.patch(
-                "https://aim4hd.herokuapp.com/api/v1/users/update",
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
                 body
             );
             if (`${response.status}`.startsWith("2")) {

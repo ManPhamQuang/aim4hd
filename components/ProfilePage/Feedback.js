@@ -75,7 +75,7 @@ const Feedback = ({ user }) => {
         setIsLoading(true);
         try {
             const response = await axios.post(
-                `https://aim4hd.herokuapp.com/api/v1/users/${chosenStudent.id}/feedbacks`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/users/${chosenStudent.id}/feedbacks`,
                 data
             );
             const responseData = response.data;
@@ -106,10 +106,10 @@ const Feedback = ({ user }) => {
             setIsFetching(true);
             try {
                 const getPostsAdmitted = axios.get(
-                    `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/posts`
+                    `https://aim4hd-backend.herokuapp.com/api/v1/users/${user.id}/posts`
                 );
                 const getFeedbacksOfUser = axios.get(
-                    `https://aim4hd.herokuapp.com/api/v1/users/${user.id}/feedbacks?author=true`
+                    `https://aim4hd-backend.herokuapp.com/api/v1/users/${user.id}/feedbacks?author=true`
                 );
                 const result = await axios.all(
                     [getPostsAdmitted, getFeedbacksOfUser],

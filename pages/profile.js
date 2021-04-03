@@ -56,10 +56,10 @@ const ProfilePage = ({ user }) => {
         let source = axios.CancelToken.source();
         const getAllCoursesAndSkills = async () => {
             const skillsResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/skills"
+                "https://aim4hd-backend.herokuapp.com/api/v1/skills"
             );
             const coursesResponse = axios.get(
-                "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
+                "https://aim4hd-backend.herokuapp.com/api/v1/courses?limit=100"
             );
             try {
                 const result = await axios.all(

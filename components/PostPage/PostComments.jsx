@@ -67,7 +67,7 @@ export default function PostComments({ _id }) {
     useEffect(() => {
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments?limit=100`
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments?limit=100`
             )
             .then((res) => setComments(res.data.data.comments))
             .catch((err) => console.log(err));
@@ -86,7 +86,7 @@ export default function PostComments({ _id }) {
         };
         axios
             .post(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments`,
                 body
             )
             .then((res) => {
@@ -116,7 +116,7 @@ export default function PostComments({ _id }) {
     const handleDelete = (commentId) => {
         axios
             .delete(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
             )
             .then((res) => {
                 Router.reload(window.location.pathname);

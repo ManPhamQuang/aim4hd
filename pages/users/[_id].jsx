@@ -21,14 +21,14 @@ export async function getStaticPaths() {
 
 const getUsers = async () => {
     let users = await axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
+        "https://aim4hd-backend.herokuapp.com/api/v1/users?limit=10000"
     );
     return users.data.data.user;
 };
 
 const getUser = async (_id) => {
     let post = await axios.get(
-        `https://aim4hd.herokuapp.com/api/v1/users/${_id}`
+        `https://aim4hd-backend.herokuapp.com/api/v1/users/${_id}`
     );
     return post.data.data;
 };
@@ -70,7 +70,7 @@ export default function UserProfile({ user }) {
     // useEffect(() => {
     //     axios
     //         .get(
-    //             "https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694"
+    //             "https://aim4hd-backend.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694"
     //         )
     //         .then((res) => setUser(res.data.data.user))
     //         .catch((err) => console.log(err));
@@ -82,7 +82,7 @@ export default function UserProfile({ user }) {
     useEffect(() => {
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/users/${user._id}/feedbacks`
+                `https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/feedbacks`
             )
             .then((res) => setFeedback(res.data.data))
             .catch((err) => console.log(err));

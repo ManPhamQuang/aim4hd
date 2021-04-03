@@ -5,6 +5,7 @@ import Filter from "../../components/Filter";
 import LeftProfile from "../../components/LeftProfile";
 import CenterProfile from "../../components/CenterProfile";
 import RightProfile from "../../components/RightProfile";
+import FullProfile from "../../components/FullProfile";
 //* Styling import
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
@@ -99,8 +100,8 @@ export default function UserProfile({ user }) {
                 />
             </Head>
             <Grid container justify="center">
-                <Grid item xs={11} md={3}>
-                    <LeftProfile user={user} />
+                <Grid item xs={10}>
+                    <FullProfile user={user} />
                 </Grid>
                 <Grid item xs={11} md={5}>
                     <CenterProfile user={user} feedback={feedback} />

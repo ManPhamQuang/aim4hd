@@ -20,7 +20,7 @@ const schoolName = (school) => {
 
 export default function School({ school }) {
     return (
-        <Typography variant="h6" align="center" style={{ fontWeight: "200" }}>
+        <Typography variant="h6" style={{ fontWeight: "200" }}>
             {schoolName(school)}
         </Typography>
     );

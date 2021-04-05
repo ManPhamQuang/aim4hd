@@ -12,8 +12,8 @@ import { useRouter } from "next/router";
 import { FormHelperText, MenuItem } from "@material-ui/core";
 import validator from "../utils/validator";
 import axios from "axios";
-import LoadingSpinner from "../components/LoadingSpinner";
-import ImageUpload from "../components/ImageUpload";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import ImageUpload from "../components/common/ImageUpload";
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -116,12 +116,11 @@ export default function SignIn({ courses, skills }) {
         if (avatar) body.avatar = avatar;
         try {
             const response = await axios.post(
-                "https://aim4hd.herokuapp.com/api/v1/users/signup",
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/signup",
                 body
             );
             if (`${response.status}`.startsWith("2")) {
                 setIsLoading(false);
-                console.log(response.data.data.user);
                 auth.login("signup", {
                     user: response.data.data.user,
                     token: response.data.data.token,
@@ -303,10 +302,10 @@ export default function SignIn({ courses, skills }) {
 
 export async function getStaticProps(context) {
     const skillsResponse = axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/skills"
+        "https://aim4hd-backend.herokuapp.com/api/v1/skills"
     );
     const coursesResponse = axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/courses?limit=100"
+        "https://aim4hd-backend.herokuapp.com/api/v1/courses?limit=100"
     );
     try {
         const result = await Promise.all([skillsResponse, coursesResponse]);

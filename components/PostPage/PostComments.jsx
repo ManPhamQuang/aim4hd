@@ -13,7 +13,7 @@ import {
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import SendIcon from "@material-ui/icons/Send";
-import authContext from "../utils/authContext";
+import authContext from "../../utils/authContext";
 import { green } from "@material-ui/core/colors";
 import Router from "next/router";
 import moment from "moment";
@@ -67,7 +67,7 @@ export default function PostComments({ _id }) {
     useEffect(() => {
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments?limit=100`
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments?limit=100`
             )
             .then((res) => setComments(res.data.data.comments))
             .catch((err) => console.log(err));
@@ -86,11 +86,10 @@ export default function PostComments({ _id }) {
         };
         axios
             .post(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments`,
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments`,
                 body
             )
             .then((res) => {
-                console.log(res);
                 setPostingComment(false);
                 setCommentText("");
                 Router.reload(window.location.pathname);
@@ -117,10 +116,9 @@ export default function PostComments({ _id }) {
     const handleDelete = (commentId) => {
         axios
             .delete(
-                `https://aim4hd.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments/${commentId}`
             )
             .then((res) => {
-                console.log(res);
                 Router.reload(window.location.pathname);
             })
             .catch((err) => console.log(err));

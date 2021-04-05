@@ -20,9 +20,9 @@ import {
 import { useContext } from "react";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Image from 'next/image'
+import Image from "next/image";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         height: "80px",
-        [theme.breakpoints.down('sm')]: {
-            padding: "0px"
+        [theme.breakpoints.down("sm")]: {
+            padding: "0px",
         },
     },
     button: {
@@ -85,8 +85,8 @@ const useStyles = makeStyles((theme) => ({
     },
     login: {
         width: "150px",
-        [theme.breakpoints.down('sm')]: {
-            width: "100px"
+        [theme.breakpoints.down("sm")]: {
+            width: "100px",
         },
         marginLeft: "10px",
     },
@@ -148,15 +148,15 @@ const useStyles = makeStyles((theme) => ({
     },
     logoButton: {
         "&:hover": {
-			cursor: "pointer",
-		},
-    }
+            cursor: "pointer",
+        },
+    },
 }));
 
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
     try {
         const response = await axios.post(
-            "https://aim4hd.herokuapp.com/api/v1/users/check",
+            "https://aim4hd-backend.herokuapp.com/api/v1/users/check",
             { microsoftUniqueId: uniqueId }
         );
         return {
@@ -213,24 +213,29 @@ export default function DesktopHeader(props) {
         setOpen((prevOpen) => !prevOpen);
     };
     const loginWithMicrosoft = (
-            <MicrosoftLogin
-                clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
-                authCallback={(error, authData, msal) =>
-                    handleOnAuth(error, authData, msal)
-                }
-                prompt="select_account"
-                children={
-                    <Button
-                        variant="contained"
-                        size="large"
-                        color="primary"
-                        className={classes.login}
-                    >
-                        Login
-                    </Button>
-                }
-                buttonTheme="light_short"
-            />
+        <MicrosoftLogin
+            clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"
+            authCallback={(error, authData, msal) =>
+                handleOnAuth(error, authData, msal)
+            }
+            prompt="select_account"
+            redirectUri={
+                process.env.NODE_ENV === "production"
+                    ? "https://aim4hd.vercel.app/"
+                    : "http://localhost:3000/"
+            }
+            children={
+                <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    className={classes.login}
+                >
+                    Login
+                </Button>
+            }
+            buttonTheme="light_short"
+        />
     );
 
     return (
@@ -241,15 +246,17 @@ export default function DesktopHeader(props) {
 
                     <Toolbar className={classes.toolbar} spacing={3}>
                         <Link href="/">
-                            <Image
-                                className={classes.logoButton}
-                                src="/logo.png"
-                                alt="aim4hd - RMIT Logo"
-                                width={50*3.14}
-                                height={50}
-                            />
+                            <a>
+                                <Image
+                                    className={classes.logoButton}
+                                    src="/logo.png"
+                                    alt="aim4hd - RMIT Logo"
+                                    width={50 * 3.14}
+                                    height={50}
+                                />
+                            </a>
                         </Link>
-                        
+
                         <Typography
                             variant="h6"
                             className={classes.title}
@@ -274,9 +281,7 @@ export default function DesktopHeader(props) {
                         {/* <Button className={classes.button} color="inherit">
                                 Profile
                             </Button> */}
-                        {typeof window !== "undefined" &&
-                            !auth.user &&
-                            loginWithMicrosoft}
+                        {!auth.user && loginWithMicrosoft}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}
@@ -295,7 +300,9 @@ export default function DesktopHeader(props) {
                                     <span>{auth.user.name}</span>
                                     {open && (
                                         <div className={classes.dropdown}>
-                                            <Link href="/my-profile">
+                                            <Link
+                                                href={`/users/${auth.user._id}`}
+                                            >
                                                 <a className={classes.card}>
                                                     <Avatar
                                                         className={`${classes.avatar} ${classes.avatarLink}`}
@@ -327,7 +334,9 @@ export default function DesktopHeader(props) {
                                                 </a>
                                             </Link>
                                             <div className={classes.cardBody}>
-                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
+                                                <Link
+                                                    href={`/users/${auth.user._id}?viewPosts=2`}
+                                                >
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -336,15 +345,7 @@ export default function DesktopHeader(props) {
                                                         Your Posts
                                                     </a>
                                                 </Link>
-                                                <Link href={`/users/${auth.user._id}?viewPosts=2`}>
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        Saved Posts
-                                                    </a>
-                                                </Link>
+
                                                 {/* <Link href="/team">
                                                     <a
                                                         className={
@@ -354,13 +355,22 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
-                                                <Link href="/profile">
+                                                <Link href={`/posting`}>
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
                                                         }
                                                     >
-                                                        Edit profile
+                                                        New Post
+                                                    </a>
+                                                </Link>
+                                                <Link href={`/profile`}>
+                                                    <a
+                                                        className={
+                                                            classes.cardBodyLink
+                                                        }
+                                                    >
+                                                        Edit Profile
                                                     </a>
                                                 </Link>
                                                 <Link href="/">
@@ -370,7 +380,7 @@ export default function DesktopHeader(props) {
                                                             classes.cardBodyLink
                                                         }
                                                     >
-                                                        Log out
+                                                        Log Out
                                                     </a>
                                                 </Link>
                                             </div>
@@ -383,7 +393,7 @@ export default function DesktopHeader(props) {
                 </AppBar>
             </ElevationScroll>
 
-            <Toolbar className={classes.toolbar} />
+            <Toolbar style={{ height: "120px" }} />
         </div>
     );
 }

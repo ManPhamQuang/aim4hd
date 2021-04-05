@@ -1,15 +1,12 @@
 //* Components import
 import MyPost from "./MyPost";
-import Head from "next/head";
-import Filter from "../components/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
 import { useRouter } from "next/router";
 
 //*Styling import
-import SkillBadge from "./SkillBadge";
-import CourseBadge from "./CourseBadge";
+import SkillBadge from "../common/SkillBadge";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -98,9 +95,14 @@ export default function CenterProfile({ user, feedback }) {
         router.query.viewPosts ? parseInt(router.query.viewPosts, 10) : 0
     );
     const [posts, setPosts] = useState([]);
+    var numberOfRecommended = feedback.feedbacks.filter(
+        (feedback) => feedback.isRecommended == true
+    ).length;
     useEffect(() => {
         axios
-            .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
+            .get(
+                `https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/posts`
+            )
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) => console.log(err));
     }, []);

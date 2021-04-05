@@ -50,7 +50,7 @@ export default function RecommenedUsers() {
     useEffect(() => {
         axios
             .get(
-                "https://aim4hd.herokuapp.com/api/v1/users?sort=-numberOfRecommended&limit=5"
+                "https://aim4hd-backend.herokuapp.com/api/v1/users?sort=-numberOfRecommended&limit=5"
             )
             .then((res) => setUsers(res.data.data.user))
             .catch((err) => console.log(err));

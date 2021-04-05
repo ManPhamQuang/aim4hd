@@ -18,13 +18,32 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkillBadge from "./SkillBadge";
-import { Box, Button, Container, Grid, Hidden } from "@material-ui/core";
+import Menu from "@material-ui/core/Menu";
+import axios from "axios";
+import {
+    Box,
+    Button,
+    Container,
+    Grid,
+    Hidden,
+    List,
+    MenuItem,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+} from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import SendIcon from "@material-ui/icons/Send";
 import Link from "next/link";
 import ProgressButton from "./ApplyButton";
-import AuthContext from "../utils/authContext";
+import AuthContext from "../../utils/authContext";
 import AimBadge from "./AimBadge";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useRouter } from "next/router";
+import { Edit } from "@material-ui/icons";
+import SaveButton from "./SaveButton";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -125,6 +144,11 @@ const useStyles = makeStyles((theme) => ({
             textDecoration: "underline",
         },
     },
+    toolbar: {
+        // color: theme.palette.primary,
+        // backgroundColor: theme.palette.primary,
+        textDecoration: "none",
+    },
 }));
 
 export default function PostCard({
@@ -145,18 +169,38 @@ export default function PostCard({
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const context = useContext(AuthContext);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    const router = useRouter();
+    const handleToolbarClick = () => {
+        setToolbar(!toolbar);
     };
 
-    const skillBadges = () => {
-        return (
-            <Hidden xsDown>
-                {skills.map((skill) => (
-                    <SkillBadge key={skill.name} label={skill.name} />
-                ))}
-            </Hidden>
-        );
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = (action) => {
+        setAnchorEl(null);
+        if (action == "delete") {
+            axios
+                .delete(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`)
+                .then((res) => router.reload())
+                .catch((err) => console.log(err));
+        }
+    };
+    const handleSavedPost = async (userId, postId) => {
+        console.log("ENTER");
+        try {
+            const response = await axios.post(
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}?savedPosts=true`,
+                { userId }
+            );
+            const user = response;
+            console.log(user);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -176,24 +220,54 @@ export default function PostCard({
                     </Link>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                action={
-                    <Hidden xsDown>
-                        {/* desktop */}
-                        {requiredSkills.map((skill, idx) => {
-                            if (idx < 4) {
-                                return (
-                                    <SkillBadge
-                                        key={skill.name}
-                                        label={skill.name}
-                                    />
-                                );
-                            }
-                        })}
-                    </Hidden>
+                    <>
+                        <Hidden xsDown>
+                            {/* desktop */}
+                            {requiredSkills.map((skill, idx) => {
+                                if (idx < 4) {
+                                    return (
+                                        <SkillBadge
+                                            key={skill.name}
+                                            label={skill.name}
+                                        />
+                                    );
+                                }
+                            })}
+                        </Hidden>
+                        {context.user && context.user._id == author._id ? (
+                            <>
+                                <IconButton
+                                    onClick={handleClick}
+                                    aria-label="settings"
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                    id="postcard-toolbar"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <Link href={`/posting?postId=${_id}`}>
+                                        <MenuItem
+                                            className={classes.toolbar}
+                                            onClick={handleClose}
+                                        >
+                                            <EditIcon />
+                                            Edit Post
+                                        </MenuItem>
+                                    </Link>
+                                    <MenuItem
+                                        onClick={() => handleClose("delete")}
+                                    >
+                                        <DeleteIcon />
+                                        Delete Post
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        ) : null}
+                    </>
                 }
                 title={
                     <Link href={`/users/${author._id}`}>
@@ -235,15 +309,26 @@ export default function PostCard({
                 </Link>
 
                 <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
-                    >
-                        recruiting {maximumMember - currentMember}/{""}
-                        {maximumMember} members
-                    </Typography>
+                    {currentMember ? (
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                            component="a"
+                        >
+                            recruiting {maximumMember - currentMember}/{""}
+                            {maximumMember} members
+                        </Typography>
+                    ) : (
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                            component="a"
+                        >
+                            recruiting {maximumMember} members
+                        </Typography>
+                    )}
                 </Link>
             </div>
             {/* <MUILink
@@ -284,6 +369,15 @@ export default function PostCard({
                     })}
                 </Hidden>
             </CardActions>
+            <List>
+                <ListItem>
+                    {course ? (
+                        <ListItemText>
+                            {course.name} - {course.code}
+                        </ListItemText>
+                    ) : null}
+                </ListItem>
+            </List>
             {context.user ? (
                 <Grid
                     container
@@ -291,13 +385,21 @@ export default function PostCard({
                     className={classes.buttonsContainer}
                 >
                     <Grid item xs={6}>
-                        <Button
+                        {/* <Button
                             variant="contained"
                             className={classes.button}
                             startIcon={<BookmarkIcon />}
+                            onClick={() =>
+                                handleSavedPost(context.user.id, _id)
+                            }
                         >
                             Save It
-                        </Button>
+                        </Button> */}
+                        <SaveButton
+                            userId={context.user._id}
+                            postId={_id}
+                            savedPosts={context.user.savedPosts}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <ProgressButton

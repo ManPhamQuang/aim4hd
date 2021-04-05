@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
-import AuthContext from "../utils/authContext";
+import AuthContext from "../../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -42,10 +42,9 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef();
-    const isApplied = appliedStudents.find((id) => id == user._id)
+    const isApplied = appliedStudents.find((student) => student._id == user._id)
         ? true
         : false;
-    // const isDisabled =
 
     const ButtonText = () => {
         if (isApplied) {
@@ -74,14 +73,13 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
 
     const applyToPost = () => {
         axios
-            .post(`https://aim4hd.herokuapp.com/api/v1/posts/${postId}`, {
+            .post(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`, {
                 userId: user._id,
             })
             .then((res) => {
                 if (res.status == 200) {
                     setSuccess(true);
                     setLoading(false);
-                    console.log(res.data);
                 }
             })
             .catch((err) => console.log(err));

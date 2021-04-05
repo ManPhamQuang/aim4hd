@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PostCard from "./PostCard";
+import PostCard from "../common/PostCard";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
@@ -30,13 +30,12 @@ export default function Posts({ aiming, loading, setLoading }) {
         setVisible(isVisible);
     };
     const fetchPosts = () => {
-        console.log("fetching page: " + page);
         // setLoading(true);
         axios
             .get(
-                `https://aim4hd.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
                     aiming != "" ? `&aiming=${aiming}` : ""
-                }`
+                }&sort=-createdAt`
             )
             .then((res) => {
                 if (res.data.length != 0) {

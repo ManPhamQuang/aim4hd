@@ -1,12 +1,26 @@
-import { Grid, Hidden } from "@material-ui/core";
-import Posts from "../components/Posts";
-import Filter from "../components/Filter";
-import RecommendedUsers from "../components/RecommendUsers";
-import { useEffect, useState } from "react";
+import { Grid, Hidden, makeStyles } from "@material-ui/core";
+import Posts from "../components/Newsfeed/Posts";
+import Filter from "../components/Newsfeed/Filter";
+import RecommendedUsers from "../components/Newsfeed/RecommendUsers";
+import { useEffect, useState, useContext } from "react";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import Link from "next/link";
+import AuthContext from "../utils/authContext";
+
+const useStyles = makeStyles((theme) => ({
+    fab: {
+        position: "fixed",
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+    },
+}));
 
 export default function Home() {
     const [aiming, setAiming] = useState(["HD"]);
     const [loading, setLoading] = useState(false);
+    const classes = useStyles();
+    const auth = useContext(AuthContext);
 
     // useEffect(() => {
     //     setPage(1);
@@ -14,6 +28,18 @@ export default function Home() {
 
     return (
         <Grid container justify="center">
+            {auth.user ? (
+                <Fab
+                    className={classes.fab}
+                    size="medium"
+                    color="primary"
+                    aria-label="add"
+                >
+                    <Link href="posting">
+                        <AddIcon />
+                    </Link>
+                </Fab>
+            ) : null}
             <Grid item xs={12} md={3}>
                 <Filter
                     loading={loading}

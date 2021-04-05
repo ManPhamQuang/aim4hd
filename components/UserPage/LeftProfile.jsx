@@ -1,8 +1,4 @@
 //* Components import
-import Head from "next/head";
-import Posts from "../components/Posts";
-import Filter from "../components/Filter";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 //* Styling import
 import Avatar from "@material-ui/core/Avatar";
@@ -15,14 +11,13 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import IconButton from "@material-ui/core/IconButton";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
-import { Phone } from "@material-ui/icons";
 import List from "@material-ui/core/List";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
-import School from "./School";
+import School from "../School";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -10,6 +10,7 @@ import FullProfile from "../../components/FullProfile";
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -17,45 +18,24 @@ export async function getStaticPaths() {
     let paths = users.map((user) => `/users/${user._id}`);
     return {
         paths,
-        fallback: false,
+        fallback: true,
     };
 }
 
 const getUsers = async () => {
     let users = await axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/users?limit=10000"
+        "https://aim4hd-backend.herokuapp.com/api/v1/users?limit=10000"
     );
     return users.data.data.user;
 };
 
 const getUser = async (_id) => {
     let post = await axios.get(
-        `https://aim4hd.herokuapp.com/api/v1/users/${_id}`
+        `https://aim4hd-backend.herokuapp.com/api/v1/users/${_id}`
     );
     return post.data.data;
 };
-const feedback = {
-    numberOfRecommended: "3",
-    reviewers: [
-        {
-            name: "Man Pham",
-            image:
-                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-            comment: "This girl working really hard. Highly recommended.",
-            isAnonymous: false,
-            isRecommended: true,
-        },
-        {
-            name: "Nguyen Dang Lam Phuong",
-            image:
-                "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg",
-            comment:
-                "It is not easy to communicate with this girl because she often has conflicts with teammates.",
-            isAnonymous: true,
-            isRecommended: false,
-        },
-    ],
-};
+
 const history = {
     images: [
         {
@@ -78,17 +58,42 @@ export async function getStaticProps({ params }) {
         revalidate: 1,
     };
 }
+function isEmpty(obj) {
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+}
 
 export default function UserProfile({ user }) {
     // const [user, setUser] = useState({});
     // useEffect(() => {
     //     axios
     //         .get(
-    //             "https://aim4hd.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694"
+    //             "https://aim4hd-backend.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694"
     //         )
     //         .then((res) => setUser(res.data.data.user))
     //         .catch((err) => console.log(err));
     // }, []);
+    const { isFallback } = useRouter();
+    const [feedback, setFeedback] = useState({
+        feedbacks: [],
+    });
+    useEffect(() => {
+        axios
+            .get(
+                `https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/feedbacks`
+            )
+            .then((res) => setFeedback(res.data.data))
+            .catch((err) => console.log(err));
+    }, []);
+
+    if (isFallback) {
+        return <></>;
+    }
 
     return (
         <React.Fragment>

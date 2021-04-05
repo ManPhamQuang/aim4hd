@@ -20,52 +20,58 @@ import {
     ListItemText,
     GridListTileBar,
 } from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
+import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import DoneIcon from "@material-ui/icons/Done";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import SkillBadge from "../../components/SkillBadge";
-import AimBadge from "../../components/AimBadge";
-import ProgressButton from "../../components/ApplyButton";
+import SkillBadge from "../../components/common/SkillBadge";
+import AimBadge from "../../components/common/AimBadge";
+import ProgressButton from "../../components/common/ApplyButton";
+import TogglePostButton from "../../components/common/TogglePostButton";
+import SaveButton from "../../components/common/SaveButton";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../utils/authContext";
-import Breaker from "../../components/Breaker";
+import Breaker from "../../components/common/Breaker";
 import moment from "moment";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import PostComments from "../../components/PostComments";
-
-export async function getStaticPaths() {
-    // get list of post to populate paths
-    let posts = await getPosts();
-    let paths = posts.map((post) => `/posts/${post._id}`);
-    return {
-        paths,
-        fallback: false,
-    };
-}
+import PostComments from "../../components/PostPage/PostComments";
+import { useRouter } from "next/router";
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
+import { green } from "@material-ui/core/colors";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+// export async function getStaticPaths() {
+//     // get list of post to populate paths
+//     let posts = await getPosts();
+//     let paths = posts.map((post) => `/posts/${post._id}`);
+//     return {
+//         paths: paths,
+//         fallback: true,
+//     };
+// }
 
 const getPosts = async () => {
     let posts = await axios.get(
-        "https://aim4hd.herokuapp.com/api/v1/posts?limit=300"
+        "https://aim4hd-backend.herokuapp.com/api/v1/posts?limit=300"
     );
     return posts.data.data.posts;
 };
 
 const getPost = async (_id) => {
     let post = await axios.get(
-        `https://aim4hd.herokuapp.com/api/v1/posts/${_id}`
+        `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
     );
     return post.data.data.post;
 };
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
     let res = await getPost(params._id);
     return {
         props: res,
-        revalidate: 1,
     };
 }
 
@@ -182,7 +188,19 @@ const useStyles = makeStyles((theme) => ({
         },
         marginTop: "2px",
     },
-    userCard: theme.userCard,
+    userCard: {
+        boxShadow: "none",
+        alignItems: "center",
+        justifyContent: "space-between",
+        maxWidth: "220px",
+        borderColor: "",
+        "&:hover": {
+            boxShadow:
+                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            borderRadius: "7px",
+            cursor: "pointer",
+        },
+    },
 }));
 
 function PostPage({
@@ -199,9 +217,13 @@ function PostPage({
     course,
     numberOfComments,
     approvedMembers,
+    appliedStudents,
 }) {
+    const { isFallback } = useRouter();
+    const router = useRouter();
     const classes = useStyles();
     const context = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
     const isAuthor = () => {
         if (context.user !== null) {
             if (context.user._id == author._id) {
@@ -210,6 +232,12 @@ function PostPage({
         }
         return false;
     };
+    const [approvedMembersData, setapprovedMembersData] = useState(
+        approvedMembers
+    );
+    const [appliedStudentsData, setAppliedStudentsData] = useState(
+        appliedStudents
+    );
     const UserCard = ({ student }) => {
         return (
             <Link href={`/users/${student._id}`}>
@@ -225,8 +253,61 @@ function PostPage({
             </Link>
         );
     };
+    if (isFallback) {
+        return <></>;
+    }
+
+    const handleApprovedMember = async (student) => {
+        setIsLoading(true);
+        try {
+            const response = await axios.patch(
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`,
+                {
+                    approvedMembers: student.id,
+                }
+            );
+            console.log(response);
+            if (response.data.status === "success") {
+                setIsLoading(false);
+                setAppliedStudentsData(
+                    appliedStudentsData.filter((s) => s.id !== student.id)
+                );
+                setapprovedMembersData([...approvedMembersData, student]);
+                setTimeout(() => alert("Successfully approve member"), 0);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    };
+
+    const handleRemoveMember = async (student) => {
+        setIsLoading(true);
+        try {
+            const response = await axios.patch(
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`,
+                {
+                    removedMembers: student.id,
+                }
+            );
+            console.log(response);
+            if (response.data.status === "success") {
+                setIsLoading(false);
+                const data = approvedMembersData.filter(
+                    (m) => m.id !== student.id
+                );
+                setapprovedMembersData(data);
+                setTimeout(() => alert("Successfully remove member"), 0);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
+    };
+
     return (
         <Container maxWidth="lg">
+            <LoadingSpinner isLoading={isLoading} />
             <Card className={classes.root}>
                 <CardHeader
                     classes={{ action: classes.action, title: classes.title }}
@@ -310,42 +391,83 @@ function PostPage({
                             </ListItem>
                         </List>
                     </Grid>
+                    {isAuthor() && (
+                        <Grid item xs={12} md={4}>
+                            <Typography
+                                variant="h6"
+                                style={{ marginBottom: "10px" }}
+                            >
+                                Applied Students{" "}
+                            </Typography>
+                            <List className={classes.studentList}>
+                                {console.log(appliedStudentsData)}
+                                {appliedStudentsData.length === 0
+                                    ? "No applied students yet"
+                                    : appliedStudentsData.map((member) => {
+                                          return (
+                                              <Grid container>
+                                                  <UserCard
+                                                      student={member}
+                                                      key={member.id}
+                                                  />
+                                                  <IconButton
+                                                      onClick={handleApprovedMember.bind(
+                                                          this,
+                                                          member
+                                                      )}
+                                                  >
+                                                      <CheckIcon
+                                                          style={{
+                                                              color: green[500],
+                                                          }}
+                                                      />
+                                                  </IconButton>
+                                              </Grid>
+                                          );
+                                      })}
+                            </List>
+                        </Grid>
+                    )}
                     <Grid item xs={12} md={4}>
                         <Typography
                             variant="h6"
                             style={{ marginBottom: "10px" }}
                         >
-                            Apporved Members
+                            Approved Members
                         </Typography>
-                        {approvedMembers ? (
+                        {approvedMembersData ? (
                             <List className={classes.studentList}>
-                                {approvedMembers.map((student) => (
-                                    <UserCard
-                                        student={student}
-                                        key={student._id}
-                                    />
-                                ))}
+                                {isAuthor()
+                                    ? approvedMembersData.map((student) => (
+                                          <Grid container>
+                                              <UserCard
+                                                  student={student}
+                                                  key={student._id}
+                                              />
+                                              <IconButton
+                                                  onClick={handleRemoveMember.bind(
+                                                      this,
+                                                      student
+                                                  )}
+                                              >
+                                                  <ClearIcon
+                                                      style={{
+                                                          color: red[500],
+                                                      }}
+                                                  />
+                                              </IconButton>
+                                          </Grid>
+                                      ))
+                                    : approvedMembersData.map((student) => (
+                                          <UserCard
+                                              student={student}
+                                              key={student._id}
+                                          />
+                                      ))}
                             </List>
                         ) : (
                             <Typography variant="h7">No member yet</Typography>
                         )}
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <Typography
-                            variant="h6"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            is author?: {isAuthor() ? "yes!" : "no!"}
-                        </Typography>
-                        <List className={classes.studentList}>
-                            <ListItem>
-                                {course ? (
-                                    <ListItemText>
-                                        {course.name} - {course.code}
-                                    </ListItemText>
-                                ) : null}
-                            </ListItem>
-                        </List>
                     </Grid>
                 </Grid>
                 <Breaker />
@@ -356,21 +478,27 @@ function PostPage({
                         className={classes.buttonsContainer}
                     >
                         <Grid item xs={6}>
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                startIcon={<BookmarkIcon />}
-                            >
-                                Save It
-                            </Button>
+                            <SaveButton
+                                userId={context.user._id}
+                                postId={_id}
+                                savedPosts={context.user.savedPosts}
+                            />
                         </Grid>
                         <Grid item xs={6}>
-                            {/* <ProgressButton
+                            <ProgressButton
                                 postId={_id}
                                 appliedStudents={appliedStudents}
                                 isOpen={isOpen}
-                            /> */}
+                            />
                         </Grid>
+                        {isAuthor() ? (
+                            <Grid item xs={6}>
+                                <TogglePostButton
+                                    postId={_id}
+                                    isOpen={isOpen}
+                                />
+                            </Grid>
+                        ) : null}
                     </Grid>
                 ) : null}
                 <CardContent className={classes.content}>

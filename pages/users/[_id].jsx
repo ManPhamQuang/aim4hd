@@ -1,10 +1,10 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../../components/Posts";
-import Filter from "../../components/Filter";
-import LeftProfile from "../../components/LeftProfile";
-import CenterProfile from "../../components/CenterProfile";
-import RightProfile from "../../components/RightProfile";
+import Posts from "../../components/Newsfeed/Posts";
+import Filter from "../../components/Newsfeed/Filter";
+import LeftProfile from "../../components/UserPage/LeftProfile";
+import CenterProfile from "../../components/UserPage/CenterProfile";
+import RightProfile from "../../components/UserPage/RightProfile";
 import FullProfile from "../../components/FullProfile";
 //* Styling import
 import { Grid } from "@material-ui/core";

@@ -1,7 +1,7 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../components/Posts";
-import Filter from "../components/Filter";
+import Posts from "../components/Newsfeed/Posts";
+import Filter from "../components/Newsfeed/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 //* Styling import

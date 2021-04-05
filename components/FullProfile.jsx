@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
         fontSize: "2rem",
+        marginTop: "0.5rem",
     },
 }));
 
@@ -101,7 +102,7 @@ export default function FullProfile({ user }) {
                             {user.email}
                         </Typography>
                     </div>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", marginTop: "0.5rem" }}>
                         <Typography style={{ fontWeight: "500" }}>
                             Nationality:
                         </Typography>
@@ -110,18 +111,21 @@ export default function FullProfile({ user }) {
                         </Typography>
                     </div>
                     <div style={{ display: "flex" }}>
-                        <FacebookIcon className={classes.logo} />
+                        <FacebookIcon
+                            className={classes.logo}
+                            style={{ fill: "#3FA2FF" }}
+                        />
                         <InstagramIcon
                             className={classes.logo}
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
                         />
                         <LinkedInIcon
                             className={classes.logo}
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
                         />
                         <GitHubIcon
                             className={classes.logo}
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
                         />
                     </div>
                 </Grid>

@@ -108,10 +108,10 @@ export default function UserProfile({ user }) {
                 <Grid item xs={10}>
                     <FullProfile user={user} />
                 </Grid>
-                <Grid item xs={11} md={5}>
+                <Grid item xs={12} md={5}>
                     <CenterProfile user={user} feedback={feedback} />
                 </Grid>
-                <Grid item xs={11} md={4}>
+                <Grid item xs={12} md={4}>
                     {/* suggested users - for later */}
                     <RightProfile history={history} user={user} />
                 </Grid>

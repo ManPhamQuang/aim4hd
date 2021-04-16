@@ -13,6 +13,10 @@ import validator from "../../utils/validator";
 import axios from "axios";
 import LoadingSpinner from "../common/LoadingSpinner";
 import ImageUpload from "../common/ImageUpload";
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -42,12 +46,20 @@ export default function UserProfile({ user, courses, skills }) {
         description: user.description,
         skills: user.skills,
         currentCourses: user.currentCourses,
+        socialLinks: user.socialLinks,
     });
     const auth = useContext(AuthContext);
     const [image, setImage] = useState(null);
     const [errorMsg, setErrorMsg] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
+
+    const handleSocialLinks = (event) => {
+        setInput((input) => ({
+            ...input,
+            socialLinks: [...input.socialLinks, { type: event.target.name, url: event.target.value }]
+        }))
+    }
     const handleOnInputChange = (event) => {
         if (
             event.target.name === "skills" ||
@@ -252,6 +264,54 @@ export default function UserProfile({ user, courses, skills }) {
                             {errorMsg.currentCourses}
                         </FormHelperText>
                     )}
+                    <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<GitHubIcon />}
+                        placeholder="Put your GitHub link here"
+                        name="Github"
+                        value={input.socialLinks.filter(obj => obj.type == "Github")[0] ? (input.socialLinks.filter(obj => obj.type == "Github")[0].url) : ""}
+                        onChange={handleSocialLinks}
+                    />
+                    {/* <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<LinkedInIcon style={{ fontSize: 25 }} />}
+                        placeholder="Put your LinkedIn link here"
+                        name="Linkedin"
+                        // value={input.description}
+                        onChange={handleOnInputChange}
+                    /> */}
+                    <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<FacebookIcon />}
+                        placeholder="Put your Facebook link here"
+                        name="Facebook"
+                        value={input.socialLinks.filter(obj => obj.type == "Facebook")[0] ? (input.socialLinks.filter(obj => obj.type == "Facebook")[0].url) : ""}
+                        onChange={handleSocialLinks}
+                    />
+                    {/* <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<InstagramIcon style={{ fontSize: 25 }} />}
+                        placeholder="Put your Instagram link here"
+                        name="Instagram"
+                        // value={input.description}
+                        onChange={handleOnInputChange}
+                    /> */}
                     <ImageUpload image={image} setImage={setImage} />
                     <Button
                         type="submit"

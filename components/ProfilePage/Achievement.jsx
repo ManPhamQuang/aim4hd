@@ -124,7 +124,7 @@ export default function Achievement({ user }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true);
-        let avatar;
+        let achievement;
         if (image) {
             const formData = new FormData();
             formData.append("file", image[0]);
@@ -134,16 +134,16 @@ export default function Achievement({ user }) {
                     "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
                     formData
                 );
-                avatar = response.data.secure_url;
+                achievement = response.data.secure_url;
             } catch (error) {
                 console.log(error);
             }
         }
-        console.log(avatar);
-        const update = { title: title, url: avatar };
+        console.log(achievement);
+        const update = { title: title, url: achievement };
         let body = {
             id: user.id,
-            achievements: [update],
+            achievements: [...user.achievements, update],
         };
         // if (avatar) body.avatar = avatar;
         try {
@@ -230,10 +230,10 @@ export default function Achievement({ user }) {
             </div>
             <div className={classes.root2}>
                 <GridList cellHeight={200} spacing={10}>
-                    {history.images.map((image) => (
+                    {user.achievements.map((image) => (
                         <GridListTile key={image.title}>
                             <img
-                                src={image.link}
+                                src={image.url}
                                 alt={image.title}
                                 onClick={handleOpen}
                                 border="1"

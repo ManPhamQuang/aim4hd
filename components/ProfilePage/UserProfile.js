@@ -56,10 +56,24 @@ export default function UserProfile({ user, courses, skills }) {
     const handleSocialLinks = (event) => {
         setInput((input) => ({
             ...input,
-            socialLinks: [
-                ...input.socialLinks,
-                { type: event.target.name, url: event.target.value },
-            ],
+            socialLinks: {
+                github:
+                    event.target.name == "github"
+                        ? event.target.value
+                        : input.socialLinks.github ?? "",
+                linkedin:
+                    event.target.name == "linkedin"
+                        ? event.target.value
+                        : input.socialLinks.linkedin ?? "",
+                facebook:
+                    event.target.name == "facebook"
+                        ? event.target.value
+                        : input.socialLinks.facebook ?? "",
+                instagram:
+                    event.target.name == "instagram"
+                        ? event.target.value
+                        : input.socialLinks.instagram ?? "",
+            },
         }));
     };
     const handleOnInputChange = (event) => {
@@ -266,8 +280,19 @@ export default function UserProfile({ user, courses, skills }) {
                             {errorMsg.currentCourses}
                         </FormHelperText>
                     )}
-
-                    {/* <TextField
+                    <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<GitHubIcon />}
+                        placeholder="Put your GitHub link here"
+                        name="github"
+                        value={input.socialLinks.github}
+                        onChange={handleSocialLinks}
+                    />
+                    <TextField
                         color="secondary"
                         multiline
                         variant="outlined"
@@ -275,12 +300,24 @@ export default function UserProfile({ user, courses, skills }) {
                         fullWidth
                         label={<LinkedInIcon style={{ fontSize: 25 }} />}
                         placeholder="Put your LinkedIn link here"
-                        name="Linkedin"
-                        // value={input.description}
-                        onChange={handleOnInputChange}
-                    /> */}
+                        name="linkedin"
+                        value={input.socialLinks.linkedin}
+                        onChange={handleSocialLinks}
+                    />
+                    <TextField
+                        color="secondary"
+                        multiline
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        label={<FacebookIcon style={{ fontSize: 25 }} />}
+                        placeholder="Put your Facebook link here"
+                        name="facebook"
+                        value={input.socialLinks.facebook}
+                        onChange={handleSocialLinks}
+                    />
 
-                    {/* <TextField
+                    <TextField
                         color="secondary"
                         multiline
                         variant="outlined"
@@ -288,10 +325,10 @@ export default function UserProfile({ user, courses, skills }) {
                         fullWidth
                         label={<InstagramIcon style={{ fontSize: 25 }} />}
                         placeholder="Put your Instagram link here"
-                        name="Instagram"
-                        // value={input.description}
-                        onChange={handleOnInputChange}
-                    /> */}
+                        name="instagram"
+                        value={input.socialLinks.instagram}
+                        onChange={handleSocialLinks}
+                    />
                     <ImageUpload image={image} setImage={setImage} />
                     <Button
                         type="submit"

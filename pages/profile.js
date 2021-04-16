@@ -16,6 +16,7 @@ import {
     ListItemText,
     CircularProgress,
 } from "@material-ui/core";
+import Achievement from "../components/ProfilePage/Achievement";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -131,6 +132,15 @@ const ProfilePage = ({ user }) => {
                                 <ListItem
                                     button
                                     className={classes.listItem}
+                                    onClick={() =>
+                                        router.push("/profile?page=achievement")
+                                    }
+                                >
+                                    <ListItemText primary="My achievement" />
+                                </ListItem>
+                                <ListItem
+                                    button
+                                    className={classes.listItem}
                                     onClick={auth.logout}
                                 >
                                     <ListItemText primary="Sign out" />
@@ -148,14 +158,18 @@ const ProfilePage = ({ user }) => {
                                         "My Feedback"}
                                     {router.query.page === "saved-post" &&
                                         "My Saved Post"}
+                                    {router.query.page === "achievement" &&
+                                        "My Achievement"}
                                 </Typography>
                                 <Typography style={{ margin: "8px 0" }}>
                                     {Object.keys(router.query).length === 0 &&
                                         "Edit information about yourself"}
-                                    {router.query.page === "feedback" &&
+                                    {router.query.page === "Feedback" &&
                                         "Provide feedback to your teammate"}
-                                    {router.query.page === "saved-post" &&
+                                    {router.query.page === "Saved-post" &&
                                         "Your saved post in one place"}
+                                    {router.query.page === "Achievement" &&
+                                        "Post all of your achievements here"}
                                 </Typography>
                             </div>
                             <div>
@@ -171,6 +185,9 @@ const ProfilePage = ({ user }) => {
                                 )}
                                 {router.query.page === "saved-post" && (
                                     <MySavedPosts user={auth.user} />
+                                )}
+                                {router.query.page === "achievement" && (
+                                    <Achievement user={auth.user} />
                                 )}
                             </div>
                         </div>

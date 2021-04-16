@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "3rem",
         borderRadius: "8px",
         backgroundColor: "#FFFFFF",
-        padding: "2rem",
+        padding: "0.5rem",
     },
     profile_picture: {
         height: "12rem",

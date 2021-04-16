@@ -104,46 +104,45 @@ export default function UserProfile({ user, courses, skills }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        console.log(image);
-        // setIsLoading(true);
-        // let avatar;
-        // if (image) {
-        //     const formData = new FormData();
-        //     formData.append("file", image);
-        //     formData.append("upload_preset", "iiyg1094");
-        //     try {
-        //         const response = await axios.post(
-        //             "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
-        //             formData
-        //         );
-        //         avatar = response.data.secure_url;
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
-        // const body = {
-        //     ...input,
-        //     id: user.id,
-        // };
-        // if (avatar) body.avatar = avatar;
-        // try {
-        //     const response = await axios.patch(
-        //         "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
-        //         body
-        //     );
-        //     if (`${response.status}`.startsWith("2")) {
-        //         console.log("ENTERING");
-        //         setIsLoading(false);
-        //         const data = {};
-        //         data.user = response.data.data.user;
-        //         auth.login("update", data);
-        //         setTimeout(() => alert("Successfully update your profile"), 0);
-        //     }
-        // } catch (error) {
-        //     setIsLoading(false);
-        //     console.log(error);
-        //     alert("ERROR");
-        // }
+        setIsLoading(true);
+        let avatar;
+        if (image) {
+            const formData = new FormData();
+            formData.append("file", image);
+            formData.append("upload_preset", "iiyg1094");
+            try {
+                const response = await axios.post(
+                    "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
+                    formData
+                );
+                avatar = response.data.secure_url;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        const body = {
+            ...input,
+            id: user.id,
+        };
+        if (avatar) body.avatar = avatar;
+        try {
+            const response = await axios.patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
+                body
+            );
+            if (`${response.status}`.startsWith("2")) {
+                console.log("ENTERING");
+                setIsLoading(false);
+                const data = {};
+                data.user = response.data.data.user;
+                auth.login("update", data);
+                setTimeout(() => alert("Successfully update your profile"), 0);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+            alert("ERROR");
+        }
     };
 
     return (

@@ -11,6 +11,7 @@ import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { makeStyles } from "@material-ui/core/styles";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -67,17 +68,14 @@ function isEmpty(obj) {
 
     return JSON.stringify(obj) === JSON.stringify({});
 }
+const useStyles = makeStyles((theme) => ({
+    root: {
+        background: "linear-gradient(to right top, #65DFC9,#6CDBEB)",
+    },
+}));
 
 export default function UserProfile({ user }) {
-    // const [user, setUser] = useState({});
-    // useEffect(() => {
-    //     axios
-    //         .get(
-    //             "https://aim4hd-backend.herokuapp.com/api/v1/users/5fab4912ffd1131f3cace694"
-    //         )
-    //         .then((res) => setUser(res.data.data.user))
-    //         .catch((err) => console.log(err));
-    // }, []);
+    const classes = useStyles();
     const { isFallback } = useRouter();
     const [feedback, setFeedback] = useState({
         feedbacks: [],
@@ -104,18 +102,31 @@ export default function UserProfile({ user }) {
                     content="minimum-scale=1, initial-scale=1, width=device-width"
                 />
             </Head>
-            <Grid container justify="center">
-                <Grid item xs={10}>
-                    <FullProfile user={user} />
+            <div className={classes.root}>
+                <Grid container justify="center">
+                    <Grid item xs={9}>
+                        <FullProfile user={user} />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={9}
+                        container
+                        direction="row"
+                        alignItems="stretch"
+                        spacing={2}
+                    >
+                        <Grid item xs={3}>
+                            <LeftProfile user={user} />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <CenterProfile user={user} feedback={feedback} />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <RightProfile history={history} user={user} />
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={5}>
-                    <CenterProfile user={user} feedback={feedback} />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    {/* suggested users - for later */}
-                    <RightProfile history={history} user={user} />
-                </Grid>
-            </Grid>
+            </div>
         </React.Fragment>
     );
 }

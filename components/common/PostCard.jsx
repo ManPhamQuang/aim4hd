@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
         // maxWidth: 400,
         // maxWidth: 700,
         borderRadius: 7,
+        margin: "10px 0",
     },
     userCard: theme.userCard,
     media: {
@@ -184,7 +185,9 @@ export default function PostCard({
         setAnchorEl(null);
         if (action == "delete") {
             axios
-                .delete(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`)
+                .delete(
+                    `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
+                )
                 .then((res) => router.reload())
                 .catch((err) => console.log(err));
         }

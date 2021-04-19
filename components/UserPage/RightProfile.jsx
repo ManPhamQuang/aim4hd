@@ -36,14 +36,23 @@ import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: "20px",
-        marginLeft: "2%",
-        marginRight: "2%",
-        borderRadius: "0px 0px 8px 8px",
-        paddingBottom: "20px",
+        background:
+            "linear-gradient(to right bottom, rgba(225,225,225,0.8),rgba(255,255,255,0.5))",
+        borderRadius: "2rem",
+        backdropFilter: "blur(2rem)",
+        padding: "1.2rem",
+    },
+    about: {
+        paddingLeft: "2rem",
+        paddingRight: "2rem",
+        paddingTop: "1rem",
+    },
+    card: {
+        background:
+            "linear-gradient(to left top, rgba(255,255,255,0.8), rgba(255,255,255,0.5))",
+        borderRadius: "1rem",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.2)",
+        marginBottom: "1rem",
     },
     title: {
         color: "white",
@@ -51,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
     titleBar: {
         background:
-            "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+            "linear-gradient(to top, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
     },
     icon: {
         color: "rgba(255, 255, 255, 0.54)",
@@ -61,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: "wrap",
         justifyContent: "space-around",
         overflow: "hidden",
-        backgroundColor: theme.palette.background.paper,
     },
     titleBar: {
         background:
@@ -81,11 +89,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         overflow: "scroll",
-    },
-    about: {
-        marginLeft: "4%",
-        marginTop: "3%",
-        marginRight: "20px",
     },
 }));
 
@@ -174,80 +177,67 @@ export default function RightProfile({ history, user }) {
         </div>
     );
 
-    const ColorLine = ({ color }) => (
-        <hr
-            style={{
-                borderStyle: "none",
-                backgroundColor: "#f2f2f2",
-                height: 4,
-                width: "100%",
-            }}
-        />
-    );
-
     return (
-        <Paper className={classes.root} variant="outlined">
-            <AppBar
-                position="static"
-                style={{
-                    backgroundColor: "white",
-                    color: "black",
-                    boxShadow: "none",
-                }}
-            >
-                <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="simple tabs example"
-                >
-                    <Tab label="My achievement" />
-                </Tabs>
-            </AppBar>
-            <div className={classes.root2}>
-                <GridList cellHeight={180} spacing={7}>
-                    {history.images.map((image) => (
-                        <GridListTile key={image.title}>
-                            <img
-                                src={image.link}
-                                alt={image.title}
-                                onClick={handleOpen}
-                                border="1"
-                                style={{
-                                    height: "15rem",
-                                    width: "15rem",
-                                    marginTop: "2rem",
-                                }}
-                            />
-                            <GridListTileBar
-                                title={image.title}
-                                classes={{
-                                    root: classes.titleBar,
-                                }}
-                            />
-                        </GridListTile>
-                    ))}
-                </GridList>
-                <React.Fragment>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        className={classes.modal2}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
+        <div className={classes.root}>
+            <div className={classes.card}>
+                <div className={classes.about}>
+                    <Typography
+                        component="h5"
+                        style={{
+                            fontWeight: "600",
+                            fontSize: "22px",
                         }}
                     >
-                        <Fade in={open}>{BigImage}</Fade>
-                    </Modal>
-                </React.Fragment>
+                        MY ACHIEVEMENT
+                    </Typography>
+                </div>
+                <div
+                    className={classes.about}
+                    style={{ paddingBottom: "1rem" }}
+                >
+                    <GridList cellHeight={180} spacing={7}>
+                        {history.images.map((image) => (
+                            <GridListTile key={image.title}>
+                                <img
+                                    src={image.link}
+                                    alt={image.title}
+                                    onClick={handleOpen}
+                                    border="1"
+                                    style={{
+                                        height: "15rem",
+                                        width: "15rem",
+                                        marginTop: "2rem",
+                                    }}
+                                />
+                                <GridListTileBar
+                                    title={image.title}
+                                    classes={{
+                                        root: classes.titleBar,
+                                    }}
+                                />
+                            </GridListTile>
+                        ))}
+                    </GridList>
+                    <React.Fragment>
+                        <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                            className={classes.modal2}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={open}>{BigImage}</Fade>
+                        </Modal>
+                    </React.Fragment>
+                </div>
             </div>
-            <ColorLine color="gray[900]" />
 
-            <div style={{ marginBottom: "3px" }}>
+            <div className={classes.card}>
                 <div className={classes.about}>
                     <Typography
                         variant="h5"
@@ -257,60 +247,67 @@ export default function RightProfile({ history, user }) {
                         Groups
                     </Typography>
                 </div>
-                {posts
-                    ? posts.map((group) => {
-                          return (
-                              <Accordion
-                                  square
-                                  expanded={expanded === group.id}
-                                  onChange={handleChange2(group.id)}
-                              >
-                                  <AccordionSummary
-                                      expandIcon={<ExpandMoreIcon />}
-                                      aria-controls={group.id + "-content"}
-                                      id={group.id + "-header"}
+                <div
+                    className={classes.about}
+                    style={{ paddingBottom: "1rem" }}
+                >
+                    {posts
+                        ? posts.map((group) => {
+                              return (
+                                  <Accordion
+                                      square
+                                      expanded={expanded === group.id}
+                                      onChange={handleChange2(group.id)}
                                   >
-                                      <Typography
-                                          style={{ fontWeight: "bold" }}
+                                      <AccordionSummary
+                                          expandIcon={<ExpandMoreIcon />}
+                                          aria-controls={group.id + "-content"}
+                                          id={group.id + "-header"}
                                       >
-                                          {group.course
-                                              ? group.course.name
-                                              : "Unnamed Group"}
-                                      </Typography>
-                                  </AccordionSummary>
-                                  <AccordionDetails>
-                                      {group.approvedMembers
-                                          ? group.approvedMembers.map(
-                                                (member) => {
-                                                    return (
-                                                        <Chip
-                                                            className={
-                                                                classes.chipTest
-                                                            }
-                                                            label={member.name}
-                                                            style={{
-                                                                fontSize:
-                                                                    "100%",
-                                                            }}
-                                                            clickable
-                                                            avatar={
-                                                                <Avatar
-                                                                    src={
-                                                                        member.avatar
-                                                                    }
-                                                                />
-                                                            }
-                                                        />
-                                                    );
-                                                }
-                                            )
-                                          : null}
-                                  </AccordionDetails>
-                              </Accordion>
-                          );
-                      })
-                    : null}
+                                          <Typography
+                                              style={{ fontWeight: "bold" }}
+                                          >
+                                              {group.course
+                                                  ? group.course.name
+                                                  : "Unnamed Group"}
+                                          </Typography>
+                                      </AccordionSummary>
+                                      <AccordionDetails>
+                                          {group.approvedMembers
+                                              ? group.approvedMembers.map(
+                                                    (member) => {
+                                                        return (
+                                                            <Chip
+                                                                className={
+                                                                    classes.chipTest
+                                                                }
+                                                                label={
+                                                                    member.name
+                                                                }
+                                                                style={{
+                                                                    fontSize:
+                                                                        "100%",
+                                                                }}
+                                                                clickable
+                                                                avatar={
+                                                                    <Avatar
+                                                                        src={
+                                                                            member.avatar
+                                                                        }
+                                                                    />
+                                                                }
+                                                            />
+                                                        );
+                                                    }
+                                                )
+                                              : null}
+                                      </AccordionDetails>
+                                  </Accordion>
+                              );
+                          })
+                        : null}
+                </div>
             </div>
-        </Paper>
+        </div>
     );
 }

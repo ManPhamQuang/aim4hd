@@ -1,7 +1,7 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../components/Newsfeed/Posts";
-import Filter from "../components/Newsfeed/Filter";
+import Posts from "../Newsfeed/Posts";
+import Filter from "../Newsfeed/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 //* Styling import
@@ -24,7 +24,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
-import School from "./School";
+import School from "../School";
 import { blue } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 
@@ -35,10 +35,9 @@ const useStyles = makeStyles((theme) => ({
     container: {
         marginBottom: "4rem",
         marginTop: "3rem",
-        background:
-            "linear-gradient(to right bottom, rgba(225,225,225,0.8),rgba(255,255,255,0.5))",
+        backgroundColor: "#FFFFFF",
         borderRadius: "2rem",
-        backdropFilter: "blur(2rem)",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
     },
     profile_picture: {
         height: "166px",

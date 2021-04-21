@@ -36,10 +36,9 @@ import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background:
-            "linear-gradient(to right bottom, rgba(225,225,225,0.8),rgba(255,255,255,0.5))",
         borderRadius: "2rem",
-        backdropFilter: "blur(2rem)",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
         padding: "1.2rem",
     },
     about: {
@@ -179,134 +178,69 @@ export default function RightProfile({ history, user }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        component="h5"
-                        style={{
-                            fontWeight: "600",
-                            fontSize: "22px",
-                        }}
-                    >
-                        MY ACHIEVEMENT
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold" }}
                 >
-                    <GridList cellHeight={180} spacing={7}>
-                        {history.images.map((image) => (
-                            <GridListTile key={image.title}>
-                                <img
-                                    src={image.link}
-                                    alt={image.title}
-                                    onClick={handleOpen}
-                                    border="1"
-                                    style={{
-                                        height: "15rem",
-                                        width: "15rem",
-                                        marginTop: "2rem",
-                                    }}
-                                />
-                                <GridListTileBar
-                                    title={image.title}
-                                    classes={{
-                                        root: classes.titleBar,
-                                    }}
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
-                    <React.Fragment>
-                        <Modal
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description"
-                            className={classes.modal2}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <Fade in={open}>{BigImage}</Fade>
-                        </Modal>
-                    </React.Fragment>
-                </div>
+                    Groups
+                </Typography>
             </div>
-
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold" }}
-                    >
-                        Groups
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
-                >
-                    {posts
-                        ? posts.map((group) => {
-                              return (
-                                  <Accordion
-                                      square
-                                      expanded={expanded === group.id}
-                                      onChange={handleChange2(group.id)}
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
+                {posts
+                    ? posts.map((group) => {
+                          return (
+                              <Accordion
+                                  square
+                                  expanded={expanded === group.id}
+                                  onChange={handleChange2(group.id)}
+                              >
+                                  <AccordionSummary
+                                      expandIcon={<ExpandMoreIcon />}
+                                      aria-controls={group.id + "-content"}
+                                      id={group.id + "-header"}
                                   >
-                                      <AccordionSummary
-                                          expandIcon={<ExpandMoreIcon />}
-                                          aria-controls={group.id + "-content"}
-                                          id={group.id + "-header"}
+                                      <Typography
+                                          style={{ fontWeight: "bold" }}
                                       >
-                                          <Typography
-                                              style={{ fontWeight: "bold" }}
-                                          >
-                                              {group.course
-                                                  ? group.course.name
-                                                  : "Unnamed Group"}
-                                          </Typography>
-                                      </AccordionSummary>
-                                      <AccordionDetails>
-                                          {group.approvedMembers
-                                              ? group.approvedMembers.map(
-                                                    (member) => {
-                                                        return (
-                                                            <Chip
-                                                                className={
-                                                                    classes.chipTest
-                                                                }
-                                                                label={
-                                                                    member.name
-                                                                }
-                                                                style={{
-                                                                    fontSize:
-                                                                        "100%",
-                                                                }}
-                                                                clickable
-                                                                avatar={
-                                                                    <Avatar
-                                                                        src={
-                                                                            member.avatar
-                                                                        }
-                                                                    />
-                                                                }
-                                                            />
-                                                        );
-                                                    }
-                                                )
-                                              : null}
-                                      </AccordionDetails>
-                                  </Accordion>
-                              );
-                          })
-                        : null}
-                </div>
+                                          {group.course
+                                              ? group.course.name
+                                              : "Unnamed Group"}
+                                      </Typography>
+                                  </AccordionSummary>
+                                  <AccordionDetails>
+                                      {group.approvedMembers
+                                          ? group.approvedMembers.map(
+                                                (member) => {
+                                                    return (
+                                                        <Chip
+                                                            className={
+                                                                classes.chipTest
+                                                            }
+                                                            label={member.name}
+                                                            style={{
+                                                                fontSize:
+                                                                    "100%",
+                                                            }}
+                                                            clickable
+                                                            avatar={
+                                                                <Avatar
+                                                                    src={
+                                                                        member.avatar
+                                                                    }
+                                                                />
+                                                            }
+                                                        />
+                                                    );
+                                                }
+                                            )
+                                          : null}
+                                  </AccordionDetails>
+                              </Accordion>
+                          );
+                      })
+                    : null}
             </div>
         </div>
     );

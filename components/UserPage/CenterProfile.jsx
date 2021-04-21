@@ -28,14 +28,13 @@ const useStyles = makeStyles((theme) => ({
     root: {
         // margin: theme.spacing(2),
         // backgroundColor: "red",
-        background:
-            "linear-gradient(to right bottom, rgba(225,225,225,0.8),rgba(255,255,255,0.5))",
         justifyContent: "center",
         alignItems: "center",
         padding: "1.2rem",
         borderRadius: "2rem",
         marginBottom: "2rem",
-        backdropFilter: "blur(2rem)",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
     },
     about: {
         paddingLeft: "2rem",
@@ -117,111 +116,96 @@ export default function CenterProfile({ user, feedback }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        component="h5"
-                        style={{
-                            fontWeight: "600",
-                            fontSize: "22px",
-                        }}
-                    >
-                        ABOUT
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
+            <div className={classes.about}>
+                <Typography
+                    component="h5"
+                    style={{
+                        fontWeight: "600",
+                        fontSize: "22px",
+                    }}
                 >
-                    <Typography
-                        style={{
-                            fontSize: "18px",
-                            fontWeight: "400",
-                        }}
-                        value={value}
-                    >
-                        {user.description}
-                    </Typography>
-                </div>
+                    ABOUT
+                </Typography>
             </div>
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold", fontSize: "22px" }}
-                    >
-                        SKILLS
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
+                <Typography
+                    style={{
+                        fontSize: "18px",
+                        fontWeight: "400",
+                    }}
+                    value={value}
                 >
-                    {user.skills
-                        ? user.skills.map((skill, idx) => {
-                              if (idx < 4) {
-                                  return (
-                                      <Chip
-                                          className={classes.chipTest}
-                                          clickable
-                                          label={skill.name}
-                                      />
-                                  );
-                              }
-                          })
-                        : null}
-                </div>
+                    {user.description}
+                </Typography>
+            </div>
+            <Divider variant="middle" />
+
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold", fontSize: "22px" }}
+                >
+                    SKILLS
+                </Typography>
+            </div>
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
+                {user.skills
+                    ? user.skills.map((skill, idx) => {
+                          if (idx < 4) {
+                              return (
+                                  <Chip
+                                      className={classes.chipTest}
+                                      clickable
+                                      label={skill.name}
+                                  />
+                              );
+                          }
+                      })
+                    : null}
+            </div>
+            <Divider variant="middle" />
+
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold", fontSize: "22px" }}
+                >
+                    CURRENT COURSES
+                </Typography>
+            </div>
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
+                {user.currentCourses
+                    ? user.currentCourses.map((course, idx) => {
+                          if (idx < 4) {
+                              return (
+                                  <Chip
+                                      className={classes.chipTest}
+                                      icon={<MenuBookIcon />}
+                                      label={course.name}
+                                      clickable
+                                  />
+                              );
+                          }
+                      })
+                    : null}
+            </div>
+            <Divider variant="middle" />
+
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold", fontSize: "22px" }}
+                >
+                    MY POST
+                </Typography>
+            </div>
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
+                <MyPost userId={user._id} />
             </div>
 
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold", fontSize: "22px" }}
-                    >
-                        CURRENT COURSES
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
-                >
-                    {user.currentCourses
-                        ? user.currentCourses.map((course, idx) => {
-                              if (idx < 4) {
-                                  return (
-                                      <Chip
-                                          className={classes.chipTest}
-                                          icon={<MenuBookIcon />}
-                                          label={course.name}
-                                          clickable
-                                      />
-                                  );
-                              }
-                          })
-                        : null}
-                </div>
-            </div>
-
-            <div className={classes.card}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold", fontSize: "22px" }}
-                    >
-                        MY POST
-                    </Typography>
-                </div>
-                <div
-                    className={classes.about}
-                    style={{ paddingBottom: "1rem" }}
-                >
-                    <MyPost userId={user._id} />
-                </div>
-            </div>
             <div>
                 <div style={{ marginBottom: "3px" }}>
                     {/* <UserFeedback id={user.id} /> */}

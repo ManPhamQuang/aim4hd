@@ -24,6 +24,15 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Grid, Hidden } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+
+import CardHeader from "@material-ui/core/CardHeader";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -70,13 +79,14 @@ const useStyles = makeStyles((theme) => ({
         width: 500,
         height: 450,
     },
+    card: {
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
+    },
 }));
 
 export default function Achievement({ user }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [errorMsg, setErrorMsg] = useState({});
-    const [input, setInput] = useState(null);
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -103,14 +113,33 @@ export default function Achievement({ user }) {
         setOpen1(false);
     };
 
-    const options = ["Edit", "Delete"];
-    const handleClickMenu = (event) => {
-        setAnchorEl(event.currentTarget);
+    const deleteAchivement = async (achievement) => {
+        let update = user.achievements.filter((e) => e != achievement);
+        console.log(update);
+        let body = {
+            id: user.id,
+            achievements: update,
+        };
+        try {
+            const response = await axios.patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
+                body
+            );
+            if (`${response.status}`.startsWith("2")) {
+                console.log("ENTERING");
+                setIsLoading(false);
+                const data = {};
+                data.user = response.data.data.user;
+                auth.login("update", data);
+                setTimeout(() => alert("Successfully update your profile"), 0);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+            alert("ERROR");
+        }
     };
 
-    const handleCloseMenu = () => {
-        setAnchorEl(null);
-    };
     const BigImage = (
         <div className={classes.modal}>
             <img
@@ -152,7 +181,6 @@ export default function Achievement({ user }) {
             id: user.id,
             achievements: [...user.achievements, update],
         };
-        // if (avatar) body.avatar = avatar;
         try {
             const response = await axios.patch(
                 "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
@@ -172,7 +200,7 @@ export default function Achievement({ user }) {
             alert("ERROR");
         }
     };
-    const ITEM_HEIGHT = 48;
+
     return (
         <div style={{ height: "auto" }}>
             <div className={classes.root}>
@@ -216,7 +244,6 @@ export default function Achievement({ user }) {
                                     "image/jpeg",
                                     "image/png",
                                     "image/bmp",
-                                    // "application/pdf",
                                 ]}
                                 maxFileSize={5000000}
                                 filesLimit="1"
@@ -236,70 +263,66 @@ export default function Achievement({ user }) {
                 </Dialog>
             </div>
             <div className={classes.root2}>
-                <GridList
-                    cellHeight={180}
-                    spacing={10}
-                    className={classes.gridList}
+                <Grid
+                    xs={12}
+                    container
+                    direction="row"
+                    alignItems="stretch"
+                    spacing={4}
                 >
                     {user.achievements.map((image) => (
-                        <GridListTile key={image.title}>
-                            <img
-                                src={image.url}
-                                alt={image.title}
-                                onClick={handleOpen}
-                                border="1"
-                                style={{
-                                    height: "15rem",
-                                    width: "15rem",
-                                    marginTop: "2rem",
-                                }}
-                            />
-                            <GridListTileBar
-                                title={image.title}
-                                classes={{
-                                    root: classes.titleBar,
-                                }}
-                                style={{ color: "white" }}
-                                actionIcon={
-                                    <div>
-                                        <IconButton
-                                            aria-label="more"
-                                            aria-controls="long-menu"
-                                            aria-haspopup="true"
-                                            onClick={handleClickMenu}
-                                        >
-                                            <MoreVertIcon
-                                                style={{ fill: "white" }}
-                                            />
-                                        </IconButton>
-                                        <Menu
-                                            id="long-menu"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={openMenu}
-                                            TransitionComponent={Fade}
-                                            onClose={handleCloseMenu}
-                                            PaperProps={{
-                                                style: {
-                                                    maxHeight:
-                                                        ITEM_HEIGHT * 4.5,
-                                                    width: "20ch",
-                                                },
+                        <Grid item xs={3}>
+                            <Card className={classes.card}>
+                                <CardActionArea>
+                                    <CardMedia
+                                        component="img"
+                                        alt={image.title}
+                                        height="150"
+                                        image={image.url}
+                                        title={image.title}
+                                        onClick={handleOpen}
+                                    />
+                                    <CardContent>
+                                        <Typography
+                                            component="h5"
+                                            style={{
+                                                fontWeight: "600",
+                                                fontSize: "22px",
+                                                textAlign: "center",
                                             }}
                                         >
-                                            <MenuItem onClick={handleCloseMenu}>
-                                                Edit
-                                            </MenuItem>
-                                            <MenuItem onClick={handleCloseMenu}>
-                                                Delete
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
-                                }
-                            />
-                        </GridListTile>
+                                            {image.title}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions
+                                    style={{
+                                        alignItems: "center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => deleteAchivement(image)}
+                                    >
+                                        Delete
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+
+                                        // onClick={() => deleteAchivement(image)}
+                                    >
+                                        Edit
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     ))}
-                </GridList>
+                </Grid>
                 <React.Fragment>
                     <Modal
                         open={open1}

@@ -2,10 +2,8 @@
 import Head from "next/head";
 import Posts from "../../components/Newsfeed/Posts";
 import Filter from "../../components/Newsfeed/Filter";
-import LeftProfile from "../../components/UserPage/LeftProfile";
-import CenterProfile from "../../components/UserPage/CenterProfile";
-import RightProfile from "../../components/UserPage/RightProfile";
-import FullProfile from "../../components/FullProfile";
+import FullProfile from "../../components/UserPage/FullProfile";
+import MainUser from "../../components/MainUser";
 //* Styling import
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
@@ -70,7 +68,7 @@ function isEmpty(obj) {
 }
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: "linear-gradient(to right top, #65DFC9,#6CDBEB)",
+        backgroundColor: "#F4F7FA",
     },
 }));
 
@@ -102,31 +100,19 @@ export default function UserProfile({ user }) {
                     content="minimum-scale=1, initial-scale=1, width=device-width"
                 />
             </Head>
-            <div className={classes.root}>
-                <Grid container justify="center">
-                    <Grid item xs={9}>
-                        <FullProfile user={user} />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={9}
-                        container
-                        direction="row"
-                        alignItems="stretch"
-                        spacing={2}
-                    >
-                        <Grid item xs={3}>
-                            <LeftProfile user={user} />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <CenterProfile user={user} feedback={feedback} />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <RightProfile history={history} user={user} />
-                        </Grid>
-                    </Grid>
+
+            <Grid container justify="center">
+                <Grid item xs={9}>
+                    <FullProfile user={user} />
                 </Grid>
-            </div>
+                <Grid item xs={9}>
+                    <MainUser
+                        user={user}
+                        feedback={feedback}
+                        history={history}
+                    />
+                </Grid>
+            </Grid>
         </React.Fragment>
     );
 }

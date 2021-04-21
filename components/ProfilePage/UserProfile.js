@@ -61,7 +61,6 @@ export default function UserProfile({ user, courses, skills }) {
         instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[\W\S_]{1,25}\/$/igm,
     }
     function validateUrl(value, expression) {
-        // var expression = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/igm
         if (value == "") {
             return true;
         }
@@ -91,6 +90,14 @@ export default function UserProfile({ user, courses, skills }) {
                         : input.socialLinks.instagram ?? "",
             },
         }));
+        let newErrorMsg = { ...errorMsg };
+        const message = validator(event.target.name, event.target.value);
+
+        if (message) setErrorMsg({ ...errorMsg, [event.target.name]: message });
+        else {
+            delete newErrorMsg[event.target.name];
+            setErrorMsg(newErrorMsg);
+        }
 
     };
     const handleOnInputChange = (event) => {
@@ -163,9 +170,9 @@ export default function UserProfile({ user, courses, skills }) {
                 alert("ERROR");
             }
         }
-        else {
-            alert("Invalid social link address");
-        }
+        // else {
+        //     alert("Invalid social link address");
+        // }
     };
 
     return (
@@ -314,6 +321,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.github}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.github && (
+                        <FormHelperText error={true}>
+                            {errorMsg.github}
+                        </FormHelperText>
+                    )}
                     <TextField
                         color="secondary"
                         multiline
@@ -326,6 +338,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.linkedin}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.linkedin && (
+                        <FormHelperText error={true}>
+                            {errorMsg.linkedin}
+                        </FormHelperText>
+                    )}
                     <TextField
                         color="secondary"
                         multiline
@@ -337,8 +354,12 @@ export default function UserProfile({ user, courses, skills }) {
                         name="facebook"
                         value={input.socialLinks.facebook}
                         onChange={handleSocialLinks}
-
                     />
+                    {errorMsg.facebook && (
+                        <FormHelperText error={true}>
+                            {errorMsg.facebook}
+                        </FormHelperText>
+                    )}
 
                     <TextField
                         color="secondary"
@@ -352,6 +373,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.instagram}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.instagram && (
+                        <FormHelperText error={true}>
+                            {errorMsg.instagram}
+                        </FormHelperText>
+                    )}
                     <ImageUpload image={image} setImage={setImage} />
                     <Button
                         type="submit"

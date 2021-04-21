@@ -3,7 +3,7 @@ import io, { Socket } from "socket.io-client";
 import AuthContext from "../utils/authContext";
 
 // const socket = io.connect("http://localhost:4000");
-const endpoint = "http://localhost:4000";
+const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 function useSocket(url) {
     const [socket, setSocket] = useState(null);

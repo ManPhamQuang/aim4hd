@@ -62,6 +62,9 @@ export default function UserProfile({ user, courses, skills }) {
     }
     function validateUrl(value, expression) {
         // var expression = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/igm
+        if (value == "") {
+            return true;
+        }
         var regexp = new RegExp(expression);
         return regexp.test(value);
     }
@@ -71,23 +74,24 @@ export default function UserProfile({ user, courses, skills }) {
             ...input,
             socialLinks: {
                 github:
-                    event.target.name == "github" && validateUrl(event.target.value, patterns.github)
+                    event.target.name == "github"
                         ? event.target.value
                         : input.socialLinks.github ?? "",
                 linkedin:
-                    event.target.name == "linkedin" && validateUrl(event.target.value, patterns.linkedin)
+                    event.target.name == "linkedin"
                         ? event.target.value
                         : input.socialLinks.linkedin ?? "",
                 facebook:
-                    event.target.name == "facebook" && validateUrl(event.target.value, patterns.facebook)
+                    event.target.name == "facebook"
                         ? event.target.value
                         : input.socialLinks.facebook ?? "",
                 instagram:
-                    event.target.name == "instagram" && validateUrl(event.target.value, patterns.instagram)
+                    event.target.name == "instagram"
                         ? event.target.value
                         : input.socialLinks.instagram ?? "",
             },
         }));
+
     };
     const handleOnInputChange = (event) => {
         if (
@@ -117,45 +121,47 @@ export default function UserProfile({ user, courses, skills }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        // if ()
-        setIsLoading(true);
-        let avatar;
-        if (image) {
-            const formData = new FormData();
-            formData.append("file", image);
-            formData.append("upload_preset", "iiyg1094");
+        if (validateUrl(input.socialLinks.github, patterns.github) && validateUrl(input.socialLinks.facebook, patterns.facebook) && validateUrl(input.socialLinks.linkedin, patterns.linkedin) && validateUrl(input.socialLinks.instagram, patterns.instagram)) {
+
+            setIsLoading(true);
+            let avatar;
+            if (image) {
+                const formData = new FormData();
+                formData.append("file", image);
+                formData.append("upload_preset", "iiyg1094");
+                try {
+                    const response = await axios.post(
+                        "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
+                        formData
+                    );
+                    avatar = response.data.secure_url;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            const body = {
+                ...input,
+                id: user.id,
+            };
+            if (avatar) body.avatar = avatar;
             try {
-                const response = await axios.post(
-                    "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
-                    formData
+                const response = await axios.patch(
+                    "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
+                    body
                 );
-                avatar = response.data.secure_url;
+                if (`${response.status}`.startsWith("2")) {
+                    console.log("ENTERING");
+                    setIsLoading(false);
+                    const data = {};
+                    data.user = response.data.data.user;
+                    auth.login("update", data);
+                    setTimeout(() => alert("Successfully update your profile"), 0);
+                }
             } catch (error) {
-                console.log(error);
-            }
-        }
-        const body = {
-            ...input,
-            id: user.id,
-        };
-        if (avatar) body.avatar = avatar;
-        try {
-            const response = await axios.patch(
-                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
-                body
-            );
-            if (`${response.status}`.startsWith("2")) {
-                console.log("ENTERING");
                 setIsLoading(false);
-                const data = {};
-                data.user = response.data.data.user;
-                auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                console.log(error);
+                alert("ERROR");
             }
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-            alert("ERROR");
         }
     };
 

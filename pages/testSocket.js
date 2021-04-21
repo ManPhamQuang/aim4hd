@@ -40,7 +40,7 @@ function SocketTest() {
             "notifications",
             ({ notifications }) => {
                 console.log("getting messages");
-                console.log(notifications);
+                // console.log(notifications);
                 setRes(notifications);
                 // clean up when unmount
                 return () => io.disconnect();
@@ -48,9 +48,7 @@ function SocketTest() {
             []
         );
         socket.on("newNoti", (data) => {
-            console.log("new noti!!!!");
-            console.log(data);
-            setRes([data, ...res]);
+            setRes((res) => [data, ...res]);
         });
         // if (auth.user) {
         //     console.log("ran with user id: " + auth.user.id);

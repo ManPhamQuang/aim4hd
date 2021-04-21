@@ -163,6 +163,9 @@ export default function UserProfile({ user, courses, skills }) {
                 alert("ERROR");
             }
         }
+        else {
+            alert("Invalid social link address");
+        }
     };
 
     return (

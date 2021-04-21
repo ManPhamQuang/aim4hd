@@ -36,14 +36,22 @@ import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: "20px",
-        marginLeft: "2%",
-        marginRight: "2%",
-        borderRadius: "0px 0px 8px 8px",
-        paddingBottom: "20px",
+        borderRadius: "2rem",
+        backgroundColor: "#FFFFFF",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
+        padding: "1.2rem",
+    },
+    about: {
+        paddingLeft: "2rem",
+        paddingRight: "2rem",
+        paddingTop: "1rem",
+    },
+    card: {
+        background:
+            "linear-gradient(to left top, rgba(255,255,255,0.8), rgba(255,255,255,0.5))",
+        borderRadius: "1rem",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.2)",
+        marginBottom: "1rem",
     },
     title: {
         color: "white",
@@ -51,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
     titleBar: {
         background:
-            "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+            "linear-gradient(to top, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
     },
     icon: {
         color: "rgba(255, 255, 255, 0.54)",
@@ -61,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: "wrap",
         justifyContent: "space-around",
         overflow: "hidden",
-        backgroundColor: theme.palette.background.paper,
     },
     titleBar: {
         background:
@@ -81,11 +88,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         overflow: "scroll",
-    },
-    about: {
-        marginLeft: "4%",
-        marginTop: "3%",
-        marginRight: "20px",
     },
 }));
 
@@ -174,89 +176,18 @@ export default function RightProfile({ history, user }) {
         </div>
     );
 
-    const ColorLine = ({ color }) => (
-        <hr
-            style={{
-                borderStyle: "none",
-                backgroundColor: "#f2f2f2",
-                height: 4,
-                width: "100%",
-            }}
-        />
-    );
-
     return (
-        <Paper className={classes.root} variant="outlined">
-            <AppBar
-                position="static"
-                style={{
-                    backgroundColor: "white",
-                    color: "black",
-                    boxShadow: "none",
-                }}
-            >
-                <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="simple tabs example"
+        <div className={classes.root}>
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold" }}
                 >
-                    <Tab label="My achievement" />
-                </Tabs>
-            </AppBar>
-            <div className={classes.root2}>
-                <GridList cellHeight={180} spacing={7}>
-                    {history.images.map((image) => (
-                        <GridListTile key={image.title}>
-                            <img
-                                src={image.link}
-                                alt={image.title}
-                                onClick={handleOpen}
-                                border="1"
-                                style={{
-                                    height: "15rem",
-                                    width: "15rem",
-                                    marginTop: "2rem",
-                                }}
-                            />
-                            <GridListTileBar
-                                title={image.title}
-                                classes={{
-                                    root: classes.titleBar,
-                                }}
-                            />
-                        </GridListTile>
-                    ))}
-                </GridList>
-                <React.Fragment>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        className={classes.modal2}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <Fade in={open}>{BigImage}</Fade>
-                    </Modal>
-                </React.Fragment>
+                    Groups
+                </Typography>
             </div>
-            <ColorLine color="gray[900]" />
-
-            <div style={{ marginBottom: "3px" }}>
-                <div className={classes.about}>
-                    <Typography
-                        variant="h5"
-                        component="h2"
-                        style={{ fontWeight: "bold" }}
-                    >
-                        Groups
-                    </Typography>
-                </div>
+            <div className={classes.about} style={{ paddingBottom: "1rem" }}>
                 {posts
                     ? posts.map((group) => {
                           return (
@@ -311,6 +242,6 @@ export default function RightProfile({ history, user }) {
                       })
                     : null}
             </div>
-        </Paper>
+        </div>
     );
 }

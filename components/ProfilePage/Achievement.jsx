@@ -20,6 +20,19 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import { LensTwoTone } from "@material-ui/icons";
 import AuthContext from "../../utils/authContext";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Grid, Hidden } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+
+import CardHeader from "@material-ui/core/CardHeader";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -62,18 +75,25 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         overflow: "scroll",
     },
+    gridList: {
+        width: 500,
+        height: 450,
+    },
+    card: {
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
+    },
 }));
 
 export default function Achievement({ user }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [errorMsg, setErrorMsg] = useState({});
-    const [input, setInput] = useState(null);
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [imgPath, setimgPath] = React.useState(0);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openMenu = Boolean(anchorEl);
     const auth = useContext(AuthContext);
 
     const handleClickOpen = () => {
@@ -93,6 +113,33 @@ export default function Achievement({ user }) {
         setOpen1(false);
     };
 
+    const deleteAchivement = async (achievement) => {
+        let update = user.achievements.filter((e) => e != achievement);
+        console.log(update);
+        let body = {
+            id: user.id,
+            achievements: update,
+        };
+        try {
+            const response = await axios.patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
+                body
+            );
+            if (`${response.status}`.startsWith("2")) {
+                console.log("ENTERING");
+                setIsLoading(false);
+                const data = {};
+                data.user = response.data.data.user;
+                auth.login("update", data);
+                setTimeout(() => alert("Successfully update your profile"), 0);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+            alert("ERROR");
+        }
+    };
+
     const BigImage = (
         <div className={classes.modal}>
             <img
@@ -106,20 +153,6 @@ export default function Achievement({ user }) {
             />
         </div>
     );
-    const history = {
-        images: [
-            {
-                link:
-                    "https://cdn.slidesharecdn.com/ss_thumbnails/d8b0f189-3db0-4cf3-9691-ce34a7d0f9b0-150714050544-lva1-app6891-thumbnail-4.jpg?cb=1436850363",
-                title: "GPA",
-            },
-            {
-                link:
-                    "https://phlebotomyscout.com/wp-content/uploads/2019/09/phlebotomy-certification.jpg",
-                title: "Certification",
-            },
-        ],
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -134,6 +167,9 @@ export default function Achievement({ user }) {
                     "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
                     formData
                 );
+
+                console.log(response);
+
                 achievement = response.data.secure_url;
             } catch (error) {
                 console.log(error);
@@ -145,7 +181,6 @@ export default function Achievement({ user }) {
             id: user.id,
             achievements: [...user.achievements, update],
         };
-        // if (avatar) body.avatar = avatar;
         try {
             const response = await axios.patch(
                 "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
@@ -167,7 +202,7 @@ export default function Achievement({ user }) {
     };
 
     return (
-        <div>
+        <div style={{ height: "auto" }}>
             <div className={classes.root}>
                 <Button
                     variant="outlined"
@@ -209,7 +244,6 @@ export default function Achievement({ user }) {
                                     "image/jpeg",
                                     "image/png",
                                     "image/bmp",
-                                    "application/pdf",
                                 ]}
                                 maxFileSize={5000000}
                                 filesLimit="1"
@@ -229,29 +263,66 @@ export default function Achievement({ user }) {
                 </Dialog>
             </div>
             <div className={classes.root2}>
-                <GridList cellHeight={200} spacing={10}>
+                <Grid
+                    xs={12}
+                    container
+                    direction="row"
+                    alignItems="stretch"
+                    spacing={4}
+                >
                     {user.achievements.map((image) => (
-                        <GridListTile key={image.title}>
-                            <img
-                                src={image.url}
-                                alt={image.title}
-                                onClick={handleOpen}
-                                border="1"
-                                style={{
-                                    height: "15rem",
-                                    width: "15rem",
-                                    marginTop: "2rem",
-                                }}
-                            />
-                            <GridListTileBar
-                                title={image.title}
-                                classes={{
-                                    root: classes.titleBar,
-                                }}
-                            />
-                        </GridListTile>
+                        <Grid item xs={3}>
+                            <Card className={classes.card}>
+                                <CardActionArea>
+                                    <CardMedia
+                                        component="img"
+                                        alt={image.title}
+                                        height="150"
+                                        image={image.url}
+                                        title={image.title}
+                                        onClick={handleOpen}
+                                    />
+                                    <CardContent>
+                                        <Typography
+                                            component="h5"
+                                            style={{
+                                                fontWeight: "600",
+                                                fontSize: "22px",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            {image.title}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions
+                                    style={{
+                                        alignItems: "center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        color="primary"
+                                        onClick={() => deleteAchivement(image)}
+                                    >
+                                        Delete
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+
+                                        // onClick={() => deleteAchivement(image)}
+                                    >
+                                        Edit
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     ))}
-                </GridList>
+                </Grid>
                 <React.Fragment>
                     <Modal
                         open={open1}

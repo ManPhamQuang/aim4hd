@@ -53,6 +53,21 @@ export default function UserProfile({ user, courses, skills }) {
     const [errorMsg, setErrorMsg] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
+    const patterns = {
+        github: /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/igm,
+        facebook: /(https?:\/\/)?(www\.)?(facebook|fb|m\.facebook)\.(com|me)\/[\W\S_]{1,25}$/igm,
+        linkedin: /(ftp|http|https):\/\/?((www|\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+        // instagram: /(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
+        instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[\W\S_]{1,25}\/$/igm,
+    }
+    function validateUrl(value, expression) {
+        if (value == "") {
+            return true;
+        }
+        var regexp = new RegExp(expression);
+        return regexp.test(value);
+    }
+
     const handleSocialLinks = (event) => {
         setInput((input) => ({
             ...input,
@@ -75,6 +90,15 @@ export default function UserProfile({ user, courses, skills }) {
                         : input.socialLinks.instagram ?? "",
             },
         }));
+        let newErrorMsg = { ...errorMsg };
+        const message = validator(event.target.name, event.target.value);
+
+        if (message) setErrorMsg({ ...errorMsg, [event.target.name]: message });
+        else {
+            delete newErrorMsg[event.target.name];
+            setErrorMsg(newErrorMsg);
+        }
+
     };
     const handleOnInputChange = (event) => {
         if (
@@ -104,45 +128,51 @@ export default function UserProfile({ user, courses, skills }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        setIsLoading(true);
-        let avatar;
-        if (image) {
-            const formData = new FormData();
-            formData.append("file", image);
-            formData.append("upload_preset", "iiyg1094");
+        if (validateUrl(input.socialLinks.github, patterns.github) && validateUrl(input.socialLinks.facebook, patterns.facebook) && validateUrl(input.socialLinks.linkedin, patterns.linkedin) && validateUrl(input.socialLinks.instagram, patterns.instagram)) {
+
+            setIsLoading(true);
+            let avatar;
+            if (image) {
+                const formData = new FormData();
+                formData.append("file", image);
+                formData.append("upload_preset", "iiyg1094");
+                try {
+                    const response = await axios.post(
+                        "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
+                        formData
+                    );
+                    avatar = response.data.secure_url;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            const body = {
+                ...input,
+                id: user.id,
+            };
+            if (avatar) body.avatar = avatar;
             try {
-                const response = await axios.post(
-                    "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
-                    formData
+                const response = await axios.patch(
+                    "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
+                    body
                 );
-                avatar = response.data.secure_url;
+                if (`${response.status}`.startsWith("2")) {
+                    console.log("ENTERING");
+                    setIsLoading(false);
+                    const data = {};
+                    data.user = response.data.data.user;
+                    auth.login("update", data);
+                    setTimeout(() => alert("Successfully update your profile"), 0);
+                }
             } catch (error) {
-                console.log(error);
-            }
-        }
-        const body = {
-            ...input,
-            id: user.id,
-        };
-        if (avatar) body.avatar = avatar;
-        try {
-            const response = await axios.patch(
-                "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
-                body
-            );
-            if (`${response.status}`.startsWith("2")) {
-                console.log("ENTERING");
                 setIsLoading(false);
-                const data = {};
-                data.user = response.data.data.user;
-                auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                console.log(error);
+                alert("ERROR");
             }
-        } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-            alert("ERROR");
         }
+        // else {
+        //     alert("Invalid social link address");
+        // }
     };
 
     return (
@@ -291,6 +321,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.github}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.github && (
+                        <FormHelperText error={true}>
+                            {errorMsg.github}
+                        </FormHelperText>
+                    )}
                     <TextField
                         color="secondary"
                         multiline
@@ -303,6 +338,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.linkedin}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.linkedin && (
+                        <FormHelperText error={true}>
+                            {errorMsg.linkedin}
+                        </FormHelperText>
+                    )}
                     <TextField
                         color="secondary"
                         multiline
@@ -315,6 +355,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.facebook}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.facebook && (
+                        <FormHelperText error={true}>
+                            {errorMsg.facebook}
+                        </FormHelperText>
+                    )}
 
                     <TextField
                         color="secondary"
@@ -328,6 +373,11 @@ export default function UserProfile({ user, courses, skills }) {
                         value={input.socialLinks.instagram}
                         onChange={handleSocialLinks}
                     />
+                    {errorMsg.instagram && (
+                        <FormHelperText error={true}>
+                            {errorMsg.instagram}
+                        </FormHelperText>
+                    )}
                     <ImageUpload image={image} setImage={setImage} />
                     <Button
                         type="submit"

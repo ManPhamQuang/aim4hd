@@ -20,6 +20,10 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import { LensTwoTone } from "@material-ui/icons";
 import AuthContext from "../../utils/authContext";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -62,6 +66,10 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         overflow: "scroll",
     },
+    gridList: {
+        width: 500,
+        height: 450,
+    },
 }));
 
 export default function Achievement({ user }) {
@@ -74,6 +82,8 @@ export default function Achievement({ user }) {
     const [isLoading, setIsLoading] = useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [imgPath, setimgPath] = React.useState(0);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openMenu = Boolean(anchorEl);
     const auth = useContext(AuthContext);
 
     const handleClickOpen = () => {
@@ -93,6 +103,14 @@ export default function Achievement({ user }) {
         setOpen1(false);
     };
 
+    const options = ["Edit", "Delete"];
+    const handleClickMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
     const BigImage = (
         <div className={classes.modal}>
             <img
@@ -106,20 +124,6 @@ export default function Achievement({ user }) {
             />
         </div>
     );
-    const history = {
-        images: [
-            {
-                link:
-                    "https://cdn.slidesharecdn.com/ss_thumbnails/d8b0f189-3db0-4cf3-9691-ce34a7d0f9b0-150714050544-lva1-app6891-thumbnail-4.jpg?cb=1436850363",
-                title: "GPA",
-            },
-            {
-                link:
-                    "https://phlebotomyscout.com/wp-content/uploads/2019/09/phlebotomy-certification.jpg",
-                title: "Certification",
-            },
-        ],
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -134,6 +138,9 @@ export default function Achievement({ user }) {
                     "https://api.cloudinary.com/v1_1/dybygufkr/image/upload",
                     formData
                 );
+
+                console.log(response);
+
                 achievement = response.data.secure_url;
             } catch (error) {
                 console.log(error);
@@ -165,9 +172,9 @@ export default function Achievement({ user }) {
             alert("ERROR");
         }
     };
-
+    const ITEM_HEIGHT = 48;
     return (
-        <div>
+        <div style={{ height: "auto" }}>
             <div className={classes.root}>
                 <Button
                     variant="outlined"
@@ -209,7 +216,7 @@ export default function Achievement({ user }) {
                                     "image/jpeg",
                                     "image/png",
                                     "image/bmp",
-                                    "application/pdf",
+                                    // "application/pdf",
                                 ]}
                                 maxFileSize={5000000}
                                 filesLimit="1"
@@ -229,7 +236,11 @@ export default function Achievement({ user }) {
                 </Dialog>
             </div>
             <div className={classes.root2}>
-                <GridList cellHeight={200} spacing={10}>
+                <GridList
+                    cellHeight={180}
+                    spacing={10}
+                    className={classes.gridList}
+                >
                     {user.achievements.map((image) => (
                         <GridListTile key={image.title}>
                             <img
@@ -248,6 +259,43 @@ export default function Achievement({ user }) {
                                 classes={{
                                     root: classes.titleBar,
                                 }}
+                                style={{ color: "white" }}
+                                actionIcon={
+                                    <div>
+                                        <IconButton
+                                            aria-label="more"
+                                            aria-controls="long-menu"
+                                            aria-haspopup="true"
+                                            onClick={handleClickMenu}
+                                        >
+                                            <MoreVertIcon
+                                                style={{ fill: "white" }}
+                                            />
+                                        </IconButton>
+                                        <Menu
+                                            id="long-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={openMenu}
+                                            TransitionComponent={Fade}
+                                            onClose={handleCloseMenu}
+                                            PaperProps={{
+                                                style: {
+                                                    maxHeight:
+                                                        ITEM_HEIGHT * 4.5,
+                                                    width: "20ch",
+                                                },
+                                            }}
+                                        >
+                                            <MenuItem onClick={handleCloseMenu}>
+                                                Edit
+                                            </MenuItem>
+                                            <MenuItem onClick={handleCloseMenu}>
+                                                Delete
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
+                                }
                             />
                         </GridListTile>
                     ))}

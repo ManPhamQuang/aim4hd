@@ -25,25 +25,70 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
 import School from "./School";
+import { blue } from "@material-ui/core/colors";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
     container: {
-        marginBottom: "5rem",
+        marginBottom: "4rem",
         marginTop: "3rem",
-        borderRadius: "8px",
-        backgroundColor: "#FFFFFF",
-        padding: "0.5rem",
+        background:
+            "linear-gradient(to right bottom, rgba(225,225,225,0.8),rgba(255,255,255,0.5))",
+        borderRadius: "2rem",
+        backdropFilter: "blur(2rem)",
     },
     profile_picture: {
-        height: "12rem",
-        width: "12rem",
+        height: "166px",
+        width: "166px",
     },
     logo: {
         fontSize: "2rem",
-        marginTop: "0.5rem",
+        fontWeight: "450",
+    },
+    button: {
+        margin: theme.spacing(1),
+        borderRadius: "2rem",
+        overflow: "hidden",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.2)",
+        "&:hover": {
+            color: "white",
+        },
+        [theme.breakpoints.down("md")]: {
+            minWidth: "126px",
+            maxWidth: "126px",
+            minHeight: "45px",
+            maxHeight: "45px",
+        },
+        [theme.breakpoints.up("lg")]: {
+            minWidth: "170px",
+            maxWidth: "170px",
+            minHeight: "45px",
+            maxHeight: "45px",
+        },
+    },
+    responseAlign: {
+        [theme.breakpoints.down("md")]: {
+            textAlign: "center",
+        },
+
+        [theme.breakpoints.up("lg")]: {
+            textAlign: "left",
+        },
+    },
+    avaAlign: {
+        [theme.breakpoints.down("lg")]: {
+            justifyContent: "center",
+            display: "flex",
+            padding: "10px",
+        },
+        [theme.breakpoints.up("lg")]: {
+            justifyContent: "flex-end",
+            display: "flex",
+            padding: "20px",
+        },
     },
 }));
 
@@ -54,80 +99,207 @@ export default function FullProfile({ user }) {
             <Grid
                 container
                 direction="row"
-                justify="flex-start"
-                alignItems="center"
+                justify="center"
+                alignItems="strech"
                 className={classes.container}
-                spacing={3}
+                spacing={2}
+                // style={{ backgroundColor: "pink" }}
             >
-                <Grid item>
-                    <Avatar
-                        alt="User avatar"
-                        src={user.avatar}
-                        className={classes.profile_picture}
-                    />
-                </Grid>
                 <Grid
                     item
-                    style={{
-                        height: "100%",
-                        paddingLeft: "0.3rem",
-                    }}
+                    xs={12}
+                    lg={6}
+                    container
+                    justify="center"
+                    alignItems="center"
+                    // style={{ backgroundColor: "cyan" }}
                 >
-                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
-                        {user.name}
-                    </Typography>
-
-                    <Typography variant="h6" style={{ fontWeight: "500" }}>
-                        {user.major}
-                    </Typography>
-                    <School school={user.school} />
+                    <Grid
+                        item
+                        xs={12}
+                        lg={5}
+                        // style={{ backgroundColor: "red" }}
+                    >
+                        <div className={classes.avaAlign}>
+                            <Avatar
+                                alt="User avatar"
+                                src={user.avatar}
+                                className={classes.profile_picture}
+                            />
+                        </div>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        lg={6}
+                        // style={{ backgroundColor: "blue" }}
+                    >
+                        <div className={classes.responseAlign}>
+                            <Typography
+                                variant="h4"
+                                style={{
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {user.name}
+                            </Typography>
+                            <Typography
+                                variant="h5"
+                                style={{
+                                    fontWeight: "500",
+                                }}
+                            >
+                                {user.major}
+                            </Typography>
+                            <Typography>
+                                <School school={user.school} />
+                            </Typography>
+                        </div>
+                    </Grid>
+                    <Grid item lg={1}>
+                        <Hidden mdDown>
+                            <Divider
+                                orientation="vertical"
+                                style={{
+                                    maxWidth: "3px",
+                                    height: "10rem",
+                                }}
+                            />
+                        </Hidden>
+                    </Grid>
                 </Grid>
-                <Hidden smDown>
-                    <Divider
-                        orientation="vertical"
-                        style={{
-                            maxWidth: "3px",
-                            height: "10rem",
-                            marginLeft: "5rem",
-                            marginRight: "5rem",
-                        }}
-                    />
-                </Hidden>
-                <Grid item xs>
-                    <div style={{ display: "flex" }}>
-                        <Typography style={{ fontWeight: "500" }}>
-                            Email:
-                        </Typography>
-                        <Typography style={{ marginLeft: 70 }}>
-                            {user.email}
-                        </Typography>
-                    </div>
-                    <div style={{ display: "flex", marginTop: "0.5rem" }}>
-                        <Typography style={{ fontWeight: "500" }}>
-                            Nationality:
-                        </Typography>
-                        <Typography style={{ marginLeft: 30 }}>
-                            Vietnamese
-                        </Typography>
-                    </div>
-                    <div style={{ display: "flex" }}>
-                        <FacebookIcon
-                            className={classes.logo}
-                            style={{ fill: "#3FA2FF" }}
-                        />
-                        <InstagramIcon
-                            className={classes.logo}
-                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
-                        />
-                        <LinkedInIcon
-                            className={classes.logo}
-                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
-                        />
-                        <GitHubIcon
-                            className={classes.logo}
-                            style={{ marginLeft: "1rem", fill: "#3FA2FF" }}
-                        />
-                    </div>
+
+                <Grid
+                    item
+                    xs={12}
+                    lg={3}
+                    container
+                    spacing={1}
+                    justify="center"
+                    alignItems="center"
+                    // style={{ backgroundColor: "purple" }}
+                >
+                    <Grid item xs={12} lg={11} style={{ overflow: "hidden" }}>
+                        <div className={classes.responseAlign}>
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "500" }}
+                            >
+                                Email: {user.email}
+                            </Typography>
+                        </div>
+                        <div
+                            style={{ marginTop: "0.5rem" }}
+                            className={classes.responseAlign}
+                        >
+                            <Typography
+                                variant="h6"
+                                style={{ fontWeight: "500" }}
+                            >
+                                Nationality: Vietnamese
+                            </Typography>
+                        </div>
+                    </Grid>
+                    <Grid item lg={1}>
+                        <Hidden mdDown>
+                            <Divider
+                                orientation="vertical"
+                                style={{
+                                    maxWidth: "3px",
+                                    height: "10rem",
+                                }}
+                            />
+                        </Hidden>
+                    </Grid>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={12}
+                    lg={3}
+                    container
+                    direction="column"
+                    justify="center"
+                    alignItems="center"
+                    spacing={1}
+                    // style={{ backgroundColor: "orange" }}
+                >
+                    <Grid item xs={12}>
+                        <Button
+                            size="large"
+                            className={classes.button}
+                            style={{
+                                background:
+                                    "linear-gradient(45deg,#097CEB,#ffffff)",
+                            }}
+                            startIcon={
+                                <FacebookIcon className={classes.logo} />
+                            }
+                            onClick={(event) => {
+                                if (user.socialLinks?.facebook)
+                                    window.open(user.socialLinks.facebook);
+                            }}
+                        >
+                            Facebook
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            size="large"
+                            className={classes.button}
+                            style={{
+                                color: "white",
+                                background:
+                                    "linear-gradient(45deg,#4078c0,#6e5494,#bd2c00,#c9510c,#6cc644,#fafafa)",
+                            }}
+                            startIcon={<GitHubIcon className={classes.logo} />}
+                            onClick={(event) => {
+                                if (user.socialLinks?.facebook)
+                                    window.open(user.socialLinks.github);
+                            }}
+                        >
+                            Github
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            size="large"
+                            className={classes.button}
+                            style={{
+                                background:
+                                    "radial-gradient(circle farthest-corner at 35% 90%, #fec564, transparent 50%), radial-gradient(circle farthest-corner at 0 140%, #fec564, transparent 50%), radial-gradient(ellipse farthest-corner at 0 -25%, #5258cf, transparent 50%), radial-gradient(ellipse farthest-corner at 20% -50%, #5258cf, transparent 50%), radial-gradient(ellipse farthest-corner at 100% 0, #893dc2, transparent 50%), radial-gradient(ellipse farthest-corner at 60% -20%, #893dc2, transparent 50%), radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent), linear-gradient(#6559ca, #bc318f 30%, #e33f5f 50%, #f77638 70%, #fec66d 100%)",
+                            }}
+                            startIcon={
+                                <InstagramIcon className={classes.logo} />
+                            }
+                            onClick={(event) => {
+                                if (user.socialLinks?.facebook)
+                                    window.open(user.socialLinks.instagram);
+                            }}
+                        >
+                            Instagram
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            size="large"
+                            className={classes.button}
+                            style={{
+                                color: "white",
+                                background:
+                                    "linear-gradient(45deg,#0077B5,#000000,#313335,#86888A,#caccce, #00a0dc)",
+                            }}
+                            startIcon={
+                                <LinkedInIcon className={classes.logo} />
+                            }
+                            onClick={(event) => {
+                                if (user.socialLinks?.facebook)
+                                    window.open(user.socialLinks.linkedin);
+                            }}
+                        >
+                            Linkedin
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>

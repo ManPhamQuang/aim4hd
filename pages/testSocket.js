@@ -64,8 +64,8 @@ function SocketTest() {
             <div>
                 <h1>hello2</h1>
                 <h1>{auth.user.name}</h1>
-                {res.map((noti, idx) => (
-                    <h1 key={noti._id}>{noti.id}</h1>
+                {res.map((noti) => (
+                    <h1 key={noti._id}>{noti.content}</h1>
                 ))}
             </div>
         )

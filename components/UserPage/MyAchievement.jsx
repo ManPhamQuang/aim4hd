@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "2rem",
         backgroundColor: "#FFFFFF",
         boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
-        padding: "1.2rem",
+        padding: "1.5rem",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
+        borderRadius: "1.5rem",
     },
 }));
 
@@ -69,7 +70,7 @@ export default function MyAchievement({ user }) {
                 direction="row"
                 alignItems="center"
                 spacing={3}
-                justify="center"
+                justify="flex-start"
             >
                 {user.achievements.map((image) => (
                     <Grid item xs={12} md={3}>

@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(2),
         background: "#fff",
+        borderRadius: "2rem",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
     },
     box: {
         display: "flex",
@@ -149,7 +151,10 @@ const ProfilePage = ({ user }) => {
                         </div>
                     </Grid>
                     <Grid item md={9} sm={12} xs={12}>
-                        <div className={classes.container}>
+                        <div
+                            className={classes.container}
+                            style={{ marginBottom: "1.5rem" }}
+                        >
                             <div className={classes.menu}>
                                 <Typography variant="h6">
                                     {Object.keys(router.query).length === 0 &&

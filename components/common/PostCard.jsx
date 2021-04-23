@@ -48,8 +48,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
         // maxWidth: 700,
-        borderRadius: 7,
+        borderRadius: "2rem",
         margin: "10px 0",
+        boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
     },
     userCard: theme.userCard,
     media: {

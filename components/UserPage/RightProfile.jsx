@@ -133,7 +133,7 @@ const AccordionDetails = withStyles((theme2) => ({
     },
 }))(MuiAccordionDetails);
 
-export default function RightProfile({ history, user }) {
+export default function RightProfile({ feedback, user }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
@@ -157,24 +157,9 @@ export default function RightProfile({ history, user }) {
         setimgPath(e.target.src);
         setOpen(true);
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const BigImage = (
-        <div className={classes.modal}>
-            <img
-                src={imgPath}
-                onClick={handleOpen}
-                border="1"
-                style={{
-                    height: "100%",
-                    width: "100%",
-                }}
-            />
-        </div>
-    );
+    var numberOfRecommended = feedback.feedbacks.filter(
+        (feedback) => feedback.isRecommended == true
+    ).length;
 
     return (
         <div className={classes.root}>
@@ -184,7 +169,7 @@ export default function RightProfile({ history, user }) {
                     component="h2"
                     style={{ fontWeight: "bold" }}
                 >
-                    Groups
+                    GROUPS
                 </Typography>
             </div>
             <div className={classes.about} style={{ paddingBottom: "1rem" }}>
@@ -241,6 +226,16 @@ export default function RightProfile({ history, user }) {
                           );
                       })
                     : null}
+            </div>
+            <Divider variant="middle" />
+            <div className={classes.about}>
+                <Typography
+                    variant="h5"
+                    component="h2"
+                    style={{ fontWeight: "bold" }}
+                >
+                    REVIEWS
+                </Typography>
             </div>
         </div>
     );

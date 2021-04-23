@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "3rem",
     },
     grid: {
-        marginBottom: "5rem",
+        marginBottom: "2rem",
     },
 }));
 export default function Posts({ aiming, loading, setLoading }) {
@@ -61,7 +61,7 @@ export default function Posts({ aiming, loading, setLoading }) {
     }, [aiming]);
     const classes = useStyles();
     return (
-        <Grid container direction="column" spacing={4} className={classes.grid}>
+        <Grid container direction="column" spacing={2} className={classes.grid}>
             {/* show spinner when loading */}
             {posts.map((post) => (
                 <Grid item key={post._id}>

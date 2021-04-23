@@ -91,16 +91,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CenterProfile({ user, feedback }) {
+export default function CenterProfile({ user }) {
     const classes = useStyles();
     const router = useRouter();
     const [value, setValue] = React.useState(
         router.query.viewPosts ? parseInt(router.query.viewPosts, 10) : 0
     );
     const [posts, setPosts] = useState([]);
-    var numberOfRecommended = feedback.feedbacks.filter(
-        (feedback) => feedback.isRecommended == true
-    ).length;
+    // var numberOfRecommended = feedback.feedbacks.filter(
+    //     (feedback) => feedback.isRecommended == true
+    // ).length;
     useEffect(() => {
         axios
             .get(
@@ -206,9 +206,9 @@ export default function CenterProfile({ user, feedback }) {
                 <MyPost userId={user._id} />
             </div>
 
-            <div>
+            {/* <div>
                 <div style={{ marginBottom: "3px" }}>
-                    {/* <UserFeedback id={user.id} /> */}
+                    
                     <div className={classes.review}>
                         <div>
                             <Typography
@@ -238,8 +238,8 @@ export default function CenterProfile({ user, feedback }) {
                             </Typography>
                         </div>
                     </div>
-                </div>
-                <div>
+                </div> */}
+            {/* <div>
                     <List style={{ marginLeft: "2%" }}>
                         {feedback.reviewers
                             ? feedback.reviewers.map((reviewer) => {
@@ -382,8 +382,8 @@ export default function CenterProfile({ user, feedback }) {
                               })
                             : null}
                     </List>
-                </div>
-            </div>
+                </div> */}
+            {/* </div> */}
         </div>
     );
 }

@@ -106,11 +106,7 @@ export default function UserProfile({ user }) {
                     <FullProfile user={user} />
                 </Grid>
                 <Grid item xs={9}>
-                    <MainUser
-                        user={user}
-                        feedback={feedback}
-                        history={history}
-                    />
+                    <MainUser user={user} feedback={feedback} />
                 </Grid>
             </Grid>
         </React.Fragment>

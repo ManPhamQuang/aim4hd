@@ -61,19 +61,9 @@ const useStyles = makeStyles((theme) => ({
             "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
     },
     modal: {
-        position: "relative",
-        backgroundColor: theme.palette.background.paper,
-        border: "2px solid #000",
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-    modal2: {
-        position: "relative",
-        marginTop: "5px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "scroll",
     },
     gridList: {
         width: 500,
@@ -81,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         boxShadow: "6px 6px 20px rgba(122,122,122,0.4)",
+        borderRadius: "1.5rem",
     },
 }));
 
@@ -147,8 +138,8 @@ export default function Achievement({ user }) {
                 onClick={handleOpen}
                 border="1"
                 style={{
-                    height: "100%",
-                    width: "100%",
+                    height: "80vh",
+                    width: "auto",
                 }}
             />
         </div>
@@ -178,10 +169,11 @@ export default function Achievement({ user }) {
         console.log(achievement);
         const update = { title: title, url: achievement };
         let body = {
-            id: user.id,
+            id: user.id, // id of user to be updated
             achievements: [...user.achievements, update],
         };
         try {
+            // update a user profile
             const response = await axios.patch(
                 "https://aim4hd-backend.herokuapp.com/api/v1/users/update",
                 body
@@ -271,7 +263,7 @@ export default function Achievement({ user }) {
                     spacing={4}
                 >
                     {user.achievements.map((image) => (
-                        <Grid item xs={3}>
+                        <Grid item xs={12} md={6}>
                             <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
@@ -329,7 +321,7 @@ export default function Achievement({ user }) {
                         onClose={handleClose2}
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
-                        className={classes.modal2}
+                        className={classes.modal}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{

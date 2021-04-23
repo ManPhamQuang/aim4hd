@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: "none",
         paddingBottom: "1rem",
     },
+    tab: {
+        borderRadius: "2rem",
+    },
 }));
 
 export default function MainUser({ user, feedback, history }) {
@@ -64,9 +67,18 @@ export default function MainUser({ user, feedback, history }) {
                     value={value}
                     onChange={handleChange}
                     aria-label="simple tabs example"
+                    indicatorColor="secondary"
                 >
-                    <Tab label="OVERVIEW" {...a11yProps(0)} />
-                    <Tab label="MY ACHIEVEMENT" {...a11yProps(1)} />
+                    <Tab
+                        className={classes.tab}
+                        label="OVERVIEW"
+                        {...a11yProps(0)}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        label="MY ACHIEVEMENT"
+                        {...a11yProps(1)}
+                    />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -79,10 +91,10 @@ export default function MainUser({ user, feedback, history }) {
                     spacing={2}
                 >
                     <Grid item xs={8}>
-                        <CenterProfile user={user} feedback={feedback} />
+                        <CenterProfile user={user} />
                     </Grid>
                     <Grid item xs={4}>
-                        <RightProfile user={user} history={history} />
+                        <RightProfile user={user} feedback={feedback} />
                     </Grid>
                 </Grid>
             </TabPanel>

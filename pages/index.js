@@ -27,7 +27,7 @@ export default function Home() {
     // }, [aiming]);
 
     return (
-        <Grid container justify="center">
+        <Grid container justify="space-between" spacing={4}>
             {auth.user ? (
                 <Fab
                     className={classes.fab}
@@ -40,7 +40,7 @@ export default function Home() {
                     </Link>
                 </Fab>
             ) : null}
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={2}>
                 <Filter
                     loading={loading}
                     setLoading={setLoading}
@@ -48,7 +48,7 @@ export default function Home() {
                     setAiming={setAiming}
                 />
             </Grid>
-            <Grid item xs={11} md={5}>
+            <Grid item xs={11} md={6}>
                 <Posts
                     loading={loading}
                     setLoading={setLoading}
@@ -56,7 +56,7 @@ export default function Home() {
                 />
             </Grid>
             <Hidden smDown>
-                <Grid item xs={false} md={4}>
+                <Grid item xs={false} md={3}>
                     <RecommendedUsers />
                 </Grid>
             </Hidden>

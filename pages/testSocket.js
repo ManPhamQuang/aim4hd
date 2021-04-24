@@ -3,7 +3,7 @@ import io, { Socket } from "socket.io-client";
 import AuthContext from "../utils/authContext";
 
 // const socket = io.connect("http://localhost:4000");
-const endpoint = "https://aim4hd-backend.herokuapp.com/";
+const endpoint = "http://localhost:5000";
 
 function useSocket(url) {
     const [socket, setSocket] = useState(null);
@@ -35,6 +35,7 @@ function SocketTest() {
     // });
     useEffect(() => {
         const socket = io(endpoint);
+        // socket.emit("room ids", {})
         socket.emit("getNotification", { id: "606a6fb9b824bd0015da77a7" });
         socket.on(
             "notifications",

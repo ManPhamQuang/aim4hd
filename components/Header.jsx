@@ -23,6 +23,7 @@ import axios from "axios";
 import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
+import Notification from './Notification/Notification';
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -282,6 +283,7 @@ export default function DesktopHeader(props) {
                                 Profile
                             </Button> */}
                         {!auth.user && loginWithMicrosoft}
+                        {auth.user && <Notification auth={auth}/>}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}

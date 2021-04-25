@@ -7,6 +7,8 @@ import theme from "../src/theme";
 import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
 import { useRouter } from "next/router";
+import { SnackbarProvider } from "notistack";
+
 let timer;
 export default function MyApp(props) {
     const { Component, pageProps } = props;
@@ -86,10 +88,12 @@ export default function MyApp(props) {
                 value={{ user, login, logout, authData, token }}
             >
                 <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
+                    <SnackbarProvider maxSnack={3}>
+                        <CssBaseline />
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </SnackbarProvider>
                 </ThemeProvider>
             </AuthContext.Provider>
         </React.Fragment>

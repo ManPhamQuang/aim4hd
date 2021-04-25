@@ -86,6 +86,15 @@ export default function Achievement({ user }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
     const auth = useContext(AuthContext);
+    const [open3, setOpen3] = React.useState(false);
+
+    const handleClickOpen3 = () => {
+        setOpen3(true);
+    };
+
+    const handleClose3 = () => {
+        setOpen3(false);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -197,7 +206,7 @@ export default function Achievement({ user }) {
         <div style={{ height: "auto" }}>
             <div className={classes.root}>
                 <Button
-                    variant="outlined"
+                    variant="contained"
                     color="primary"
                     onClick={handleClickOpen}
                     className={classes.newAchievement}
@@ -298,10 +307,11 @@ export default function Achievement({ user }) {
                                         variant="contained"
                                         size="small"
                                         color="primary"
-                                        onClick={() => deleteAchivement(image)}
+                                        onClick={handleClickOpen3}
                                     >
                                         Delete
                                     </Button>
+
                                     <Button
                                         variant="contained"
                                         size="small"
@@ -330,6 +340,28 @@ export default function Achievement({ user }) {
                     >
                         <Fade in={open1}>{BigImage}</Fade>
                     </Modal>
+                    <Dialog open={open3} onClose={handleClose3}>
+                        <DialogTitle>
+                            Are you sure you want to delete this attachment?
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Be careful, this process can not be undone.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Delete
+                            </Button>
+                            <Button
+                                onClick={() => deleteAchivement(image)}
+                                color="primary"
+                                autoFocus
+                            >
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </React.Fragment>
             </div>
         </div>

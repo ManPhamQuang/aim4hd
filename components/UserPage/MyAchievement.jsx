@@ -12,6 +12,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +40,7 @@ export default function MyAchievement({ user }) {
     const classes = useStyles();
     const [open1, setOpen1] = React.useState(false);
     const [imgPath, setimgPath] = React.useState(0);
+    const router = useRouter();
 
     const handleOpen = (e) => {
         setimgPath(e.target.src);
@@ -72,6 +75,25 @@ export default function MyAchievement({ user }) {
                 spacing={3}
                 justify="flex-start"
             >
+                <Grid item xs={12}>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginBottom: "1rem",
+                        }}
+                    >
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() =>
+                                router.push("/profile?page=achievement")
+                            }
+                        >
+                            Achievement Management
+                        </Button>
+                    </div>
+                </Grid>
                 {user.achievements.map((image) => (
                     <Grid item xs={12} md={3}>
                         <Card className={classes.card}>

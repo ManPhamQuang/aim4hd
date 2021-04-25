@@ -153,6 +153,27 @@ export default function FullProfile({ user }) {
                             <Typography>
                                 <School school={user.school} />
                             </Typography>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                style={{
+                                    borderRadius: "2rem",
+                                    backgroundColor: "#3C9BFD",
+                                    margin: "1rem",
+                                }}
+                            >
+                                FOLLOW
+                            </Button>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                style={{
+                                    borderRadius: "2rem",
+                                    backgroundColor: "#55CF7A",
+                                }}
+                            >
+                                MESSAGE
+                            </Button>
                         </div>
                     </Grid>
                     <Grid item lg={1}>

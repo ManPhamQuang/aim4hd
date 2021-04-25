@@ -27,7 +27,7 @@ export default function Home() {
     // }, [aiming]);
 
     return (
-        <Grid container justify="space-between" spacing={4}>
+        <Grid container justify="center" spacing={6}>
             {auth.user ? (
                 <Fab
                     className={classes.fab}
@@ -48,7 +48,7 @@ export default function Home() {
                     setAiming={setAiming}
                 />
             </Grid>
-            <Grid item xs={11} md={6}>
+            <Grid item xs={11} md={7}>
                 <Posts
                     loading={loading}
                     setLoading={setLoading}

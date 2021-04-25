@@ -10,7 +10,7 @@ import NotiCard from "./NotiCard";
 
 import { withSnackbar } from "notistack";
 
-const endpoint = "http://localhost:5000";
+const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {

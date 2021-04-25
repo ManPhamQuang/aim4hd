@@ -8,8 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { withSnackbar } from "notistack";
 
-const endpoint = "http://localhost:5000";
-
 const useStyles = makeStyles((theme) => ({
     dropdown: {
         position: "absolute",

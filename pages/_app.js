@@ -2,11 +2,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
 import { useRouter } from "next/router";
+import { SnackbarProvider } from "notistack";
+
+const useStyles = makeStyles((theme) => ({
+    success: { backgroundColor: "purple" },
+    error: { backgroundColor: "blue" },
+    warning: { backgroundColor: "green" },
+    info: { backgroundColor: "yellow" }, // pass !important to change the color
+}));
+
 let timer;
 export default function MyApp(props) {
     const { Component, pageProps } = props;
@@ -15,6 +25,7 @@ export default function MyApp(props) {
     const [token, setToken] = useState(null);
     const router = useRouter();
     const [post, setPost] = useState(null);
+    const classes = useStyles();
     useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector("#jss-server-side");
@@ -86,10 +97,21 @@ export default function MyApp(props) {
                 value={{ user, login, logout, authData, token }}
             >
                 <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
+                    <SnackbarProvider
+                        hideIconVariant
+                        maxSnack={3}
+                        classes={{
+                            variantSuccess: classes.success,
+                            variantError: classes.error,
+                            variantWarning: classes.warning,
+                            variantInfo: classes.info,
+                        }}
+                    >
+                        <CssBaseline />
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </SnackbarProvider>
                 </ThemeProvider>
             </AuthContext.Provider>
         </React.Fragment>

@@ -23,6 +23,7 @@ import axios from "axios";
 import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
+import Notification from './Notification/Notification';
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -261,27 +262,9 @@ export default function DesktopHeader(props) {
                             variant="h6"
                             className={classes.title}
                         ></Typography>
-                        {/* <Button
-                            aria-describedby={id}
-                            onClick={handleClick}
-                            className={classes.button}
-                            color="inherit"
-                        >
-                            Posts
-                        </Button>
-                        <Popper id={id} open={openMenu} anchorEl={anchorEl}>
-                            <MenuList>
-                                <MenuItem>Your posts</MenuItem>
-                                <MenuItem>Your saved posts</MenuItem>
-                            </MenuList>
-                        </Popper>
-                        <Button className={classes.button} color="inherit">
-                            About
-                        </Button> */}
-                        {/* <Button className={classes.button} color="inherit">
-                                Profile
-                            </Button> */}
+                        
                         {!auth.user && loginWithMicrosoft}
+                        {auth.user && <Notification user={auth.user}/>}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}

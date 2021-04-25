@@ -9,18 +9,69 @@ import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
 
 import { withSnackbar } from "notistack";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import { red } from "@material-ui/core/colors";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import Paper from "@material-ui/core/Paper";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {
         position: "absolute",
-        width: "290px",
+        width: "360px",
+        height: "300px",
+        overflowY: "scroll",
         top: "100%",
         right: 0,
         zIndex: 2,
         backgroundColor: theme.palette.background.paper,
         boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
+        padding: "10px",
+    },
+    grow: {
+        flexGrow: "1",
+    },
+    bar: {
+        boxShadow: "none",
+        marginBottom: "10px",
+    },
+    heading: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    title: {
+        fontSize: "24px",
+        fontWeight: "bold",
+        color: "black",
+    },
+    root: {
+        maxWidth: 345,
+    },
+
+    expand: {
+        transform: "rotate(0deg)",
+        marginLeft: "auto",
+        transition: theme.transitions.create("transform", {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: "rotate(180deg)",
+    },
+    avatar: {
+        backgroundColor: red[500],
     },
 }));
 
@@ -50,20 +101,42 @@ function Notification({ user, enqueueSnackbar }) {
     }, []);
 
     return (
-        <ClickAwayListener onClickAway={() => setOpen(false)}>
-            <IconButton onClick={() => setOpen(!open)}>
-                <Badge badgeContent={notis.length} color="primary">
-                    <NotificationsIcon />
+        <>
+            <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <IconButton onClick={() => setOpen(!open)}>
+                    <Badge badgeContent={notis.length} color="primary">
+                        <NotificationsIcon />
+                    </Badge>
                     {open && (
-                        <div className={classes.dropdown}>
+                        <Paper className={classes.dropdown} variant="outlined">
+                            <AppBar
+                                className={classes.bar}
+                                position="static"
+                                color="transparent"
+                            >
+                                <Toolbar disableGutters>
+                                    <Typography
+                                        variant="h5"
+                                        className={classes.title}
+                                    >
+                                        Notifications
+                                    </Typography>
+                                    <div className={classes.grow} />
+                                    <IconButton>
+                                        <MoreVertIcon />
+                                        {/* TODO: add the mark all noti function as read here */}
+                                    </IconButton>
+                                </Toolbar>
+                            </AppBar>
+
                             {notis.map((noti) => (
                                 <NotiCard noti={noti} />
                             ))}
-                        </div>
+                        </Paper>
                     )}
-                </Badge>
-            </IconButton>
-        </ClickAwayListener>
+                </IconButton>
+            </ClickAwayListener>
+        </>
     );
 }
 

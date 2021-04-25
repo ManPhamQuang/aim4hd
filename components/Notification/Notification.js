@@ -4,73 +4,67 @@ import AuthContext from "../../utils/authContext";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-import Snackbar from "@material-ui/core/Snackbar";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { makeStyles } from "@material-ui/core/styles";
+import NotiCard from "./NotiCard";
+
 import { withSnackbar } from "notistack";
 
-// const socket = io.connect("http://localhost:4000");
 const endpoint = "http://localhost:5000";
 
-function useSocket(url) {
-    const [socket, setSocket] = useState(null);
+const useStyles = makeStyles((theme) => ({
+    dropdown: {
+        position: "absolute",
+        width: "290px",
+        top: "100%",
+        right: 0,
+        zIndex: 2,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
+    },
+}));
 
-    useEffect(() => {
-        const socketIo = io(url);
-
-        setSocket(socketIo);
-
-        function cleanup() {
-            socketIo.disconnect();
-        }
-        return cleanup;
-
-        // should only run once and not on every re-render,
-        // so pass an empty array
-    }, []);
-
-    return socket;
-}
-
-function Notification({ auth, enqueueSnackbar }) {
-    const [res, setRes] = useState([]);
-    // socket.on("notifications", ({ notifications }) => {
-    //     console.log("getting messages");
-    //     console.log(notifications);
-    //     setRes(notifications);
-    // });
+function Notification({ user, enqueueSnackbar }) {
+    const [notis, setNotis] = useState([]);
+    const [open, setOpen] = useState(false);
+    const classes = useStyles();
     useEffect(() => {
         const socket = io(endpoint);
         // socket.emit("room ids", {})
-        socket.emit("getNotification", { id: auth.user._id });
+        socket.emit("getNotification", { id: user._id });
         socket.on(
             "notifications",
             ({ notifications }) => {
-                console.log("getting messages");
-                // console.log(notifications);
-                setRes(notifications);
+                setNotis(notifications);
                 // clean up when unmount
                 return () => io.disconnect();
             },
             []
         );
         socket.on("newNoti", (data) => {
-            setRes((res) => [data, ...res]);
-            enqueueSnackbar(data.content);
+            setNotis((res) => [data, ...res]);
+            enqueueSnackbar(data.content, {
+                variant: "info",
+            });
         });
-        // if (auth.user) {
-        //     console.log("ran with user id: " + auth.user.id);
-        //     socket.emit("getNotification", { id: auth.user?._id }); // somehow auth is not ready when emitting getNotification
-        // }
-        // return socket.close();
     }, []);
 
     return (
-        auth.user && (
-            <Badge badgeContent={res.length} color="primary">
-                <NotificationsIcon />
-            </Badge>
-        )
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <IconButton onClick={() => setOpen(!open)}>
+                <Badge badgeContent={notis.length} color="primary">
+                    <NotificationsIcon />
+                    {open && (
+                        <div className={classes.dropdown}>
+                            {notis.map((noti) => (
+                                <NotiCard noti={noti} />
+                            ))}
+                        </div>
+                    )}
+                </Badge>
+            </IconButton>
+        </ClickAwayListener>
     );
-    // change some render thing for id to pass TOTO: FIX THIS SHIT LATER
 }
 
 export default withSnackbar(Notification);

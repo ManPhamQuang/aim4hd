@@ -7,7 +7,6 @@ import Badge from "@material-ui/core/Badge";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
-
 import { withSnackbar } from "notistack";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";

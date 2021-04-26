@@ -69,7 +69,17 @@ export default function MyApp(props) {
         clearTimeout(timer);
         router.push("/");
         if (!state)
-            setTimeout(() => alert("Session expired. Please login again"), 0);
+            setTimeout(() =>
+                enqueueSnackbar("Session expired. Please login again", {
+                    variant: "error",
+                    anchorOrigin: {
+                        vertical: "top",
+                        horizontal: "center",
+                    },
+                    autoHideDuration: 4000,
+                    persist: true,
+                })
+            );
     }, []);
 
     useEffect(() => {
@@ -98,7 +108,6 @@ export default function MyApp(props) {
             >
                 <ThemeProvider theme={theme}>
                     <SnackbarProvider
-                        hideIconVariant
                         maxSnack={3}
                         classes={{
                             variantSuccess: classes.success,

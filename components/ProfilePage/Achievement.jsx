@@ -31,8 +31,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-
-import CardHeader from "@material-ui/core/CardHeader";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Achievement({ user }) {
+function Achievement({ user, enqueueSnackbar }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [image, setImage] = useState(null);
@@ -134,12 +133,28 @@ export default function Achievement({ user }) {
                 const data = {};
                 data.user = response.data.data.user;
                 auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully update your profile", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            alert("ERROR");
+            enqueueSnackbar("An error has occured!", {
+                variant: "error",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
         }
         setImageToBeDelete([]);
         setOpen3(false);
@@ -178,6 +193,14 @@ export default function Achievement({ user }) {
                 achievement = response.data.secure_url;
             } catch (error) {
                 console.log(error);
+                enqueueSnackbar("An error has occured!", {
+                    variant: "error",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    autoHideDuration: 4000,
+                });
             }
         }
         console.log(achievement);
@@ -198,13 +221,30 @@ export default function Achievement({ user }) {
                 const data = {};
                 data.user = response.data.data.user;
                 auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully update your profile", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            alert("ERROR");
+            enqueueSnackbar("An error has occured!", {
+                variant: "error",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
         }
+        setOpen(false);
     };
 
     return (
@@ -374,3 +414,5 @@ export default function Achievement({ user }) {
         </div>
     );
 }
+
+export default withSnackbar(Achievement);

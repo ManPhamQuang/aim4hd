@@ -87,9 +87,12 @@ export default function Achievement({ user }) {
     const openMenu = Boolean(anchorEl);
     const auth = useContext(AuthContext);
     const [open3, setOpen3] = React.useState(false);
+    const [imageToBeDelete, setImageToBeDelete] = React.useState([]);
 
-    const handleClickOpen3 = () => {
+    const handleClickOpen3 = (image) => {
+        // console.log(image);
         setOpen3(true);
+        setImageToBeDelete(image);
     };
 
     const handleClose3 = () => {
@@ -138,6 +141,8 @@ export default function Achievement({ user }) {
             console.log(error);
             alert("ERROR");
         }
+        setImageToBeDelete([]);
+        setOpen3(false);
     };
 
     const BigImage = (
@@ -307,7 +312,7 @@ export default function Achievement({ user }) {
                                         variant="contained"
                                         size="small"
                                         color="primary"
-                                        onClick={handleClickOpen3}
+                                        onClick={() => handleClickOpen3(image)}
                                     >
                                         Delete
                                     </Button>
@@ -350,15 +355,17 @@ export default function Achievement({ user }) {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                                Delete
+                            <Button onClick={handleClose3} color="primary">
+                                Cancel
                             </Button>
                             <Button
-                                onClick={() => deleteAchivement(image)}
+                                onClick={() =>
+                                    deleteAchivement(imageToBeDelete)
+                                }
                                 color="primary"
                                 autoFocus
                             >
-                                Cancel
+                                Delete
                             </Button>
                         </DialogActions>
                     </Dialog>

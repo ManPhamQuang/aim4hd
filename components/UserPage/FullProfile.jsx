@@ -176,7 +176,7 @@ export default function FullProfile({ user }) {
                             </Button>
                         </div>
                     </Grid>
-                    <Grid item lg={1}>
+                    <Grid item container lg={1}>
                         <Hidden mdDown>
                             <Divider
                                 orientation="vertical"

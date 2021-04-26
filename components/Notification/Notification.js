@@ -23,7 +23,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import Paper from "@material-ui/core/Paper";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import clsx from "clsx";
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +38,22 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
         padding: "10px",
-        borderRadius: "1rem",
+        borderRadius: "0.3rem",
+        "&::-webkit-scrollbar": {
+            width: "0.4em",
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            borderRadius: "2rem",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.1)",
+            borderRadius: "2rem",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "rgba(0,0,0,.5)",
+        },
     },
     grow: {
         flexGrow: "1",
@@ -74,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: red[500],
     },
+    notiIcon: {
+        color: "#4395FF",
+    },
 }));
 
 function Notification({ user, enqueueSnackbar }) {
@@ -101,12 +119,16 @@ function Notification({ user, enqueueSnackbar }) {
         });
     }, []);
 
+    const iconClass = clsx({
+        [classes.notiIcon]: open,
+    });
+
     return (
         <>
             <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <IconButton onClick={() => setOpen(!open)}>
                     <Badge badgeContent={notis.length} color="primary">
-                        <NotificationsIcon />
+                        <NotificationsIcon className={iconClass} />
                     </Badge>
                     {open && (
                         <Paper className={classes.dropdown} variant="outlined">

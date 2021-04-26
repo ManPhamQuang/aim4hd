@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Fab, Avatar } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import { withSnackbar } from "notistack";
 
-const ImageUpload = ({ image, setImage }) => {
+const ImageUpload = ({ image, setImage, enqueueSnackbar }) => {
     const [preview, setPreview] = useState(null);
 
     useEffect(() => {
@@ -15,7 +16,9 @@ const ImageUpload = ({ image, setImage }) => {
     const handleImageOnChange = (e) => {
         const file = e.target.files[0];
         if (!file) return setImage(null);
-        if (file.size > 71680) return alert("File is too big!");
+        if (file.size > 71680) {
+            enqueueSnackbar("File is too big!", { variant: "error" });
+        }
         setImage(e.target.files[0]);
     };
 
@@ -58,4 +61,4 @@ const ImageUpload = ({ image, setImage }) => {
     );
 };
 
-export default ImageUpload;
+export default withSnackbar(ImageUpload);

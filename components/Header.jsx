@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: theme.background.main,
         // background: "transparent",
         // boxShadow: "none",
-        color: "black",
+        backgroundColor: "#fff",
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
     },
@@ -243,8 +243,8 @@ export default function DesktopHeader(props) {
 
     return (
         <div className={classes.root}>
-            <ElevationScroll {...props}>
-                <AppBar className={classes.appbar} position="fixed">
+            {/* <ElevationScroll {...props}> */}
+                <AppBar className={classes.appbar} elevation={1} position="fixed">
                     {isLoading && <LoadingSpinner isLoading={isLoading} />}
 
                     <Toolbar className={classes.toolbar} spacing={3}>
@@ -376,7 +376,7 @@ export default function DesktopHeader(props) {
                         )}
                     </Toolbar>
                 </AppBar>
-            </ElevationScroll>
+            {/* </ElevationScroll> */}
 
             <Toolbar style={{ height: "120px" }} />
         </div>

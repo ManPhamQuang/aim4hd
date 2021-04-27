@@ -150,9 +150,7 @@ export default function FullProfile({ user }) {
                             >
                                 {user.major}
                             </Typography>
-                            <Typography>
                                 <School school={user.school} />
-                            </Typography>
                             <Button
                                 variant="contained"
                                 size="large"

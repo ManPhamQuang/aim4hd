@@ -177,6 +177,7 @@ export default function RightProfile({ feedback, user }) {
                     ? posts.map((group) => {
                           return (
                               <Accordion
+                                  key={group._id}
                                   square
                                   expanded={expanded === group.id}
                                   onChange={handleChange2(group.id)}
@@ -200,6 +201,7 @@ export default function RightProfile({ feedback, user }) {
                                                 (member) => {
                                                     return (
                                                         <Chip
+                                                            key={member._id}
                                                             className={
                                                                 classes.chipTest
                                                             }

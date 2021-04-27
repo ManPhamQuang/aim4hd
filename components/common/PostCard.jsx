@@ -289,7 +289,7 @@ export default function PostCard({
                     {content}
                 </Typography>
                 <Link href={`/posts/${_id}`}>
-                    <Typography variant="a" className={classes.titleLink}>
+                    <Typography  className={classes.titleLink}>
                         Read more
                     </Typography>
                 </Link>

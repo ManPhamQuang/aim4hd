@@ -44,6 +44,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import { green } from "@material-ui/core/colors";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
+import { withSnackbar } from "notistack";
 // export async function getStaticPaths() {
 //     // get list of post to populate paths
 //     let posts = await getPosts();
@@ -273,7 +274,17 @@ function PostPage({
                     appliedStudentsData.filter((s) => s.id !== student.id)
                 );
                 setapprovedMembersData([...approvedMembersData, student]);
-                setTimeout(() => alert("Successfully approve member"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully approve member", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
@@ -297,7 +308,17 @@ function PostPage({
                     (m) => m.id !== student.id
                 );
                 setapprovedMembersData(data);
-                setTimeout(() => alert("Successfully remove member"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully approve member", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
@@ -526,4 +547,4 @@ function PostPage({
     );
 }
 
-export default PostPage;
+export default withSnackbar(PostPage);

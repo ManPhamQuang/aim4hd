@@ -23,10 +23,11 @@ import axios from "axios";
 import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
-import Notification from './Notification/Notification';
+import Notification from "./Notification/Notification";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
+import { withSnackbar } from "notistack";
 
 function ElevationScroll(props) {
     const { children, window } = props;
@@ -198,7 +199,8 @@ export default function DesktopHeader(props) {
                 setIsLoading(false);
                 console.log(data);
                 auth.login("login", data);
-            } else alert("Please use your rmit accoutn to login");
+            } else {
+            }
         }
     };
 
@@ -262,9 +264,9 @@ export default function DesktopHeader(props) {
                             variant="h6"
                             className={classes.title}
                         ></Typography>
-                        
+
                         {!auth.user && loginWithMicrosoft}
-                        {auth.user && <Notification user={auth.user}/>}
+                        {auth.user && <Notification user={auth.user} />}
                         {auth.user && (
                             <ClickAwayListener
                                 onClickAway={() => setOpen(false)}

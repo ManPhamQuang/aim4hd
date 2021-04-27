@@ -31,8 +31,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-
-import CardHeader from "@material-ui/core/CardHeader";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Achievement({ user }) {
+function Achievement({ user, enqueueSnackbar }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [image, setImage] = useState(null);
@@ -87,9 +86,12 @@ export default function Achievement({ user }) {
     const openMenu = Boolean(anchorEl);
     const auth = useContext(AuthContext);
     const [open3, setOpen3] = React.useState(false);
+    const [imageToBeDelete, setImageToBeDelete] = React.useState([]);
 
-    const handleClickOpen3 = () => {
+    const handleClickOpen3 = (image) => {
+        // console.log(image);
         setOpen3(true);
+        setImageToBeDelete(image);
     };
 
     const handleClose3 = () => {
@@ -131,13 +133,31 @@ export default function Achievement({ user }) {
                 const data = {};
                 data.user = response.data.data.user;
                 auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully update your profile", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            alert("ERROR");
+            enqueueSnackbar("An error has occured!", {
+                variant: "error",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
         }
+        setImageToBeDelete([]);
+        setOpen3(false);
     };
 
     const BigImage = (
@@ -173,6 +193,14 @@ export default function Achievement({ user }) {
                 achievement = response.data.secure_url;
             } catch (error) {
                 console.log(error);
+                enqueueSnackbar("An error has occured!", {
+                    variant: "error",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    autoHideDuration: 4000,
+                });
             }
         }
         console.log(achievement);
@@ -193,13 +221,30 @@ export default function Achievement({ user }) {
                 const data = {};
                 data.user = response.data.data.user;
                 auth.login("update", data);
-                setTimeout(() => alert("Successfully update your profile"), 0);
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully update your profile", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        autoHideDuration: 4000,
+                    })
+                );
             }
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            alert("ERROR");
+            enqueueSnackbar("An error has occured!", {
+                variant: "error",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
         }
+        setOpen(false);
     };
 
     return (
@@ -307,7 +352,7 @@ export default function Achievement({ user }) {
                                         variant="contained"
                                         size="small"
                                         color="primary"
-                                        onClick={handleClickOpen3}
+                                        onClick={() => handleClickOpen3(image)}
                                     >
                                         Delete
                                     </Button>
@@ -350,15 +395,17 @@ export default function Achievement({ user }) {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                                Delete
+                            <Button onClick={handleClose3} color="primary">
+                                Cancel
                             </Button>
                             <Button
-                                onClick={() => deleteAchivement(image)}
+                                onClick={() =>
+                                    deleteAchivement(imageToBeDelete)
+                                }
                                 color="primary"
                                 autoFocus
                             >
-                                Cancel
+                                Delete
                             </Button>
                         </DialogActions>
                     </Dialog>
@@ -367,3 +414,5 @@ export default function Achievement({ user }) {
         </div>
     );
 }
+
+export default withSnackbar(Achievement);

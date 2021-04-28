@@ -26,9 +26,11 @@ import axios from "axios";
 
 import clsx from "clsx";
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {
+        padding: "5px",
         position: "absolute",
         width: "360px",
         height: "300px",
@@ -38,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 2,
         backgroundColor: theme.palette.background.paper,
         boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
-        padding: "10px",
+
         borderRadius: "0.3rem",
         "&::-webkit-scrollbar": {
             width: "0.4em",
@@ -61,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
     },
     bar: {
         boxShadow: "none",
-        marginBottom: "10px",
     },
     heading: {
         display: "flex",
@@ -165,6 +166,7 @@ function Notification({ user, enqueueSnackbar }) {
                                     <Typography
                                         variant="h5"
                                         className={classes.title}
+                                        style={{ paddingLeft: "10px" }}
                                     >
                                         Notifications
                                     </Typography>
@@ -175,7 +177,7 @@ function Notification({ user, enqueueSnackbar }) {
                                     </IconButton>
                                 </Toolbar>
                             </AppBar>
-
+                            <Divider style={{ marginBottom: "1rem" }} />
                             {notis.map((noti) => (
                                 <NotiCard noti={noti} />
                             ))}

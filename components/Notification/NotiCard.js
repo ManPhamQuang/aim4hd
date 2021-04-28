@@ -17,7 +17,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import TimeAgo from "react-timeago";
 import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: "none",
         "&:hover": {
             boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
+            backgroundColor: "rgba(0, 0, 0, 0.08)",
         },
+        borderRadius: "1rem",
     },
     cardHeader: {
         padding: 0,
@@ -49,8 +51,6 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         backgroundColor: red[500],
-        width: theme.spacing(6),
-        height: theme.spacing(6),
     },
 }));
 
@@ -60,21 +60,18 @@ function NotiCard({ noti }) {
     return (
         <Card className={classes.root}>
             <CardHeader
-                classes={{
-                    root: classes.cardHeader,
-                }}
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
+                    <Avatar
+                        className={classes.avatar}
+                        src={noti.sender.avatar}
+                    />
                 }
                 title={noti.content}
                 titleTypographyProps={{
-                    variant: "body1",
-                    component: "p",
+                    variant: "body2",
                     align: "left",
                 }}
-                subheader="September 14, 2016"
+                subheader={<TimeAgo date={noti.createdAt} />}
                 subheaderTypographyProps={{
                     align: "left",
                     variant: "subtitle2",

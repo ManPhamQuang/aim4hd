@@ -170,7 +170,8 @@ export default function FullProfile({ user }) {
                                 }}
                             >
                                 MESSAGE
-                            </Button>
+                            </Button>{" "}
+                            */}
                         </div>
                     </Grid>
                     <Grid item container lg={1}>

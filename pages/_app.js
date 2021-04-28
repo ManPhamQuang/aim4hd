@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let timer;
-export default function MyApp(props) {
+export default function MyApp(props, enqueueSnackbar) {
     const { Component, pageProps } = props;
     const [user, setUser] = useState(null);
     const [authData, setAuthData] = useState(null);

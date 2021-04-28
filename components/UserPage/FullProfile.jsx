@@ -1,6 +1,5 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../Newsfeed/Posts";
 import Filter from "../Newsfeed/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -150,7 +149,7 @@ export default function FullProfile({ user }) {
                             >
                                 {user.major}
                             </Typography>
-                                <School school={user.school} />
+                            <School school={user.school} />
                             <Button
                                 variant="contained"
                                 size="large"

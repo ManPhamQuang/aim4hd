@@ -4,6 +4,7 @@ import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import VisibilitySensor from "react-visibility-sensor";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,16 +26,24 @@ export default function Posts({ aiming, loading, setLoading }) {
     const [page, setPage] = useState(1);
     const [visible, setVisible] = useState(false);
     const [endOfList, setEndOfList] = useState(false);
+    const router = useRouter();
+    const { type } = router.query;
+
     const onChange = (isVisible) => {
         // console.log("Element is now %s", isVisible ? "visible" : "hidden");
         setVisible(isVisible);
     };
     const fetchPosts = () => {
+        // console.log(router.query.aiming);
+        // console.log(router.query?.aiming);
         // setLoading(true);
         axios
             .get(
                 `https://aim4hd-backend.herokuapp.com/api/v1/posts?&limit=3&page=${page}${
-                    aiming != "" ? `&aiming=${aiming}` : ""
+                    router.query.aiming != "" &&
+                    router.query.aiming != undefined
+                        ? `&aiming=${router.query.aiming}`
+                        : ""
                 }&sort=-createdAt`
             )
             .then((res) => {
@@ -50,15 +59,18 @@ export default function Posts({ aiming, loading, setLoading }) {
             .catch((err) => console.log(err));
     };
     useEffect(() => {
-        if (visible && !loading) {
-            setLoading(true);
-            fetchPosts();
-        }
-    }, [visible]);
-    useEffect(() => {
-        setPosts([]);
-        setPage(1);
-    }, [aiming]);
+        fetchPosts();
+    }, [router.query]);
+    // useEffect(() => {
+    //     if (visible && !loading) {
+    //         setLoading(true);
+    //         fetchPosts();
+    //     }
+    // }, [visible]);
+    // useEffect(() => {
+    //     setPosts([]);
+    //     setPage(1);
+    // }, [aiming]);
     const classes = useStyles();
     return (
         <Grid container direction="column" spacing={2} className={classes.grid}>

@@ -60,7 +60,12 @@ function NotiCard({ noti }) {
     return (
         <Card className={classes.root}>
             <CardHeader
-                avatar={<Avatar className={classes.avatar}>R</Avatar>}
+                avatar={
+                    <Avatar
+                        className={classes.avatar}
+                        src={noti.sender.avatar}
+                    />
+                }
                 title={noti.content}
                 titleTypographyProps={{
                     fontWeight: "100",

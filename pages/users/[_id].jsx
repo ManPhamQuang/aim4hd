@@ -1,6 +1,5 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../../components/Newsfeed/Posts";
 import Filter from "../../components/Newsfeed/Filter";
 import FullProfile from "../../components/UserPage/FullProfile";
 import MainUser from "../../components/MainUser";

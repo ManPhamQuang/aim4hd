@@ -13,8 +13,10 @@ import {
     Select,
     MenuItem,
     Input,
+    Button,
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 const useStyles = makeStyles((theme) => ({
     breaker: {
         backgroundColor: theme.palette.primary.main,
@@ -73,6 +75,8 @@ const MenuProps = {
 };
 export default function Filter({ aiming, setAiming }) {
     const [items, setItems] = useState(aiming);
+    const [aim, setAim] = useState("");
+    const router = useRouter();
     const classes = useStyles();
     const Breaker = () => {
         return <div className={classes.breaker}></div>;
@@ -80,8 +84,14 @@ export default function Filter({ aiming, setAiming }) {
 
     const handleChange = (e) => {
         setItems(e.target.value);
-        // setAiming(e.target.value);
     };
+
+    const setFilter = () => {
+        router.push({
+            query: { aiming: items.join() },
+        });
+    };
+
     return (
         <div>
             {/* Desktop */}
@@ -111,6 +121,7 @@ export default function Filter({ aiming, setAiming }) {
                             </MenuItem>
                         ))}
                     </Select>
+                    <Button onClick={setFilter}>Apply filter</Button>
                 </FormControl>
                 {/* <FormControl className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label">

@@ -153,7 +153,7 @@ export default function FullProfile({ user }) {
                             <Typography>
                                 <School school={user.school} />
                             </Typography>
-                            <Button
+                            {/* <Button
                                 variant="contained"
                                 size="large"
                                 style={{
@@ -173,7 +173,7 @@ export default function FullProfile({ user }) {
                                 }}
                             >
                                 MESSAGE
-                            </Button>
+                            </Button> */}
                         </div>
                     </Grid>
                     <Grid item container lg={1}>

@@ -154,9 +154,7 @@ function Notification({ user, enqueueSnackbar }) {
                             </AppBar>
                             <Divider style={{ marginBottom: "1rem" }} />
                             {notis.map((noti) => (
-                                <React.Fragment>
-                                    <NotiCard noti={noti} />
-                                </React.Fragment>
+                                <NotiCard noti={noti} />
                             ))}
                         </Paper>
                     )}

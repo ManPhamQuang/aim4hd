@@ -17,7 +17,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import TimeAgo from "react-timeago";
 import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
@@ -68,10 +68,10 @@ function NotiCard({ noti }) {
                 }
                 title={noti.content}
                 titleTypographyProps={{
-                    fontWeight: "100",
+                    variant: "body2",
                     align: "left",
                 }}
-                subheader="September 14, 2016"
+                subheader={<TimeAgo date={noti.createdAt} />}
                 subheaderTypographyProps={{
                     align: "left",
                     variant: "subtitle2",

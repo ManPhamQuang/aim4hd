@@ -90,10 +90,10 @@ export default function MainUser({ user, feedback, history }) {
                     alignItems="stretch"
                     spacing={2}
                 >
-                    <Grid item xs={8}>
+                    <Grid item xs={12} md={8}>
                         <CenterProfile user={user} />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4}>
                         <RightProfile user={user} feedback={feedback} />
                     </Grid>
                 </Grid>

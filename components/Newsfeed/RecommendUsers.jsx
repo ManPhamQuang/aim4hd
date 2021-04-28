@@ -1,16 +1,11 @@
-import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-import { Container, Grid } from "@material-ui/core";
+import { Avatar, Container, Grid, CardHeader } from "@material-ui/core";
 import Link from "next/link";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         backgroundColor: "transparent",
         ...theme.userCard,
+    },
+    cardHeaderRoot: {
+        [theme.breakpoints.down("md")]: {
+            padding: "8px !important",
+        },
     },
     details: {
         display: "flex",
@@ -31,14 +31,26 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         height: "3px",
         marginBottom: "5px",
+        [theme.breakpoints.down("md")]: {
+            marginBottom: "15px",
+        },
     },
     cover: {
-        width: 110,
-        height: 110,
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+        [theme.breakpoints.down("md")]: {
+            width: theme.spacing(7),
+            height: theme.spacing(7),
+        },
         borderRadius: "7px",
         // width: "100%",
         // height: "100%",
         objectFit: "cover",
+    },
+    gridItem: {
+        [theme.breakpoints.down("md")]: {
+            padding: "5px !important",
+        },
     },
 }));
 
@@ -55,27 +67,26 @@ export default function RecommenedUsers() {
             .then((res) => setUsers(res.data.data.user))
             .catch((err) => console.log(err));
     }, []);
+
     const UserCard = ({ user }) => {
         return (
             <Card className={classes.root}>
-                <CardMedia
-                    className={classes.cover}
-                    image={user.avatar}
-                    title="Live from space album cover"
+                <CardHeader
+                    classes={{ root: classes.cardHeaderRoot }}
+                    avatar={
+                        <Avatar src={user.avatar} className={classes.cover} />
+                    }
+                    title={user.name}
+                    titleTypographyProps={{
+                        variant: "body2",
+                        align: "left",
+                    }}
+                    subheader={`${user.major} - ${user.school}`}
+                    subheaderTypographyProps={{
+                        align: "left",
+                        variant: "subtitle2",
+                    }}
                 />
-                {/* <div className={classes.details}> */}
-                <CardContent className={classes.content}>
-                    <Typography component="h6" variant="h6">
-                        {user.name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                        {user.major}
-                    </Typography>
-                    <Typography variant="subtitle2" color="textSecondary">
-                        {user.school}
-                    </Typography>
-                </CardContent>
-                {/* </div> */}
             </Card>
         );
     };
@@ -91,7 +102,7 @@ export default function RecommenedUsers() {
             <Grid container direction="column" spacing={4}>
                 {users.map((user) => (
                     <Link href={`/users/${user._id}`} key={user._id}>
-                        <Grid item>
+                        <Grid item classes={{ item: classes.gridItem }}>
                             <UserCard user={user} />
                         </Grid>
                     </Link>

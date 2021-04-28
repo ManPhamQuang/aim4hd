@@ -3,7 +3,6 @@ import PostCard from "../common/PostCard";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import VisibilitySensor from "react-visibility-sensor";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({

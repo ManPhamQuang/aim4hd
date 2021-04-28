@@ -3,7 +3,6 @@ import PostCard from "../common/PostCard";
 import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import VisibilitySensor from "react-visibility-sensor";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,12 +79,12 @@ export default function Posts({ aiming, loading, setLoading }) {
                     <PostCard {...post} />
                 </Grid>
             ))}
-            {!endOfList ? (
+            {/* {!endOfList ? (
                 <VisibilitySensor onChange={onChange}>
                     <CircularProgress className={classes.loader} />
-                    {/* <h1>more more more</h1> */}
+                    <h1>more more more</h1>
                 </VisibilitySensor>
-            ) : null}
+            ) : null} */}
         </Grid>
     );
 }

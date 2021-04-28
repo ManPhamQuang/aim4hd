@@ -22,7 +22,7 @@ export default function usePosts(aiming, page, setPage) {
         // );
         axios({
             method: "GET",
-            url: `http://localhost:5000/api/v1/posts?&limit=4&page=${page}&aiming=${aiming}&sort=-createdAt`,
+            url: `https://aim4hd-backend.herokuapp.com/api/v1/posts?&limit=4&page=${page}&aiming=${aiming}&sort=-createdAt`,
             cancelToken: new axios.CancelToken((c) => (cancel = c)),
         })
             .then((res) => {

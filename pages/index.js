@@ -9,9 +9,6 @@ import Link from "next/link";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
 import { useRouter } from "next/router";
-import VisibilitySensor from "react-visibility-sensor";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Waypoint } from "react-waypoint";
 import usePosts from "../components/Newsfeed/usePosts";
 
 const useStyles = makeStyles((theme) => ({

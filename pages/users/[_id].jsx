@@ -100,11 +100,11 @@ export default function UserProfile({ user }) {
                 />
             </Head>
 
-            <Grid container justify="center">
-                <Grid item xs={9}>
+            <Grid container justify="center" alignItems="center">
+                <Grid item xs={11} md={9}>
                     <FullProfile user={user} />
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={11} md={9}>
                     <MainUser user={user} feedback={feedback} />
                 </Grid>
             </Grid>

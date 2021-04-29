@@ -110,9 +110,7 @@ function Notification({ user, enqueueSnackbar }) {
             .catch((err) => console.log(err));
     }, []);
     useEffect(() => {
-        console.log("useEffect running");
         if (roomIds !== null) {
-            console.log("socket running");
             console.log(roomIds);
             const socket = io(endpoint);
             socket.emit("room ids", roomIds);
@@ -135,6 +133,7 @@ function Notification({ user, enqueueSnackbar }) {
             );
             socket.on("newNoti", (data) => {
                 setNotis((res) => [data, ...res]);
+                console.log(data);
                 enqueueSnackbar(data.content, {
                     variant: "info",
                 });
@@ -152,7 +151,12 @@ function Notification({ user, enqueueSnackbar }) {
         <>
             <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <IconButton onClick={() => setOpen(!open)}>
-                    <Badge badgeContent={notis.length} color="primary">
+                    <Badge
+                        badgeContent={
+                            notis.filter((noti) => noti.read === false).length
+                        }
+                        color="primary"
+                    >
                         <NotificationsIcon className={iconClass} />
                     </Badge>
                     {open && (

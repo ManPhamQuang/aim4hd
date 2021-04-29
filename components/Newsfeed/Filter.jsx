@@ -121,7 +121,7 @@ export default function Filter({ aiming, setAiming }) {
                             </MenuItem>
                         ))}
                     </Select>
-                    <Button onClick={setFilter}>Apply filter</Button>
+                    {/* <Button onClick={setFilter}>Apply filter</Button> */}
                 </FormControl>
                 {/* <FormControl className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label">

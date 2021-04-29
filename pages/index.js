@@ -25,14 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const [aiming, setAiming] = useState(["HD"]);
-    // const [loading, setLoading] = useState(true);
     const classes = useStyles();
     const auth = useContext(AuthContext);
-    // const [posts, setPosts] = useState([]);
-    const [endOfList, setEndOfList] = useState(false);
     const [page, setPage] = useState(1);
-    const router = useRouter();
-    const [active, setActive] = useState(false);
     const { posts, hasMore, loading, error } = usePosts(aiming, page, setPage);
     const observer = useRef();
 
@@ -51,55 +46,6 @@ export default function Home() {
         },
         [loading, hasMore]
     );
-
-    const fetchPosts = () => {
-        // console.log(router.query.aiming);
-        // console.log(router.query?.aiming);
-        setLoading(true);
-        axios
-            .get(
-                `https://aim4hd-backend.herokuapp.com/api/v1/posts?&limit=5&page=${page}${
-                    router.query.aiming != "" &&
-                    router.query.aiming != undefined
-                        ? `&aiming=${router.query.aiming}`
-                        : ""
-                }&sort=-createdAt`
-            )
-            .then((res) => {
-                if (res.data.length != 0) {
-                    setPosts([...posts, ...res.data.data.posts]);
-                    setLoading(false);
-                    setActive(true);
-                } else {
-                    // no more posts, stop loading more
-                    setEndOfList(true);
-                    setActive(false);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
-    };
-
-    const onChange = (isVisible) => {
-        // console.log("Element is now %s", isVisible ? "visible" : "hidden");
-        setActive(false);
-        // setLoading(true);
-        // setPage(page + 1);
-    };
-
-    // useEffect(() => {
-    //     console.log("fetching..");
-    // }, [active]);
-
-    // useEffect(() => {
-    //     fetchPosts();
-    // }, [page]);
-
-    // useEffect(() => {
-    //     setPage(1);
-    // }, [aiming]);
 
     return (
         <Grid container justify="center" spacing={6}>
@@ -125,6 +71,8 @@ export default function Home() {
                     refVar={lastBookElementRef}
                 />
                 {loading && <CircularProgress className={classes.loader} />}
+                {!hasMore && <h2>no more data</h2>}{" "}
+                {/* TODO: Thien An pls style this part */}
             </Grid>
             <Hidden smDown>
                 <Grid item xs={false} md={3}>

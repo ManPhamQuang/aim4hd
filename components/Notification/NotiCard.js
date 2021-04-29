@@ -7,10 +7,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
+
 import Avatar from "@material-ui/core/Avatar";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -19,6 +16,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TimeAgo from "react-timeago";
 import { withSnackbar } from "notistack";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,9 +57,24 @@ const useStyles = makeStyles((theme) => ({
 
 function NotiCard({ noti }) {
     const classes = useStyles();
+    const router = useRouter();
+
+    const handleNotiClick = () => {
+        axios
+            .patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/notification/",
+                {
+                    id: noti._id,
+                    read: true,
+                }
+            )
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+        router.push(`/posts/${noti.postLink}`);
+    };
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onClick={handleNotiClick}>
             <CardHeader
                 avatar={
                     <Avatar
@@ -72,6 +86,9 @@ function NotiCard({ noti }) {
                 titleTypographyProps={{
                     variant: "body2",
                     align: "left",
+                    style: {
+                        fontWeight: noti.read ? "400" : "bold",
+                    },
                 }}
                 subheader={<TimeAgo date={noti.createdAt} />}
                 subheaderTypographyProps={{

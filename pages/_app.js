@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+    useRef,
+    forwardRef,
+    useImperativeHandle,
+} from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -8,7 +15,7 @@ import theme from "../src/theme";
 import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
 import { useRouter } from "next/router";
-import { SnackbarProvider } from "notistack";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     success: { backgroundColor: "purple" },
@@ -18,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let timer;
-export default function MyApp(props, enqueueSnackbar) {
+function MyApp(props) {
     const { Component, pageProps } = props;
     const [user, setUser] = useState(null);
     const [authData, setAuthData] = useState(null);
     const [token, setToken] = useState(null);
     const router = useRouter();
-    const [post, setPost] = useState(null);
+    const LogOutNotice = useRef();
     const classes = useStyles();
     useEffect(() => {
         // Remove the server-side injected CSS.
@@ -69,7 +76,15 @@ export default function MyApp(props, enqueueSnackbar) {
         clearTimeout(timer);
         router.push("/");
         if (!state)
-            setTimeout(() =>
+            setTimeout(() => {
+                LogOutNotice.current.getAlert();
+            });
+    }, []);
+
+    const LogOutComponent = forwardRef((props, ref) => {
+        const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+        useImperativeHandle(ref, () => ({
+            getAlert() {
                 enqueueSnackbar("Session expired. Please login again", {
                     variant: "error",
                     anchorOrigin: {
@@ -77,10 +92,12 @@ export default function MyApp(props, enqueueSnackbar) {
                         horizontal: "center",
                     },
                     autoHideDuration: 4000,
-                    persist: true,
-                })
-            );
-    }, []);
+                    // persist: true,
+                });
+            },
+        }));
+        return null;
+    });
 
     useEffect(() => {
         if (localStorage.getItem("user")) {
@@ -118,6 +135,7 @@ export default function MyApp(props, enqueueSnackbar) {
                     >
                         <CssBaseline />
                         <Layout>
+                            <LogOutComponent ref={LogOutNotice} />
                             <Component {...pageProps} />
                         </Layout>
                     </SnackbarProvider>
@@ -131,3 +149,5 @@ MyApp.propTypes = {
     Component: PropTypes.elementType.isRequired,
     pageProps: PropTypes.object.isRequired,
 };
+
+export default MyApp;

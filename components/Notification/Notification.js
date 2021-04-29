@@ -179,7 +179,7 @@ function Notification({ user, enqueueSnackbar }) {
                             </AppBar>
                             <Divider style={{ marginBottom: "1rem" }} />
                             {notis.map((noti) => (
-                                <NotiCard noti={noti} />
+                                <NotiCard noti={noti} key={noti._id} />
                             ))}
                         </Paper>
                     )}

@@ -47,8 +47,7 @@ function MyApp(props) {
         if (status === "signup" || status === "login") {
             setUser(data.user);
             setToken(data.token);
-            let expireTime = 10000;
-            // let expireTime = 1000 * 60 * 60;
+            let expireTime = 1000 * 60 * 60;
             let startSessionAt = Date.now() + expireTime;
             timer = setTimeout(logout, expireTime);
             localStorage.setItem(

@@ -17,8 +17,8 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     paper: {
         // marginTop: theme.spacing(8),
@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
     autoCompleteRoot: {
         width: 500,
-        '& > * + *': {
+        "& > * + *": {
             marginTop: theme.spacing(3),
         },
-    }
+    },
 }));
 
 function UserProfile({ user, courses, skills, enqueueSnackbar }) {
@@ -134,8 +134,13 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        console.log(input.currentCourses)
-        if (validateUrl(input.socialLinks.github, patterns.github) && validateUrl(input.socialLinks.facebook, patterns.facebook) && validateUrl(input.socialLinks.linkedin, patterns.linkedin) && validateUrl(input.socialLinks.instagram, patterns.instagram)) {
+        console.log(input.currentCourses);
+        if (
+            validateUrl(input.socialLinks.github, patterns.github) &&
+            validateUrl(input.socialLinks.facebook, patterns.facebook) &&
+            validateUrl(input.socialLinks.linkedin, patterns.linkedin) &&
+            validateUrl(input.socialLinks.instagram, patterns.instagram)
+        ) {
             setIsLoading(true);
             let avatar;
             if (image) {
@@ -467,7 +472,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                     </Button>
                 </form>
             </div>
-        </Container >
+        </Container>
     );
 }
 export default withSnackbar(UserProfile);

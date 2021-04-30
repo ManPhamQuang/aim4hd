@@ -355,13 +355,10 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                                 {...params}
                                 variant="outlined"
                                 label="Current Course"
-                                placeholder="Favorites"
+                            // placeholder="Favorites"
                             />
                         )}
                     />
-
-
-
                     {/* <TextField
                         color="secondary"
                         select

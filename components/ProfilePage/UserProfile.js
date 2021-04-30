@@ -17,6 +17,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         zIndex: 10,
     },
+    autoCompleteRoot: {
+        width: 500,
+        '& > * + *': {
+            marginTop: theme.spacing(3),
+        },
+    }
 }));
 
 export default function UserProfile({ user, courses, skills }) {
@@ -128,8 +135,8 @@ export default function UserProfile({ user, courses, skills }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
+        console.log(input.currentCourses)
         if (validateUrl(input.socialLinks.github, patterns.github) && validateUrl(input.socialLinks.facebook, patterns.facebook) && validateUrl(input.socialLinks.linkedin, patterns.linkedin) && validateUrl(input.socialLinks.instagram, patterns.instagram)) {
-
             setIsLoading(true);
             let avatar;
             if (image) {
@@ -174,6 +181,12 @@ export default function UserProfile({ user, courses, skills }) {
         //     alert("Invalid social link address");
         // }
     };
+    const defaultValue = courses.filter((course) =>
+        input.currentCourses.includes(course.id)
+    );
+    // const defaultValue = courses.filter((course) =>
+    //     input.currentCourses.includes(course.id)
+    // );
 
     return (
         <Container component="main" maxWidth="xs">
@@ -284,13 +297,58 @@ export default function UserProfile({ user, courses, skills }) {
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
-                    <TextField
+                    {/* {courses && defaultValue.length > 0 && (
+                        <Autocomplete
+                            // id="combo-box-demo"
+                            limitTags={24}
+                            multiple
+                            options={courses}
+                            getOptionLabel={(option) => option.name}
+                            defaultValue={defaultValue}
+                            fullWidth
+                            color="secondary"
+                            // select
+                            // SelectProps={{
+                            //     multiple: true,
+                            //     value: input.currentCourses,
+                            //     onChange: handleOnInputChange,
+                            // }}
+                            renderInput={(params) => (<TextField {...params} variant="standard" label="Current courses" variant="outlined"></TextField>)}>
+                        </Autocomplete>
+                    )} */}
+                    <Autocomplete
+                        multiple
+                        limitTags={2}
+                        options={courses}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(_, value) => {
+                            if (value.length > 0) {
+                                const currentCourses = value.map(
+                                    (course) => course.id
+                                );
+                                setInput({ ...input, currentCourses });
+                            }
+                        }}
+                        defaultValue={defaultValue}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                variant="outlined"
+                                label="Current Course"
+                                placeholder="Favorites"
+                            />
+                        )}
+                    />
+
+
+
+                    {/* <TextField
                         color="secondary"
                         select
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        label="Current courses"
+                        // label="Current courses"
                         name="currentCourses"
                         SelectProps={{
                             multiple: true,
@@ -303,7 +361,8 @@ export default function UserProfile({ user, courses, skills }) {
                                 {course.name}
                             </MenuItem>
                         ))}
-                    </TextField>
+
+                    </TextField> */}
                     {errorMsg.currentCourses && (
                         <FormHelperText error={true}>
                             {errorMsg.currentCourses}
@@ -391,6 +450,6 @@ export default function UserProfile({ user, courses, skills }) {
                     </Button>
                 </form>
             </div>
-        </Container>
+        </Container >
     );
 }

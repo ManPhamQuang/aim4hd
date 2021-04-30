@@ -9,6 +9,7 @@ import DoneIcon from "@material-ui/icons/Done";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import axios from "axios";
 import AuthContext from "../../utils/authContext";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TogglePostButton({ postId, isOpen }) {
+function TogglePostButton({ postId, isOpen, enqueueSnackbar }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const user = context.user;
@@ -66,16 +67,29 @@ export default function TogglePostButton({ postId, isOpen }) {
 
     const togglePost = () => {
         axios
-            .patch(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`, {
-                isOpen: !isOpen,
-            })
+            .patch(
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`,
+                {
+                    isOpen: !isOpen,
+                }
+            )
             .then((res) => {
                 if (res.status == 200) {
                     setSuccess(true);
                     setLoading(false);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
 
     const handleButtonClick = () => {
@@ -110,3 +124,4 @@ export default function TogglePostButton({ postId, isOpen }) {
         </div>
     );
 }
+export default withSnackbar(TogglePostButton);

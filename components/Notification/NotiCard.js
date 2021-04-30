@@ -7,18 +7,17 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
+
 import Avatar from "@material-ui/core/Avatar";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import TimeAgo from "react-timeago";
 import { withSnackbar } from "notistack";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +27,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: "none",
         "&:hover": {
             boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
+            backgroundColor: "rgba(0, 0, 0, 0.08)",
         },
+        borderRadius: "1rem",
     },
     cardHeader: {
         padding: 0,
@@ -48,33 +49,58 @@ const useStyles = makeStyles((theme) => ({
         transform: "rotate(180deg)",
     },
     avatar: {
-        backgroundColor: red[500],
-        width: theme.spacing(6),
-        height: theme.spacing(6),
+        // backgroundColor: red[500],
+        width: theme.spacing(8),
+        height: theme.spacing(8),
     },
 }));
 
-function NotiCard({ noti }) {
+function NotiCard({ noti, enqueueSnackbar }) {
     const classes = useStyles();
+    const router = useRouter();
+
+    const handleNotiClick = () => {
+        axios
+            .patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/notification/",
+                {
+                    id: noti._id,
+                    read: true,
+                }
+            )
+            .then((res) => console.log(res))
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
+        router.push(`/posts/${noti.postLink}`);
+    };
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} onClick={handleNotiClick}>
             <CardHeader
-                classes={{
-                    root: classes.cardHeader,
-                }}
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
+                    <Avatar
+                        className={classes.avatar}
+                        src={noti.sender.avatar}
+                    />
                 }
                 title={noti.content}
                 titleTypographyProps={{
-                    variant: "body1",
-                    component: "p",
+                    variant: "body2",
                     align: "left",
+                    style: {
+                        fontWeight: noti.read ? "400" : "bold",
+                    },
                 }}
-                subheader="September 14, 2016"
+                subheader={<TimeAgo date={noti.createdAt} />}
                 subheaderTypographyProps={{
                     align: "left",
                     variant: "subtitle2",

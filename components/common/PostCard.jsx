@@ -43,7 +43,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { useRouter } from "next/router";
 import { Edit } from "@material-ui/icons";
 import SaveButton from "./SaveButton";
-
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         // maxWidth: 400,
@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PostCard({
+function PostCard({
     isOpen,
     createdAt,
     _id,
@@ -167,6 +167,7 @@ export default function PostCard({
     numberOfComments,
     appliedStudents,
     requiredSkills,
+    enqueueSnackbar,
 }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -190,7 +191,17 @@ export default function PostCard({
                     `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
                 )
                 .then((res) => router.reload())
-                .catch((err) => console.log(err));
+                .catch((err) =>
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    })
+                );
         }
     };
     const handleSavedPost = async (userId, postId) => {
@@ -203,7 +214,15 @@ export default function PostCard({
             const user = response;
             console.log(user);
         } catch (error) {
-            console.log(error);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 
@@ -289,7 +308,7 @@ export default function PostCard({
                     {content}
                 </Typography>
                 <Link href={`/posts/${_id}`}>
-                    <Typography variant="a" className={classes.titleLink}>
+                    <Typography className={classes.titleLink}>
                         Read more
                     </Typography>
                 </Link>
@@ -464,3 +483,4 @@ export default function PostCard({
         </Card>
     );
 }
+export default withSnackbar(PostCard);

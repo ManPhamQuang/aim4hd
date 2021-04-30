@@ -1,8 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Fab, Avatar } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import { withSnackbar } from "notistack";
+import Slide from "@material-ui/core/Slide";
+import { SnackbarProvider } from "notistack";
+import Button from "@material-ui/core/Button";
+import WarningIcon from "@material-ui/icons/Warning";
+import { ThemeProvider } from "@material-ui/core/styles";
 
-const ImageUpload = ({ image, setImage }) => {
+const ImageUpload = ({ image, setImage, enqueueSnackbar }) => {
     const [preview, setPreview] = useState(null);
 
     useEffect(() => {
@@ -15,7 +21,17 @@ const ImageUpload = ({ image, setImage }) => {
     const handleImageOnChange = (e) => {
         const file = e.target.files[0];
         if (!file) return setImage(null);
-        if (file.size > 71680) return alert("File is too big!");
+        if (file.size > 71680) {
+            enqueueSnackbar("File is too big!", {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
+        }
         setImage(e.target.files[0]);
     };
 
@@ -58,4 +74,4 @@ const ImageUpload = ({ image, setImage }) => {
     );
 };
 
-export default ImageUpload;
+export default withSnackbar(ImageUpload);

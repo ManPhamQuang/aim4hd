@@ -23,6 +23,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -91,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CenterProfile({ user }) {
+function CenterProfile({ user, enqueueSnackbar }) {
     const classes = useStyles();
     const router = useRouter();
     const [value, setValue] = React.useState(
@@ -107,7 +108,17 @@ export default function CenterProfile({ user }) {
                 `https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/posts`
             )
             .then((res) => setPosts(res.data.data.posts))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
 
     const handleChange = (event, newValue) => {
@@ -133,7 +144,6 @@ export default function CenterProfile({ user }) {
                         fontSize: "18px",
                         fontWeight: "400",
                     }}
-                    value={value}
                 >
                     {user.description}
                 </Typography>
@@ -152,15 +162,14 @@ export default function CenterProfile({ user }) {
             <div className={classes.about} style={{ paddingBottom: "1rem" }}>
                 {user.skills
                     ? user.skills.map((skill, idx) => {
-                          if (idx < 4) {
-                              return (
-                                  <Chip
-                                      className={classes.chipTest}
-                                      clickable
-                                      label={skill.name}
-                                  />
-                              );
-                          }
+                          return (
+                              <Chip
+                                  key={idx}
+                                  className={classes.chipTest}
+                                  clickable
+                                  label={skill.name}
+                              />
+                          );
                       })
                     : null}
             </div>
@@ -178,16 +187,15 @@ export default function CenterProfile({ user }) {
             <div className={classes.about} style={{ paddingBottom: "1rem" }}>
                 {user.currentCourses
                     ? user.currentCourses.map((course, idx) => {
-                          if (idx < 4) {
-                              return (
-                                  <Chip
-                                      className={classes.chipTest}
-                                      icon={<MenuBookIcon />}
-                                      label={course.name}
-                                      clickable
-                                  />
-                              );
-                          }
+                          return (
+                              <Chip
+                                  key={idx}
+                                  className={classes.chipTest}
+                                  icon={<MenuBookIcon />}
+                                  label={course.name}
+                                  clickable
+                              />
+                          );
                       })
                     : null}
             </div>
@@ -387,3 +395,4 @@ export default function CenterProfile({ user }) {
         </div>
     );
 }
+export default withSnackbar(CenterProfile);

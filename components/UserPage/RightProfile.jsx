@@ -33,6 +33,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -133,7 +134,7 @@ const AccordionDetails = withStyles((theme2) => ({
     },
 }))(MuiAccordionDetails);
 
-export default function RightProfile({ feedback, user }) {
+function RightProfile({ feedback, user, enqueueSnackbar }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = React.useState(false);
@@ -144,7 +145,17 @@ export default function RightProfile({ feedback, user }) {
         axios
             .get(`https://aim4hd.herokuapp.com/api/v1/users/${user._id}/posts`)
             .then((res) => setPosts(res.data.data.posts))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -177,6 +188,7 @@ export default function RightProfile({ feedback, user }) {
                     ? posts.map((group) => {
                           return (
                               <Accordion
+                                  key={group._id}
                                   square
                                   expanded={expanded === group.id}
                                   onChange={handleChange2(group.id)}
@@ -200,6 +212,7 @@ export default function RightProfile({ feedback, user }) {
                                                 (member) => {
                                                     return (
                                                         <Chip
+                                                            key={member._id}
                                                             className={
                                                                 classes.chipTest
                                                             }
@@ -240,3 +253,4 @@ export default function RightProfile({ feedback, user }) {
         </div>
     );
 }
+export default withSnackbar(RightProfile);

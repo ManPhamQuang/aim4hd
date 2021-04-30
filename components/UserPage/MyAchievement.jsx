@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
     },
+    root2: {
+        maxWidth: 345,
+    },
     modal: {
         display: "flex",
         alignItems: "center",
@@ -41,12 +44,15 @@ export default function MyAchievement({ user }) {
     const [open1, setOpen1] = React.useState(false);
     const [imgPath, setimgPath] = React.useState(0);
     const router = useRouter();
-
+    const [expanded, setExpanded] = React.useState(false);
     const handleOpen = (e) => {
         setimgPath(e.target.src);
         setOpen1(true);
     };
 
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
     const BigImage = (
         <div className={classes.modal}>
             <img
@@ -94,6 +100,7 @@ export default function MyAchievement({ user }) {
                         </Button>
                     </div>
                 </Grid>
+
                 {user.achievements.map((image) => (
                     <Grid item xs={12} md={3}>
                         <Card className={classes.card}>

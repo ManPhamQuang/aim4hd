@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostCard from "../common/PostCard";
 import { Typography } from "@material-ui/core";
+import { withSnackbar } from "notistack";
 
 const getInterestedPosts = async (id) => {
     try {
@@ -14,7 +15,15 @@ const getInterestedPosts = async (id) => {
             return response.data.data.posts;
         }
     } catch (error) {
-        console.log(error);
+        enqueueSnackbar(err.message, {
+            variant: "warning",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 4000,
+        });
     }
 };
 
@@ -29,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const MySavedPosts = ({ user }) => {
+const MySavedPosts = ({ user, enqueueSnackbar }) => {
     const [interestedPosts, setInterestedPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const classes = useStyles();
@@ -65,4 +74,4 @@ const MySavedPosts = ({ user }) => {
     );
 };
 
-export default MySavedPosts;
+export default withSnackbar(MySavedPosts);

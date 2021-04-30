@@ -24,6 +24,7 @@ import { green } from "@material-ui/core/colors";
 import { useRouter } from "next/router";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -74,7 +75,7 @@ function isEmpty(obj) {
     return JSON.stringify(obj) === JSON.stringify({});
 }
 const ITEM_HEIGHT = 52;
-export default function PostingPage() {
+function PostingPage(enqueueSnackbar) {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
@@ -239,18 +240,41 @@ export default function PostingPage() {
                     setSuccess(true);
                     redirectToPostPage(res.data.data.post._id);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) =>
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    })
+                );
         } else {
             formData.approvedMembers.push(auth.user._id);
             formData.currentMember += 1;
             axios
-                .post("https://aim4hd-backend.herokuapp.com/api/v1/posts", formData)
+                .post(
+                    "https://aim4hd-backend.herokuapp.com/api/v1/posts",
+                    formData
+                )
                 .then((res) => {
                     setLoading(false);
                     setSuccess(true);
                     redirectToPostPage(res.data.data.post._id);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) =>
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    })
+                );
         }
     };
     return (
@@ -496,3 +520,4 @@ export default function PostingPage() {
         </Container>
     );
 }
+export default withSnackbar(PostingPage);

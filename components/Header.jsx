@@ -23,10 +23,11 @@ import axios from "axios";
 import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
-import Notification from './Notification/Notification';
+import Notification from "./Notification/Notification";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
+import { withSnackbar } from "notistack";
 
 function ElevationScroll(props) {
     const { children, window } = props;
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: theme.background.main,
         // background: "transparent",
         // boxShadow: "none",
-        color: "black",
+        // backgroundColor: "#fff",
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
     },
@@ -165,11 +166,19 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        return { error: error.response.data.message };
+        enqueueSnackbar(error.message, {
+            variant: "warning",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 4000,
+        });
     }
 };
 
-export default function DesktopHeader(props) {
+function DesktopHeader(props, enqueueSnackbar) {
     const classes = useStyles();
     const router = useRouter();
     const auth = useContext(AuthContext);
@@ -198,7 +207,8 @@ export default function DesktopHeader(props) {
                 setIsLoading(false);
                 console.log(data);
                 auth.login("login", data);
-            } else alert("Please use your rmit accoutn to login");
+            } else {
+            }
         }
     };
 
@@ -241,95 +251,86 @@ export default function DesktopHeader(props) {
 
     return (
         <div className={classes.root}>
-            <ElevationScroll {...props}>
-                <AppBar className={classes.appbar} position="fixed">
-                    {isLoading && <LoadingSpinner isLoading={isLoading} />}
+            {/* <ElevationScroll {...props}> */}
+            <AppBar className={classes.appbar} position="fixed" color="inherit">
+                {isLoading && <LoadingSpinner isLoading={isLoading} />}
 
-                    <Toolbar className={classes.toolbar} spacing={3}>
-                        <Link href="/">
-                            <a>
-                                <Image
-                                    className={classes.logoButton}
-                                    src="/logo.png"
-                                    alt="aim4hd - RMIT Logo"
-                                    width={50 * 3.14}
-                                    height={50}
-                                />
-                            </a>
-                        </Link>
+                <Toolbar className={classes.toolbar} spacing={3}>
+                    <Link href="/">
+                        <a>
+                            <Image
+                                className={classes.logoButton}
+                                src="/logo.png"
+                                alt="aim4hd - RMIT Logo"
+                                width={50 * 3.14}
+                                height={50}
+                            />
+                        </a>
+                    </Link>
 
-                        <Typography
-                            variant="h6"
-                            className={classes.title}
-                        ></Typography>
-                        
-                        {!auth.user && loginWithMicrosoft}
-                        {auth.user && <Notification user={auth.user}/>}
-                        {auth.user && (
-                            <ClickAwayListener
-                                onClickAway={() => setOpen(false)}
+                    <Typography
+                        variant="h6"
+                        className={classes.title}
+                    ></Typography>
+
+                    {!auth.user && loginWithMicrosoft}
+                    {auth.user && <Notification user={auth.user} />}
+                    {auth.user && (
+                        <ClickAwayListener onClickAway={() => setOpen(false)}>
+                            <Button
+                                className={classes.button}
+                                color="inherit"
+                                aria-controls="simple-menu"
+                                aria-haspopup="true"
+                                onClick={() => setOpen(!open)}
                             >
-                                <Button
-                                    className={classes.button}
-                                    color="inherit"
-                                    aria-controls="simple-menu"
-                                    aria-haspopup="true"
-                                    onClick={() => setOpen(!open)}
-                                >
-                                    <Avatar
-                                        className={classes.avatar}
-                                        src={auth.user.avatar}
-                                    />
-                                    <span>{auth.user.name}</span>
-                                    {open && (
-                                        <div className={classes.dropdown}>
-                                            <Link
-                                                href={`/users/${auth.user._id}`}
-                                            >
-                                                <a className={classes.card}>
-                                                    <Avatar
-                                                        className={`${classes.avatar} ${classes.avatarLink}`}
-                                                        src={auth.user.avatar}
-                                                    />
-                                                    <div
-                                                        className={
-                                                            classes.cardHead
-                                                        }
+                                <Avatar
+                                    className={classes.avatar}
+                                    src={auth.user.avatar}
+                                />
+                                <span>{auth.user.name}</span>
+                                {open && (
+                                    <div className={classes.dropdown}>
+                                        <Link href={`/users/${auth.user._id}`}>
+                                            <a className={classes.card}>
+                                                <Avatar
+                                                    className={`${classes.avatar} ${classes.avatarLink}`}
+                                                    src={auth.user.avatar}
+                                                />
+                                                <div
+                                                    className={classes.cardHead}
+                                                >
+                                                    <span>
+                                                        {auth.user.name}
+                                                    </span>
+                                                    <span
+                                                        style={{
+                                                            color: "#73726c",
+                                                            fontSize: "13px",
+                                                            textTransform:
+                                                                "none",
+                                                            fontWeight: "400",
+                                                        }}
                                                     >
-                                                        <span>
-                                                            {auth.user.name}
-                                                        </span>
-                                                        <span
-                                                            style={{
-                                                                color:
-                                                                    "#73726c",
-                                                                fontSize:
-                                                                    "13px",
-                                                                textTransform:
-                                                                    "none",
-                                                                fontWeight:
-                                                                    "400",
-                                                            }}
-                                                        >
-                                                            {auth.user.email}
-                                                        </span>
-                                                    </div>
+                                                        {auth.user.email}
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </Link>
+                                        <div className={classes.cardBody}>
+                                            <Link
+                                                href={`/users/${auth.user._id}?viewPosts=2`}
+                                            >
+                                                <a
+                                                    className={
+                                                        classes.cardBodyLink
+                                                    }
+                                                >
+                                                    Your Posts
                                                 </a>
                                             </Link>
-                                            <div className={classes.cardBody}>
-                                                <Link
-                                                    href={`/users/${auth.user._id}?viewPosts=2`}
-                                                >
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        Your Posts
-                                                    </a>
-                                                </Link>
 
-                                                {/* <Link href="/team">
+                                            {/* <Link href="/team">
                                                     <a
                                                         className={
                                                             classes.cardBodyLink
@@ -338,45 +339,47 @@ export default function DesktopHeader(props) {
                                                         My team
                                                     </a>
                                                 </Link> */}
-                                                <Link href={`/posting`}>
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        New Post
-                                                    </a>
-                                                </Link>
-                                                <Link href={`/profile`}>
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        Edit Profile
-                                                    </a>
-                                                </Link>
-                                                <Link href="/">
-                                                    <a
-                                                        onClick={auth.logout}
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        Log Out
-                                                    </a>
-                                                </Link>
-                                            </div>
+                                            <Link href={`/posting`}>
+                                                <a
+                                                    className={
+                                                        classes.cardBodyLink
+                                                    }
+                                                >
+                                                    New Post
+                                                </a>
+                                            </Link>
+                                            <Link href={`/profile`}>
+                                                <a
+                                                    className={
+                                                        classes.cardBodyLink
+                                                    }
+                                                >
+                                                    Edit Profile
+                                                </a>
+                                            </Link>
+                                            <Link href="/">
+                                                <a
+                                                    onClick={auth.logout}
+                                                    className={
+                                                        classes.cardBodyLink
+                                                    }
+                                                >
+                                                    Log Out
+                                                </a>
+                                            </Link>
                                         </div>
-                                    )}
-                                </Button>
-                            </ClickAwayListener>
-                        )}
-                    </Toolbar>
-                </AppBar>
-            </ElevationScroll>
+                                    </div>
+                                )}
+                            </Button>
+                        </ClickAwayListener>
+                    )}
+                </Toolbar>
+            </AppBar>
+            {/* </ElevationScroll> */}
 
             <Toolbar style={{ height: "120px" }} />
         </div>
     );
 }
+
+export default withSnackbar(DesktopHeader);

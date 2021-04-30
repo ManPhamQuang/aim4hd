@@ -14,6 +14,7 @@ import validator from "../utils/validator";
 import axios from "axios";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import ImageUpload from "../components/common/ImageUpload";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn({ courses, skills }) {
+function SignIn({ courses, skills, enqueueSnackbar }) {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
@@ -103,7 +104,15 @@ export default function SignIn({ courses, skills }) {
                 );
                 avatar = response.data.secure_url;
             } catch (error) {
-                console.log(error);
+                enqueueSnackbar(error.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                });
             }
         }
         const body = {
@@ -130,6 +139,15 @@ export default function SignIn({ courses, skills }) {
         } catch (error) {
             setIsLoading(false);
             console.log(error.response);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 
@@ -316,6 +334,15 @@ export async function getStaticProps(context) {
             },
         };
     } catch (error) {
-        console.log(error);
+        enqueueSnackbar(error.message, {
+            variant: "warning",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 4000,
+        });
     }
 }
+export default withSnackbar(SignIn);

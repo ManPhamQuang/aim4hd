@@ -7,7 +7,6 @@ import Badge from "@material-ui/core/Badge";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
-
 import { withSnackbar } from "notistack";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
@@ -23,11 +22,15 @@ import ShareIcon from "@material-ui/icons/Share";
 import Paper from "@material-ui/core/Paper";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import axios from "axios";
 
+import clsx from "clsx";
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {
+        padding: "5px",
         position: "absolute",
         width: "360px",
         height: "300px",
@@ -37,15 +40,29 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 2,
         backgroundColor: theme.palette.background.paper,
         boxShadow: "0 2px 4px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.08)",
-        padding: "10px",
-        borderRadius: "1rem",
+
+        borderRadius: "0.3rem",
+        "&::-webkit-scrollbar": {
+            width: "0.4em",
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+            borderRadius: "2rem",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,.1)",
+            borderRadius: "2rem",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+            backgroundColor: "rgba(0,0,0,.5)",
+        },
     },
     grow: {
         flexGrow: "1",
     },
     bar: {
         boxShadow: "none",
-        marginBottom: "10px",
     },
     heading: {
         display: "flex",
@@ -74,39 +91,79 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: red[500],
     },
+    notiIcon: {
+        color: "#4395FF",
+    },
 }));
 
 function Notification({ user, enqueueSnackbar }) {
     const [notis, setNotis] = useState([]);
     const [open, setOpen] = useState(false);
+    const [roomIds, setRoomIds] = useState(null);
     const classes = useStyles();
     useEffect(() => {
-        const socket = io(endpoint);
-        // socket.emit("room ids", {})
-        socket.emit("getNotification", { id: user._id });
-        socket.on(
-            "notifications",
-            ({ notifications }) => {
-                setNotis(notifications);
-                // clean up when unmount
-                return () => io.disconnect();
-            },
-            []
-        );
-        socket.on("newNoti", (data) => {
-            setNotis((res) => [data, ...res]);
-            enqueueSnackbar(data.content, {
-                variant: "info",
-            });
-        });
+        axios
+            .get(
+                `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${user._id}`
+            )
+            .then((res) => setRoomIds(res.data.rooms.map((room) => room._id)))
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
+    useEffect(() => {
+        console.log("useEffect running");
+        if (roomIds !== null) {
+            console.log("socket running");
+            console.log(roomIds);
+            const socket = io(endpoint);
+            socket.emit("room ids", roomIds);
+            socket.emit("getNotification", { id: user._id });
+            socket.on(
+                "new message",
+                ({ message }) => {
+                    enqueueSnackbar(message.message.messageText, {
+                        variant: "success",
+                    });
+                },
+                []
+            );
+            socket.on(
+                "notifications",
+                ({ notifications }) => {
+                    setNotis(notifications);
+                },
+                []
+            );
+            socket.on("newNoti", (data) => {
+                setNotis((res) => [data, ...res]);
+                enqueueSnackbar(data.content, {
+                    variant: "info",
+                });
+            });
+        }
+        // clean up when unmount
+        // return () => io.
+    }, [roomIds]);
+
+    const iconClass = clsx({
+        [classes.notiIcon]: open,
+    });
 
     return (
         <>
             <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <IconButton onClick={() => setOpen(!open)}>
                     <Badge badgeContent={notis.length} color="primary">
-                        <NotificationsIcon />
+                        <NotificationsIcon className={iconClass} />
                     </Badge>
                     {open && (
                         <Paper className={classes.dropdown} variant="outlined">
@@ -119,6 +176,7 @@ function Notification({ user, enqueueSnackbar }) {
                                     <Typography
                                         variant="h5"
                                         className={classes.title}
+                                        style={{ paddingLeft: "10px" }}
                                     >
                                         Notifications
                                     </Typography>
@@ -129,9 +187,9 @@ function Notification({ user, enqueueSnackbar }) {
                                     </IconButton>
                                 </Toolbar>
                             </AppBar>
-
+                            <Divider style={{ marginBottom: "1rem" }} />
                             {notis.map((noti) => (
-                                <NotiCard noti={noti} />
+                                <NotiCard noti={noti} key={noti._id} />
                             ))}
                         </Paper>
                     )}

@@ -1,6 +1,5 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../Newsfeed/Posts";
 import Filter from "../Newsfeed/Filter";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -101,7 +100,7 @@ export default function FullProfile({ user }) {
                 justify="center"
                 alignItems="strech"
                 className={classes.container}
-                spacing={2}
+
                 // style={{ backgroundColor: "pink" }}
             >
                 <Grid
@@ -153,7 +152,7 @@ export default function FullProfile({ user }) {
                             <Typography>
                                 <School school={user.school} />
                             </Typography>
-                            <Button
+                            {/* <Button
                                 variant="contained"
                                 size="large"
                                 style={{
@@ -173,10 +172,10 @@ export default function FullProfile({ user }) {
                                 }}
                             >
                                 MESSAGE
-                            </Button>
+                            </Button> */}
                         </div>
                     </Grid>
-                    <Grid item lg={1}>
+                    <Grid item container lg={1}>
                         <Hidden mdDown>
                             <Divider
                                 orientation="vertical"
@@ -241,8 +240,6 @@ export default function FullProfile({ user }) {
                     direction="column"
                     justify="center"
                     alignItems="center"
-                    spacing={1}
-                    // style={{ backgroundColor: "orange" }}
                 >
                     <Grid item xs={12}>
                         <Button

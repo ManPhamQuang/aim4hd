@@ -18,6 +18,7 @@ import { green } from "@material-ui/core/colors";
 import Router from "next/router";
 import moment from "moment";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PostComments({ _id }) {
+function PostComments({ _id, enqueueSnackbar }) {
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState("");
     const classes = useStyles();
@@ -70,7 +71,17 @@ export default function PostComments({ _id }) {
                 `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}/comments?limit=100`
             )
             .then((res) => setComments(res.data.data.comments))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
 
     const handleChange = (e) => {
@@ -94,7 +105,17 @@ export default function PostComments({ _id }) {
                 setCommentText("");
                 Router.reload(window.location.pathname);
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
 
     const DeleteButton = ({ comment }) => {
@@ -121,7 +142,17 @@ export default function PostComments({ _id }) {
             .then((res) => {
                 Router.reload(window.location.pathname);
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
     return (
         <div className={classes.root}>
@@ -212,3 +243,4 @@ export default function PostComments({ _id }) {
         </div>
     );
 }
+export default withSnackbar(PostComments);

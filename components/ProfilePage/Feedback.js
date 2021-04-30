@@ -14,6 +14,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import FeedbackDialog from "./FeedbackDialog";
 import LoadingSpinner from "../common/LoadingSpinner";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     info: { marginBottom: "10px", color: "red", textAlign: "right" },
 }));
 
-const Feedback = ({ user }) => {
+const Feedback = ({ user, enqueueSnackbar }) => {
     const classes = useStyles();
     const [posts, setPosts] = useState([]);
     const [expanded, setExpanded] = useState(false);
@@ -89,14 +90,29 @@ const Feedback = ({ user }) => {
                 setIsLoading(false);
                 setPosts(newPosts);
                 handleChangeStudent(null);
-                setTimeout(
-                    () => alert("Successfully provide feedback to user"),
-                    0
+                setTimeout(() =>
+                    enqueueSnackbar("Successfully provide feedback to user", {
+                        variant: "error",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        autoHideDuration: 4000,
+                    })
                 );
             }
         } catch (error) {
             setIsLoading(false);
             console.log(error);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 
@@ -136,6 +152,15 @@ const Feedback = ({ user }) => {
                 setPosts(data);
             } catch (error) {
                 console.log(error);
+                enqueueSnackbar(error.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                });
             } finally {
                 setIsFetching(false);
             }
@@ -211,4 +236,4 @@ const Feedback = ({ user }) => {
     );
 };
 
-export default Feedback;
+export default withSnackbar(Feedback);

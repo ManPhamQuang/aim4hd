@@ -1,6 +1,5 @@
 //* Components import
 import Head from "next/head";
-import Posts from "../../components/Newsfeed/Posts";
 import Filter from "../../components/Newsfeed/Filter";
 import FullProfile from "../../components/UserPage/FullProfile";
 import MainUser from "../../components/MainUser";
@@ -10,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
+import { withSnackbar } from "notistack";
 
 export async function getStaticPaths() {
     // get list of post to populate paths
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserProfile({ user }) {
+function UserProfile({ user, enqueueSnackbar }) {
     const classes = useStyles();
     const { isFallback } = useRouter();
     const [feedback, setFeedback] = useState({
@@ -84,7 +84,17 @@ export default function UserProfile({ user }) {
                 `https://aim4hd-backend.herokuapp.com/api/v1/users/${user._id}/feedbacks`
             )
             .then((res) => setFeedback(res.data.data))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
 
     if (isFallback) {
@@ -101,14 +111,15 @@ export default function UserProfile({ user }) {
                 />
             </Head>
 
-            <Grid container justify="center">
-                <Grid item xs={9}>
+            <Grid container justify="center" alignItems="center">
+                <Grid item xs={11} md={9}>
                     <FullProfile user={user} />
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={11} md={9}>
                     <MainUser user={user} feedback={feedback} />
                 </Grid>
             </Grid>
         </React.Fragment>
     );
 }
+export default withSnackbar(UserProfile);

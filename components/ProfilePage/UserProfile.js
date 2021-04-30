@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function UserProfile({ user, courses, skills }) {
+function UserProfile({ user, courses, skills, enqueueSnackbar }) {
     const classes = useStyles();
     const [input, setInput] = useState({
         name: user.name,
@@ -61,12 +61,12 @@ export default function UserProfile({ user, courses, skills }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const patterns = {
-        github: /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/igm,
-        facebook: /(https?:\/\/)?(www\.)?(facebook|fb|m\.facebook)\.(com|me)\/[\W\S_]{1,25}$/igm,
+        github: /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim,
+        facebook: /(https?:\/\/)?(www\.)?(facebook|fb|m\.facebook)\.(com|me)\/[\W\S_]{1,25}$/gim,
         linkedin: /(ftp|http|https):\/\/?((www|\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
         // instagram: /(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
-        instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[\W\S_]{1,25}\/$/igm,
-    }
+        instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[\W\S_]{1,25}\/$/gim,
+    };
     function validateUrl(value, expression) {
         if (value == "") {
             return true;
@@ -105,7 +105,6 @@ export default function UserProfile({ user, courses, skills }) {
             delete newErrorMsg[event.target.name];
             setErrorMsg(newErrorMsg);
         }
-
     };
     const handleOnInputChange = (event) => {
         if (
@@ -150,7 +149,15 @@ export default function UserProfile({ user, courses, skills }) {
                     );
                     avatar = response.data.secure_url;
                 } catch (error) {
-                    console.log(error);
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    });
                 }
             }
             const body = {
@@ -169,17 +176,30 @@ export default function UserProfile({ user, courses, skills }) {
                     const data = {};
                     data.user = response.data.data.user;
                     auth.login("update", data);
-                    setTimeout(() => alert("Successfully update your profile"), 0);
+                    setTimeout(() =>
+                        enqueueSnackbar("Successfully update your profile", {
+                            variant: "success",
+                            anchorOrigin: {
+                                vertical: "bottom",
+                                horizontal: "left",
+                            },
+                            autoHideDuration: 4000,
+                        })
+                    );
                 }
             } catch (error) {
                 setIsLoading(false);
                 console.log(error);
-                alert("ERROR");
+                enqueueSnackbar(error.message, {
+                    variant: "error",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    autoHideDuration: 4000,
+                });
             }
         }
-        // else {
-        //     alert("Invalid social link address");
-        // }
     };
     const defaultValue = courses.filter((course) =>
         input.currentCourses.includes(course.id)
@@ -453,3 +473,4 @@ export default function UserProfile({ user, courses, skills }) {
         </Container >
     );
 }
+export default withSnackbar(UserProfile);

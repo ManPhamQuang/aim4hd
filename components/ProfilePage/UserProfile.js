@@ -147,7 +147,15 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                     );
                     avatar = response.data.secure_url;
                 } catch (error) {
-                    console.log(error);
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    });
                 }
             }
             const body = {
@@ -180,7 +188,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
             } catch (error) {
                 setIsLoading(false);
                 console.log(error);
-                enqueueSnackbar("An error has occured!", {
+                enqueueSnackbar(error.message, {
                     variant: "error",
                     anchorOrigin: {
                         vertical: "bottom",

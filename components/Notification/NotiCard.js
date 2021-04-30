@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function NotiCard({ noti }) {
+function NotiCard({ noti, enqueueSnackbar }) {
     const classes = useStyles();
     const router = useRouter();
 
@@ -69,7 +69,17 @@ function NotiCard({ noti }) {
                 }
             )
             .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
         router.push(`/posts/${noti.postLink}`);
     };
 

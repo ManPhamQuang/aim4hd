@@ -72,11 +72,19 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        return { error: error.response.data.message };
+        enqueueSnackbar(error.message, {
+            variant: "warning",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 4000,
+        });
     }
 };
 
-export default function MobileHeader() {
+function MobileHeader(enqueueSnackbar) {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -192,7 +200,7 @@ export default function MobileHeader() {
                                                 className={classes.avatar}
                                                 onclick={() =>
                                                     router.push(
-                                                        "/users/${auth.user._id}"
+                                                        `/users/${auth.user._id}`
                                                     )
                                                 }
                                             />
@@ -211,7 +219,7 @@ export default function MobileHeader() {
                                                 style={{ fontSize: "18px" }}
                                                 onclick={() =>
                                                     router.push(
-                                                        "/users/${auth.user._id}"
+                                                        `/users/${auth.user._id}`
                                                     )
                                                 }
                                             >
@@ -268,3 +276,4 @@ export default function MobileHeader() {
         </div>
     );
 }
+export default withSnackbar(MobileHeader);

@@ -17,6 +17,7 @@ import {
     CircularProgress,
 } from "@material-ui/core";
 import Achievement from "../components/ProfilePage/Achievement";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProfilePage = ({ user }) => {
+const ProfilePage = ({ user, enqueueSnackbar }) => {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
@@ -72,7 +73,15 @@ const ProfilePage = ({ user }) => {
                 setSkills(result[0].data.skills);
                 setCourses(result[1].data.data.courses);
             } catch (error) {
-                console.log(error);
+                enqueueSnackbar(error.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                });
             }
         };
         getAllCoursesAndSkills();
@@ -203,4 +212,4 @@ const ProfilePage = ({ user }) => {
     );
 };
 
-export default ProfilePage;
+export default withSnackbar(ProfilePage);

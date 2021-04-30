@@ -4,6 +4,7 @@ import { CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "2rem",
     },
 }));
-export default function Posts({ aiming, loading, setLoading }) {
+function Posts({ aiming, loading, setLoading, enqueueSnackbar }) {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     const [visible, setVisible] = useState(false);
@@ -55,7 +56,17 @@ export default function Posts({ aiming, loading, setLoading }) {
                     setEndOfList(true);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
     useEffect(() => {
         fetchPosts();
@@ -88,3 +99,4 @@ export default function Posts({ aiming, loading, setLoading }) {
         </Grid>
     );
 }
+export default withSnackbar(Posts);

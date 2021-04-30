@@ -107,7 +107,17 @@ function Notification({ user, enqueueSnackbar }) {
                 `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${user._id}`
             )
             .then((res) => setRoomIds(res.data.rooms.map((room) => room._id)))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
     useEffect(() => {
         console.log("useEffect running");

@@ -104,6 +104,15 @@ const Feedback = ({ user, enqueueSnackbar }) => {
         } catch (error) {
             setIsLoading(false);
             console.log(error);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 
@@ -143,6 +152,15 @@ const Feedback = ({ user, enqueueSnackbar }) => {
                 setPosts(data);
             } catch (error) {
                 console.log(error);
+                enqueueSnackbar(error.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                });
             } finally {
                 setIsFetching(false);
             }

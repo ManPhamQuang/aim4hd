@@ -209,9 +209,6 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
     const defaultValue = courses.filter((course) =>
         input.currentCourses.includes(course.id)
     );
-    // const defaultValue = courses.filter((course) =>
-    //     input.currentCourses.includes(course.id)
-    // );
 
     return (
         <Container component="main" maxWidth="xs">
@@ -322,25 +319,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
-                    {/* {courses && defaultValue.length > 0 && (
-                        <Autocomplete
-                            // id="combo-box-demo"
-                            limitTags={24}
-                            multiple
-                            options={courses}
-                            getOptionLabel={(option) => option.name}
-                            defaultValue={defaultValue}
-                            fullWidth
-                            color="secondary"
-                            // select
-                            // SelectProps={{
-                            //     multiple: true,
-                            //     value: input.currentCourses,
-                            //     onChange: handleOnInputChange,
-                            // }}
-                            renderInput={(params) => (<TextField {...params} variant="standard" label="Current courses" variant="outlined"></TextField>)}>
-                        </Autocomplete>
-                    )} */}
+
                     <Autocomplete
                         multiple
                         limitTags={2}
@@ -360,10 +339,10 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                                 {...params}
                                 variant="outlined"
                                 label="Current Course"
-                            // placeholder="Favorites"
                             />
                         )}
                     />
+
                     {/* <TextField
                         color="secondary"
                         select

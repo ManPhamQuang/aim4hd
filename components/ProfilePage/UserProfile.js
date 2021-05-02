@@ -207,8 +207,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
         }
     };
     const defaultValue = courses.filter((course) =>
-        input.currentCourses.includes(course.id)
-    );
+        input.currentCourses.includes(course.id));
 
     return (
         <Container component="main" maxWidth="xs">
@@ -319,8 +318,33 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
+                    {defaultValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={courses}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const currentCourses = value.map(
+                                        (course) => course.id
+                                    );
+                                    setInput({ ...input, currentCourses });
+                                }
+                            }}
+                            defaultValue={defaultValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label="Current Course"
+                                    placeholder="Favorites"
+                                />
+                            )}
+                        />
+                    )}
 
-                    <Autocomplete
+                    {/* <Autocomplete
                         multiple
                         limitTags={2}
                         options={courses}
@@ -341,7 +365,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                                 label="Current Course"
                             />
                         )}
-                    />
+                    /> */}
 
                     {/* <TextField
                         color="secondary"

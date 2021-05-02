@@ -297,26 +297,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                         value={input.description}
                         onChange={handleOnInputChange}
                     />
-                    {/* <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Skills"
-                        name="skills"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.skills,
-                            onChange: handleOnInputChange,
-                        }}
-                    >
-                        {skills.map((skill) => (
-                            <MenuItem key={skill.id} value={skill.id}>
-                                {skill.name}
-                            </MenuItem>
-                        ))}
-                    </TextField> */}
+
                     {defaultSkillValue.length > 0 && (
                         <Autocomplete
                             multiple

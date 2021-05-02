@@ -207,8 +207,11 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
         }
     };
     const defaultValue = courses.filter((course) =>
-        input.currentCourses.includes(course.id)
-    );
+        input.currentCourses.includes(course.id));
+
+    const defaultSkillValue = skills.filter((skill) =>
+        input.skills.includes(skill.id));
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -294,76 +297,67 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                         value={input.description}
                         onChange={handleOnInputChange}
                     />
-                    <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Skills"
-                        name="skills"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.skills,
-                            onChange: handleOnInputChange,
-                        }}
-                    >
-                        {skills.map((skill) => (
-                            <MenuItem key={skill.id} value={skill.id}>
-                                {skill.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+
+                    {defaultSkillValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={skills}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const skills = value.map(
+                                        (skill) => skill.id
+                                    );
+                                    setInput({ ...input, skills });
+                                }
+                            }}
+                            defaultValue={defaultSkillValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Skills"
+                                    placeholder="Skills"
+                                />
+                            )}
+                        />
+                    )}
                     {errorMsg.skills && (
                         <FormHelperText error={true}>
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
+                    {defaultValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={courses}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const currentCourses = value.map(
+                                        (course) => course.id
+                                    );
+                                    setInput({ ...input, currentCourses });
+                                }
+                            }}
+                            defaultValue={defaultValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Current Course"
+                                    placeholder="Current Course"
+                                />
+                            )}
+                        />
+                    )}
 
-                    <Autocomplete
-                        multiple
-                        limitTags={2}
-                        options={courses}
-                        getOptionLabel={(option) => option.name}
-                        onChange={(_, value) => {
-                            if (value.length > 0) {
-                                const currentCourses = value.map(
-                                    (course) => course.id
-                                );
-                                setInput({ ...input, currentCourses });
-                            }
-                        }}
-                        defaultValue={defaultValue}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Current Course"
-                            />
-                        )}
-                    />
-
-                    {/* <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        // label="Current courses"
-                        name="currentCourses"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.currentCourses,
-                            onChange: handleOnInputChange,
-                        }}
-                    >
-                        {courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {course.name}
-                            </MenuItem>
-                        ))}
-
-                    </TextField> */}
                     {errorMsg.currentCourses && (
                         <FormHelperText error={true}>
                             {errorMsg.currentCourses}

@@ -98,7 +98,7 @@ export default function FullProfile({ user }) {
                 container
                 direction="row"
                 justify="center"
-                alignItems="strech"
+                alignItems="stretch"
                 className={classes.container}
 
                 // style={{ backgroundColor: "pink" }}

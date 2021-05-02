@@ -37,6 +37,7 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import NotiCard from "./Notification/NotiCard";
 import CloseIcon from "@material-ui/icons/Close";
+import Badge from "@material-ui/core/Badge";
 
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
@@ -250,15 +251,22 @@ function MobileHeader({ enqueueSnackbar }) {
                                 aria-label="open drawer"
                                 onClick={handleNotiDrawerOpen}
                             >
-                                <NotificationsIcon
-                                    style={{ color: "#707070" }}
-                                />
+                                <Badge
+                                    badgeContent={notis.length}
+                                    color="primary"
+                                >
+                                    <NotificationsIcon
+                                        style={{ color: "#707070" }}
+                                    />
+                                </Badge>
                             </IconButton>
+
                             <SwipeableDrawer
                                 anchor="top"
                                 open={openNotiDrawer}
                                 onClose={handleNotiDrawerClose}
                                 onOpen={handleNotiDrawerOpen}
+                                className={classes.notiDrawer}
                             >
                                 <div className={classes.topList}>
                                     <AppBar
@@ -280,7 +288,7 @@ function MobileHeader({ enqueueSnackbar }) {
                                                 {/* TODO: add the mark all noti function as read here */}
                                             </IconButton>
                                             <IconButton
-                                                onclick={handleNotiDrawerClose}
+                                                onClick={handleNotiDrawerClose}
                                             >
                                                 <CloseIcon />
                                             </IconButton>
@@ -322,7 +330,7 @@ function MobileHeader({ enqueueSnackbar }) {
                                             style={{ paddingTop: "1rem" }}
                                         >
                                             <Button
-                                                onclick={() =>
+                                                onClick={() =>
                                                     router.push(
                                                         `/users/${auth.user._id}`
                                                     )
@@ -336,7 +344,6 @@ function MobileHeader({ enqueueSnackbar }) {
                                         </Grid>
                                         <Grid
                                             container
-                                            xs={12}
                                             style={{
                                                 paddingTop: "0.75rem",
                                                 textAlign: "center",
@@ -346,7 +353,7 @@ function MobileHeader({ enqueueSnackbar }) {
                                         >
                                             <Typography
                                                 style={{ fontSize: "18px" }}
-                                                onclick={() =>
+                                                onClick={() =>
                                                     router.push(
                                                         `/users/${auth.user._id}`
                                                     )

@@ -7,7 +7,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Avatar from "@material-ui/core/Avatar";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
         // backgroundColor: red[500],
         width: theme.spacing(7),
         height: theme.spacing(7),
+    },
+    action: {
+        alignSelf: "center",
     },
 }));
 
@@ -104,7 +107,35 @@ function NotiCard({ noti, enqueueSnackbar }) {
                 subheaderTypographyProps={{
                     align: "left",
                     variant: "subtitle2",
+                    style: {
+                        color: noti.read ? "#787888" : "#4395FF",
+                    },
                 }}
+                action={
+                    // <IconButton
+                    //     aria-label="settings"
+                    //     style={{
+                    //         alignItems: "center",
+                    //         display: "flex",
+                    //         justifyContent: "center",
+                    //     }}
+                    // >
+                    //     <MoreVertIcon />
+                    // </IconButton>
+
+                    noti.read ? (
+                        ""
+                    ) : (
+                        <FiberManualRecordIcon
+                            style={{
+                                color: "#4395FF",
+                                fontSize: "0.6em",
+                                marginLeft: "0.4rem",
+                            }}
+                        />
+                    )
+                }
+                classes={{ action: classes.action }}
             />
         </Card>
     );

@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Divider from "@material-ui/core/Divider";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import io, { Socket } from "socket.io-client";
 import {
     Grid,
     Avatar,
@@ -30,10 +32,11 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import axios from "axios";
 import LoadingSpinner from "./common/LoadingSpinner";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
-import Notification from "./Notification/Notification";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import NotiCard from "./Notification/NotiCard";
+import CloseIcon from "@material-ui/icons/Close";
 
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
@@ -59,7 +62,16 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(15),
         height: theme.spacing(15),
     },
+    bar: {
+        boxShadow: "none",
+    },
+    topList: {
+        width: "auto",
+        height: "55vh",
+    },
 }));
+
+const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
     try {
@@ -84,13 +96,24 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
     }
 };
 
-function MobileHeader(enqueueSnackbar) {
+function MobileHeader({ enqueueSnackbar }) {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const auth = useContext(AuthContext);
     const [open, setOpen] = useState(false);
     const [openDrawer, setOpenDrawer] = React.useState(false);
+    const [openNotiDrawer, setOpenNotiDrawer] = React.useState(false);
+    const [roomIds, setRoomIds] = useState(null);
+    const [notis, setNotis] = useState([]);
+
+    const handleNotiDrawerOpen = () => {
+        setOpenNotiDrawer(true);
+    };
+
+    const handleNotiDrawerClose = () => {
+        setOpenNotiDrawer(false);
+    };
 
     const handleDrawerOpen = () => {
         setOpenDrawer(true);
@@ -99,6 +122,59 @@ function MobileHeader(enqueueSnackbar) {
     const handleDrawerClose = () => {
         setOpenDrawer(false);
     };
+
+    useEffect(() => {
+        axios
+            .get(
+                `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${auth.user._id}`
+            )
+            .then((res) => setRoomIds(res.data.rooms.map((room) => room._id)))
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
+    }, []);
+    useEffect(() => {
+        console.log("useEffect running");
+        if (roomIds !== null) {
+            console.log("socket running");
+            console.log(roomIds);
+            const socket = io(endpoint);
+            socket.emit("room ids", roomIds);
+            socket.emit("getNotification", { id: auth.user._id });
+            socket.on(
+                "new message",
+                ({ message }) => {
+                    enqueueSnackbar(message.message.messageText, {
+                        variant: "success",
+                    });
+                },
+                []
+            );
+            socket.on(
+                "notifications",
+                ({ notifications }) => {
+                    setNotis(notifications);
+                },
+                []
+            );
+            socket.on("newNoti", (data) => {
+                setNotis((res) => [data, ...res]);
+                enqueueSnackbar(data.content, {
+                    variant: "info",
+                });
+            });
+        }
+        // clean up when unmount
+        // return () => io.
+    }, [roomIds]);
 
     const handleOnAuth = async (error, authData, msal) => {
         if (authData) {
@@ -167,7 +243,57 @@ function MobileHeader(enqueueSnackbar) {
                         className={classes.title}
                     ></Typography>
                     {!auth.user && loginWithMicrosoft}
-                    {auth.user && <Notification user={auth.user} />}
+                    {auth.user && (
+                        <React.Fragment>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleNotiDrawerOpen}
+                            >
+                                <NotificationsIcon
+                                    style={{ color: "#707070" }}
+                                />
+                            </IconButton>
+                            <SwipeableDrawer
+                                anchor="top"
+                                open={openNotiDrawer}
+                                onClose={handleNotiDrawerClose}
+                                onOpen={handleNotiDrawerOpen}
+                            >
+                                <div className={classes.topList}>
+                                    <AppBar
+                                        className={classes.bar}
+                                        position="static"
+                                        color="transparent"
+                                    >
+                                        <Toolbar disableGutters>
+                                            <Typography
+                                                variant="h5"
+                                                className={classes.title}
+                                                style={{ paddingLeft: "10px" }}
+                                            >
+                                                Notifications
+                                            </Typography>
+                                            <div className={classes.grow} />
+                                            <IconButton>
+                                                <MoreVertIcon />
+                                                {/* TODO: add the mark all noti function as read here */}
+                                            </IconButton>
+                                            <IconButton
+                                                onclick={handleNotiDrawerClose}
+                                            >
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </Toolbar>
+                                    </AppBar>
+                                    <Divider style={{ marginBottom: "1rem" }} />
+                                    {notis.map((noti) => (
+                                        <NotiCard noti={noti} key={noti._id} />
+                                    ))}
+                                </div>
+                            </SwipeableDrawer>
+                        </React.Fragment>
+                    )}
                     {auth.user && (
                         <React.Fragment>
                             <IconButton
@@ -195,15 +321,18 @@ function MobileHeader(enqueueSnackbar) {
                                             xs={12}
                                             style={{ paddingTop: "1rem" }}
                                         >
-                                            <Avatar
-                                                src={auth.user.avatar}
-                                                className={classes.avatar}
+                                            <Button
                                                 onclick={() =>
                                                     router.push(
                                                         `/users/${auth.user._id}`
                                                     )
                                                 }
-                                            />
+                                            >
+                                                <Avatar
+                                                    src={auth.user.avatar}
+                                                    className={classes.avatar}
+                                                />
+                                            </Button>
                                         </Grid>
                                         <Grid
                                             container

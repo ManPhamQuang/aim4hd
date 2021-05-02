@@ -9,24 +9,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
 import { withSnackbar } from "notistack";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import Paper from "@material-ui/core/Paper";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
-
+import Divider from "@material-ui/core/Divider";
 import clsx from "clsx";
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
-import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {

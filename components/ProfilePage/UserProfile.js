@@ -209,6 +209,10 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
     const defaultValue = courses.filter((course) =>
         input.currentCourses.includes(course.id));
 
+    const defaultSkillValue = skills.filter((skill) =>
+        input.skills.includes(skill.id));
+
+
     return (
         <Container component="main" maxWidth="xs">
             <LoadingSpinner isLoading={isLoading} />
@@ -293,7 +297,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                         value={input.description}
                         onChange={handleOnInputChange}
                     />
-                    <TextField
+                    {/* <TextField
                         color="secondary"
                         select
                         variant="outlined"
@@ -312,7 +316,34 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                                 {skill.name}
                             </MenuItem>
                         ))}
-                    </TextField>
+                    </TextField> */}
+                    {defaultSkillValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={skills}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const skills = value.map(
+                                        (skill) => skill.id
+                                    );
+                                    setInput({ ...input, skills });
+                                }
+                            }}
+                            defaultValue={defaultSkillValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Skills"
+                                    placeholder="Skills"
+                                />
+                            )}
+                        />
+                    )}
                     {errorMsg.skills && (
                         <FormHelperText error={true}>
                             {errorMsg.skills}
@@ -336,6 +367,8 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
+                                    color="secondary"
+                                    margin="normal"
                                     variant="outlined"
                                     label="Current Course"
                                     placeholder="Current Course"

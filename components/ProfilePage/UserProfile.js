@@ -17,8 +17,8 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { withSnackbar } from "notistack";
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         // marginTop: theme.spacing(8),
@@ -35,6 +35,12 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         zIndex: 10,
+    },
+    autoCompleteRoot: {
+        width: 500,
+        "& > * + *": {
+            marginTop: theme.spacing(3),
+        },
     },
 }));
 
@@ -128,6 +134,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
+        console.log(input.currentCourses);
         if (
             validateUrl(input.socialLinks.github, patterns.github) &&
             validateUrl(input.socialLinks.facebook, patterns.facebook) &&
@@ -147,7 +154,15 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                     );
                     avatar = response.data.secure_url;
                 } catch (error) {
-                    console.log(error);
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    });
                 }
             }
             const body = {
@@ -180,7 +195,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
             } catch (error) {
                 setIsLoading(false);
                 console.log(error);
-                enqueueSnackbar("An error has occured!", {
+                enqueueSnackbar(error.message, {
                     variant: "error",
                     anchorOrigin: {
                         vertical: "bottom",
@@ -191,6 +206,12 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
             }
         }
     };
+    const defaultValue = courses.filter((course) =>
+        input.currentCourses.includes(course.id));
+
+    const defaultSkillValue = skills.filter((skill) =>
+        input.skills.includes(skill.id));
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -276,51 +297,67 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                         value={input.description}
                         onChange={handleOnInputChange}
                     />
-                    <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Skills"
-                        name="skills"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.skills,
-                            onChange: handleOnInputChange,
-                        }}
-                    >
-                        {skills.map((skill) => (
-                            <MenuItem key={skill.id} value={skill.id}>
-                                {skill.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+
+                    {defaultSkillValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={skills}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const skills = value.map(
+                                        (skill) => skill.id
+                                    );
+                                    setInput({ ...input, skills });
+                                }
+                            }}
+                            defaultValue={defaultSkillValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Skills"
+                                    placeholder="Skills"
+                                />
+                            )}
+                        />
+                    )}
                     {errorMsg.skills && (
                         <FormHelperText error={true}>
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
-                    <TextField
-                        color="secondary"
-                        select
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        label="Current courses"
-                        name="currentCourses"
-                        SelectProps={{
-                            multiple: true,
-                            value: input.currentCourses,
-                            onChange: handleOnInputChange,
-                        }}
-                    >
-                        {courses.map((course) => (
-                            <MenuItem key={course.id} value={course.id}>
-                                {course.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                    {defaultValue.length > 0 && (
+                        <Autocomplete
+                            multiple
+                            limitTags={2}
+                            options={courses}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                if (value.length > 0) {
+                                    const currentCourses = value.map(
+                                        (course) => course.id
+                                    );
+                                    setInput({ ...input, currentCourses });
+                                }
+                            }}
+                            defaultValue={defaultValue}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Current Course"
+                                    placeholder="Current Course"
+                                />
+                            )}
+                        />
+                    )}
+
                     {errorMsg.currentCourses && (
                         <FormHelperText error={true}>
                             {errorMsg.currentCourses}

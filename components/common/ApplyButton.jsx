@@ -8,6 +8,8 @@ import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
 import AuthContext from "../../utils/authContext";
+import { ErrorOutlineSharp } from "@material-ui/icons";
+import { withSnackbar } from "notistack";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
+function ButtonProgress({ postId, appliedStudents, isOpen, enqueueSnackbar }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const user = context.user;
@@ -73,16 +75,29 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
 
     const applyToPost = () => {
         axios
-            .post(`https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`, {
-                userId: user._id,
-            })
+            .post(
+                `https://aim4hd-backend.herokuapp.com/api/v1/posts/${postId}`,
+                {
+                    userId: user._id,
+                }
+            )
             .then((res) => {
                 if (res.status == 200) {
                     setSuccess(true);
                     setLoading(false);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
 
     const handleButtonClick = () => {
@@ -117,3 +132,5 @@ export default function ButtonProgress({ postId, appliedStudents, isOpen }) {
         </div>
     );
 }
+
+export default withSnackbar(ButtonProgress);

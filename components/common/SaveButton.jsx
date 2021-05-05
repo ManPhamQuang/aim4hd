@@ -8,6 +8,7 @@ import { green } from "@material-ui/core/colors";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import axios from "axios";
+import { withSnackbar } from "notistack";
 import AuthContext from "../../utils/authContext";
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SaveButton({ userId, postId, savedPosts }) {
+function SaveButton({ userId, postId, savedPosts, enqueueSnackbar }) {
     const classes = useStyles();
     const context = useContext(AuthContext);
     const [loading, setLoading] = React.useState(false);
@@ -87,7 +88,17 @@ export default function SaveButton({ userId, postId, savedPosts }) {
                     setLoading(false);
                 }
             })
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     };
 
     const handleButtonClick = () => {
@@ -121,3 +132,4 @@ export default function SaveButton({ userId, postId, savedPosts }) {
         </div>
     );
 }
+export default withSnackbar(SaveButton);

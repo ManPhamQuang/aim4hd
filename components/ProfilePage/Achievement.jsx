@@ -147,7 +147,7 @@ function Achievement({ user, enqueueSnackbar }) {
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            enqueueSnackbar("An error has occured!", {
+            enqueueSnackbar(error.messagge, {
                 variant: "error",
                 anchorOrigin: {
                     vertical: "bottom",
@@ -192,8 +192,7 @@ function Achievement({ user, enqueueSnackbar }) {
 
                 achievement = response.data.secure_url;
             } catch (error) {
-                console.log(error);
-                enqueueSnackbar("An error has occured!", {
+                enqueueSnackbar(error.message, {
                     variant: "error",
                     anchorOrigin: {
                         vertical: "bottom",
@@ -235,7 +234,7 @@ function Achievement({ user, enqueueSnackbar }) {
         } catch (error) {
             setIsLoading(false);
             console.log(error);
-            enqueueSnackbar("An error has occured!", {
+            enqueueSnackbar(error.message, {
                 variant: "error",
                 anchorOrigin: {
                     vertical: "bottom",

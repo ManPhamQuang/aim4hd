@@ -7,6 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { Avatar, Container, Grid, CardHeader } from "@material-ui/core";
 import Link from "next/link";
+import { withSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RecommenedUsers() {
+function RecommenedUsers(enqueueSnackbar) {
     const [users, setUsers] = useState([]);
     const classes = useStyles();
     const theme = useTheme();
@@ -65,7 +66,17 @@ export default function RecommenedUsers() {
                 "https://aim4hd-backend.herokuapp.com/api/v1/users?sort=-numberOfRecommended&limit=5"
             )
             .then((res) => setUsers(res.data.data.user))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
 
     const UserCard = ({ user }) => {
@@ -111,3 +122,4 @@ export default function RecommenedUsers() {
         </Container>
     );
 }
+export default withSnackbar(RecommenedUsers);

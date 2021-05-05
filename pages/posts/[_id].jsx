@@ -219,6 +219,7 @@ function PostPage({
     numberOfComments,
     approvedMembers,
     appliedStudents,
+    enqueueSnackbar,
 }) {
     const { isFallback } = useRouter();
     const router = useRouter();
@@ -288,7 +289,15 @@ function PostPage({
             }
         } catch (error) {
             setIsLoading(false);
-            console.log(error);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 
@@ -322,7 +331,15 @@ function PostPage({
             }
         } catch (error) {
             setIsLoading(false);
-            console.log(error);
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                TransitionComponent: Slide,
+                autoHideDuration: 4000,
+            });
         }
     };
 

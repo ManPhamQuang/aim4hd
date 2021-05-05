@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import PostCard from "../common/PostCard";
 import axios from "axios";
 import { Container } from "@material-ui/core";
+import { withSnackbar } from "notistack";
 
-export default function MyPost(props) {
+function MyPost(props, enqueueSnackbar) {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         axios
@@ -11,7 +12,17 @@ export default function MyPost(props) {
                 `https://aim4hd-backend.herokuapp.com/api/v1/posts?limit=100&author=${props.userId}`
             )
             .then((res) => setPosts(res.data.data.posts))
-            .catch((err) => console.log(err));
+            .catch((err) =>
+                enqueueSnackbar(err.message, {
+                    variant: "warning",
+                    anchorOrigin: {
+                        vertical: "bottom",
+                        horizontal: "left",
+                    },
+                    TransitionComponent: Slide,
+                    autoHideDuration: 4000,
+                })
+            );
     }, []);
     return (
         <div>
@@ -21,3 +32,4 @@ export default function MyPost(props) {
         </div>
     );
 }
+export default withSnackbar(MyPost);

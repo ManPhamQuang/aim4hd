@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import io, { Socket } from "socket.io-client";
 import AuthContext from "../utils/authContext";
 import axios from "axios";
+import { withSnackbar } from "notistack";
 // const socket = io.connect("http://localhost:4000");
 const endpoint = "http://localhost:5000";
 
-function chatRoomManTheSon() {
+function chatRoomManTheSon(enqueueSnackbar) {
     const auth = useContext(AuthContext);
     const [messages, setMessages] = useState([]);
     // socket.on("notifications", ({ notifications }) => {
@@ -25,7 +26,17 @@ function chatRoomManTheSon() {
                     "http://localhost:5000/api/v1/chatroom/60813b092e491417b4d5a6ed/message" // TODO: that's a room id
                 )
                 .then((res) => setMessages(res.data.conversation))
-                .catch((err) => console.log(err));
+                .catch((err) =>
+                    enqueueSnackbar(err.message, {
+                        variant: "warning",
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        TransitionComponent: Slide,
+                        autoHideDuration: 4000,
+                    })
+                );
             socket.emit("room ids", ["60813b092e491417b4d5a6ed"]); // array of room ids
             socket.on("new message", ({ message }) => {
                 console.log("new messages!!!console;");
@@ -48,4 +59,4 @@ function chatRoomManTheSon() {
     // change some render thing for id to pass TOTO: FIX THIS SHIT LATER
 }
 
-export default chatRoomManTheSon;
+export default withSnackbar(chatRoomManTheSon);

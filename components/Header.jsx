@@ -166,11 +166,19 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        return { error: error.response.data.message };
+        enqueueSnackbar(error.message, {
+            variant: "warning",
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+            },
+            TransitionComponent: Slide,
+            autoHideDuration: 4000,
+        });
     }
 };
 
-export default function DesktopHeader(props) {
+function DesktopHeader(props, enqueueSnackbar) {
     const classes = useStyles();
     const router = useRouter();
     const auth = useContext(AuthContext);
@@ -373,3 +381,5 @@ export default function DesktopHeader(props) {
         </div>
     );
 }
+
+export default withSnackbar(DesktopHeader);

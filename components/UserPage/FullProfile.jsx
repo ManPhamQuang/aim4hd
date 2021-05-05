@@ -100,7 +100,7 @@ export default function FullProfile({ user }) {
                 justify="center"
                 alignItems="strech"
                 className={classes.container}
-                spacing={2}
+
                 // style={{ backgroundColor: "pink" }}
             >
                 <Grid
@@ -149,8 +149,10 @@ export default function FullProfile({ user }) {
                             >
                                 {user.major}
                             </Typography>
-                            <School school={user.school} />
-                            <Button
+                            <Typography>
+                                <School school={user.school} />
+                            </Typography>
+                            {/* <Button
                                 variant="contained"
                                 size="large"
                                 style={{
@@ -170,8 +172,7 @@ export default function FullProfile({ user }) {
                                 }}
                             >
                                 MESSAGE
-                            </Button>{" "}
-                            */}
+                            </Button> */}
                         </div>
                     </Grid>
                     <Grid item container lg={1}>
@@ -239,8 +240,6 @@ export default function FullProfile({ user }) {
                     direction="column"
                     justify="center"
                     alignItems="center"
-                    spacing={1}
-                    // style={{ backgroundColor: "orange" }}
                 >
                     <Grid item xs={12}>
                         <Button

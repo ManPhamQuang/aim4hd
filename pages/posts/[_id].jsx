@@ -482,18 +482,20 @@ function PostPage({
                                                   student={student}
                                                   key={student._id}
                                               />
-                                              <IconButton
-                                                  onClick={handleRemoveMember.bind(
-                                                      this,
-                                                      student
-                                                  )}
-                                              >
-                                                  <ClearIcon
-                                                      style={{
-                                                          color: red[500],
-                                                      }}
-                                                  />
-                                              </IconButton>
+                                              {isAuthor() ? null : (
+                                                  <IconButton
+                                                      onClick={handleRemoveMember.bind(
+                                                          this,
+                                                          student
+                                                      )}
+                                                  >
+                                                      <ClearIcon
+                                                          style={{
+                                                              color: red[500],
+                                                          }}
+                                                      />
+                                                  </IconButton>
+                                              )}
                                           </Grid>
                                       ))
                                     : approvedMembersData.map((student) => (
@@ -510,34 +512,40 @@ function PostPage({
                 </Grid>
                 <Breaker />
                 {context.user ? (
-                    <Grid
-                        container
-                        spacing={3}
-                        className={classes.buttonsContainer}
-                    >
-                        <Grid item xs={6}>
-                            <SaveButton
-                                userId={context.user._id}
-                                postId={_id}
-                                savedPosts={context.user.savedPosts}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ProgressButton
-                                postId={_id}
-                                appliedStudents={appliedStudents}
-                                isOpen={isOpen}
-                            />
-                        </Grid>
+                    <React.Fragment>
                         {isAuthor() ? (
-                            <Grid item xs={6}>
-                                <TogglePostButton
-                                    postId={_id}
-                                    isOpen={isOpen}
-                                />
+                            <Grid container>
+                                <Grid item xs={12} sm={4}>
+                                    {" "}
+                                    <TogglePostButton
+                                        postId={_id}
+                                        isOpen={isOpen}
+                                    />
+                                </Grid>
                             </Grid>
-                        ) : null}
-                    </Grid>
+                        ) : (
+                            <Grid
+                                container
+                                spacing={3}
+                                className={classes.buttonsContainer}
+                            >
+                                <Grid item xs={6}>
+                                    <SaveButton
+                                        userId={context.user._id}
+                                        postId={_id}
+                                        savedPosts={context.user.savedPosts}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <ProgressButton
+                                        postId={_id}
+                                        appliedStudents={appliedStudents}
+                                        isOpen={isOpen}
+                                    />
+                                </Grid>
+                            </Grid>
+                        )}
+                    </React.Fragment>
                 ) : null}
                 <CardContent className={classes.content}>
                     <Typography variant="h4" component="h2">

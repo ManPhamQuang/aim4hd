@@ -271,8 +271,9 @@ export default function FullProfile({ user }) {
                             }}
                             startIcon={<GitHubIcon className={classes.logo} />}
                             onClick={(event) => {
-                                if (user.socialLinks?.facebook)
+                                if (user.socialLinks?.github) {
                                     window.open(user.socialLinks.github);
+                                }
                             }}
                         >
                             Github
@@ -290,7 +291,7 @@ export default function FullProfile({ user }) {
                                 <InstagramIcon className={classes.logo} />
                             }
                             onClick={(event) => {
-                                if (user.socialLinks?.facebook)
+                                if (user.socialLinks?.instagram)
                                     window.open(user.socialLinks.instagram);
                             }}
                         >
@@ -310,7 +311,7 @@ export default function FullProfile({ user }) {
                                 <LinkedInIcon className={classes.logo} />
                             }
                             onClick={(event) => {
-                                if (user.socialLinks?.facebook)
+                                if (user.socialLinks?.linkedin)
                                     window.open(user.socialLinks.linkedin);
                             }}
                         >

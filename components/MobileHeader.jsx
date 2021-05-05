@@ -38,6 +38,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import NotiCard from "./Notification/NotiCard";
 import CloseIcon from "@material-ui/icons/Close";
 import Badge from "@material-ui/core/Badge";
+import Notification from "./Notification/Notification.js";
 
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
@@ -124,58 +125,58 @@ function MobileHeader({ enqueueSnackbar }) {
         setOpenDrawer(false);
     };
 
-    useEffect(() => {
-        axios
-            .get(
-                `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${auth.user._id}`
-            )
-            .then((res) => setRoomIds(res.data.rooms.map((room) => room._id)))
-            .catch((err) =>
-                enqueueSnackbar(err.message, {
-                    variant: "warning",
-                    anchorOrigin: {
-                        vertical: "bottom",
-                        horizontal: "left",
-                    },
-                    TransitionComponent: Slide,
-                    autoHideDuration: 4000,
-                })
-            );
-    }, []);
-    useEffect(() => {
-        console.log("useEffect running");
-        if (roomIds !== null) {
-            console.log("socket running");
-            console.log(roomIds);
-            const socket = io(endpoint);
-            socket.emit("room ids", roomIds);
-            socket.emit("getNotification", { id: auth.user._id });
-            socket.on(
-                "new message",
-                ({ message }) => {
-                    enqueueSnackbar(message.message.messageText, {
-                        variant: "success",
-                    });
-                },
-                []
-            );
-            socket.on(
-                "notifications",
-                ({ notifications }) => {
-                    setNotis(notifications);
-                },
-                []
-            );
-            socket.on("newNoti", (data) => {
-                setNotis((res) => [data, ...res]);
-                enqueueSnackbar(data.content, {
-                    variant: "info",
-                });
-            });
-        }
-        // clean up when unmount
-        // return () => io.
-    }, [roomIds]);
+    // useEffect(() => {
+    //     axios
+    //         .get(
+    //             `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${auth.user._id}`
+    //         )
+    //         .then((res) => setRoomIds(res.data.rooms.map((room) => room._id)))
+    //         .catch((err) =>
+    //             enqueueSnackbar(err.message, {
+    //                 variant: "warning",
+    //                 anchorOrigin: {
+    //                     vertical: "bottom",
+    //                     horizontal: "left",
+    //                 },
+    //                 TransitionComponent: Slide,
+    //                 autoHideDuration: 4000,
+    //             })
+    //         );
+    // }, []);
+    // useEffect(() => {
+    //     console.log("useEffect running");
+    //     if (roomIds !== null) {
+    //         console.log("socket running");
+    //         console.log(roomIds);
+    //         const socket = io(endpoint);
+    //         socket.emit("room ids", roomIds);
+    //         socket.emit("getNotification", { id: auth.user._id });
+    //         socket.on(
+    //             "new message",
+    //             ({ message }) => {
+    //                 enqueueSnackbar(message.message.messageText, {
+    //                     variant: "success",
+    //                 });
+    //             },
+    //             []
+    //         );
+    //         socket.on(
+    //             "notifications",
+    //             ({ notifications }) => {
+    //                 setNotis(notifications);
+    //             },
+    //             []
+    //         );
+    //         socket.on("newNoti", (data) => {
+    //             setNotis((res) => [data, ...res]);
+    //             enqueueSnackbar(data.content, {
+    //                 variant: "info",
+    //             });
+    //         });
+    //     }
+    //     // clean up when unmount
+    //     // return () => io.
+    // }, [roomIds]);
 
     const handleOnAuth = async (error, authData, msal) => {
         if (authData) {
@@ -295,9 +296,13 @@ function MobileHeader({ enqueueSnackbar }) {
                                         </Toolbar>
                                     </AppBar>
                                     <Divider style={{ marginBottom: "1rem" }} />
-                                    {notis.map((noti) => (
+                                    {/* {notis.map((noti) => (
                                         <NotiCard noti={noti} key={noti._id} />
                                     ))}
+                                    <Notification/> */}
+                                    {auth.user && (
+                                        <Notification user={auth.user} />
+                                    )}
                                 </div>
                             </SwipeableDrawer>
                         </React.Fragment>

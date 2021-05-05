@@ -8,12 +8,12 @@ export default function Layout(props) {
     return (
         <Grid container direction="column">
             <Grid item>
-                <Hidden mdDown>
+                <Hidden smDown>
                     <Header />
                 </Hidden>
-                {/* <Hidden mdUp>
+                <Hidden mdUp>
                     <MobileHeader />
-                </Hidden> */}
+                </Hidden>
             </Grid>
             <Grid item container>
                 {props.children}

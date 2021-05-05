@@ -8,7 +8,14 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
 import { withSnackbar } from "notistack";
-import { AppBar, Toolbar, Typography, Menu, MenuItem } from "@material-ui/core";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Menu,
+    MenuItem,
+    Hidden,
+} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -195,61 +202,71 @@ function Notification({ user, enqueueSnackbar }) {
 
     return (
         <>
-            <ClickAwayListener onClickAway={onClickAway}>
-                <div>
-                    <IconButton onClick={() => setOpen(!open)}>
-                        <Badge
-                            badgeContent={
-                                notis.filter((noti) => noti.read === false)
-                                    .length
-                            }
-                            color="primary"
-                        >
-                            <NotificationsIcon className={iconClass} />
-                        </Badge>
-                    </IconButton>
-                    {open && (
-                        <Paper className={classes.dropdown} variant="outlined">
-                            <AppBar
-                                className={classes.bar}
-                                position="static"
-                                color="transparent"
+            <Hidden smDown>
+                <ClickAwayListener onClickAway={onClickAway}>
+                    <div>
+                        <IconButton onClick={() => setOpen(!open)}>
+                            <Badge
+                                badgeContent={
+                                    notis.filter((noti) => noti.read === false)
+                                        .length
+                                }
+                                color="primary"
                             >
-                                <Toolbar disableGutters>
-                                    <Typography
-                                        variant="h5"
-                                        className={classes.title}
-                                        style={{ paddingLeft: "10px" }}
-                                    >
-                                        Notifications
-                                    </Typography>
-                                    <div className={classes.grow} />
-                                    <IconButton onClick={handleClick}>
-                                        <MoreVertIcon />
-                                        {/* TODO: add the mark all noti function as read here */}
-                                    </IconButton>
-                                    <Menu
-                                        id="long-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={optionsOpen}
-                                        onClose={handleClose}
-                                        className={classes.menu}
-                                    >
-                                        <MenuItem onClick={markAllNotiRead}>
-                                            Mark all as read
-                                        </MenuItem>
-                                    </Menu>
-                                </Toolbar>
-                            </AppBar>
-                            <Divider style={{ marginBottom: "1rem" }} />
-                            {notis.map((noti) => (
-                                <NotiCard noti={noti} key={noti._id} />
-                            ))}
-                        </Paper>
-                    )}
-                </div>
-            </ClickAwayListener>
+                                <NotificationsIcon className={iconClass} />
+                            </Badge>
+                        </IconButton>
+                        {open && (
+                            <Paper
+                                className={classes.dropdown}
+                                variant="outlined"
+                            >
+                                <AppBar
+                                    className={classes.bar}
+                                    position="static"
+                                    color="transparent"
+                                >
+                                    <Toolbar disableGutters>
+                                        <Typography
+                                            variant="h5"
+                                            className={classes.title}
+                                            style={{ paddingLeft: "10px" }}
+                                        >
+                                            Notifications
+                                        </Typography>
+                                        <div className={classes.grow} />
+                                        <IconButton onClick={handleClick}>
+                                            <MoreVertIcon />
+                                            {/* TODO: add the mark all noti function as read here */}
+                                        </IconButton>
+                                        <Menu
+                                            id="long-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={optionsOpen}
+                                            onClose={handleClose}
+                                            className={classes.menu}
+                                        >
+                                            <MenuItem onClick={markAllNotiRead}>
+                                                Mark all as read
+                                            </MenuItem>
+                                        </Menu>
+                                    </Toolbar>
+                                </AppBar>
+                                <Divider style={{ marginBottom: "1rem" }} />
+                                {notis.map((noti) => (
+                                    <NotiCard noti={noti} key={noti._id} />
+                                ))}
+                            </Paper>
+                        )}
+                    </div>
+                </ClickAwayListener>
+            </Hidden>
+            <Hidden mdUp>
+                {notis.map((noti) => (
+                    <NotiCard noti={noti} key={noti._id} />
+                ))}
+            </Hidden>
         </>
     );
 }

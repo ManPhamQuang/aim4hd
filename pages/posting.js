@@ -25,6 +25,8 @@ import { useRouter } from "next/router";
 import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import { withSnackbar } from "notistack";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
@@ -75,7 +77,7 @@ function isEmpty(obj) {
     return JSON.stringify(obj) === JSON.stringify({});
 }
 const ITEM_HEIGHT = 52;
-function PostingPage(enqueueSnackbar) {
+function PostingPage({ enqueueSnackbar }) {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
@@ -169,11 +171,11 @@ function PostingPage(enqueueSnackbar) {
                 title: postData.title,
                 content: postData.content,
                 aiming: postData.aiming,
-                course: postData.course ? postData.course._id : "",
+                course: postData.course ? postData.course : "",
                 maximumMember: postData.maximumMember,
                 currentMember: postData.approvedMembers.length,
                 requiredSkills: postData.requiredSkills
-                    ? postData.requiredSkills.map((skill) => skill._id)
+                    ? postData.requiredSkills
                     : [],
                 approvedMembers: postData.approvedMembers
                     ? postData.approvedMembers.map((member) => member._id)
@@ -227,6 +229,7 @@ function PostingPage(enqueueSnackbar) {
                 Object.assign(formData, { [key]: input[key] });
             }
         }
+        formData.course = formData.course._id;
         // console.log(formData);
         if (isEdit) {
             delete formData.approvedMembers;
@@ -247,7 +250,7 @@ function PostingPage(enqueueSnackbar) {
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+                        // TransitionComponent: Slide,
                         autoHideDuration: 4000,
                     })
                 );
@@ -271,7 +274,7 @@ function PostingPage(enqueueSnackbar) {
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+                        // TransitionComponent: Slide,
                         autoHideDuration: 4000,
                     })
                 );
@@ -329,7 +332,32 @@ function PostingPage(enqueueSnackbar) {
                             </TextField>
                         </Grid>
                         <Grid item xs={12} md={10}>
-                            <TextField
+                            <Autocomplete
+                                limitTags={1}
+                                options={courses}
+                                getOptionLabel={(option) => {
+                                    return option.name;
+                                }}
+                                onChange={(_, value) => {
+                                    const course = value;
+                                    setInput({ ...input, course });
+                                }}
+                                getOptionSelected={(option, value) => {
+                                    return option._id === value;
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        color="secondary"
+                                        margin="normal"
+                                        variant="outlined"
+                                        label="Course"
+                                        placeholder="Course"
+                                    />
+                                )}
+                                value={input.course}
+                            />
+                            {/* <TextField
                                 color="secondary"
                                 select
                                 variant="outlined"
@@ -356,7 +384,7 @@ function PostingPage(enqueueSnackbar) {
                                         {course.name}
                                     </MenuItem>
                                 ))}
-                            </TextField>
+                            </TextField> */}
                         </Grid>
                     </Grid>
                     {/* <TextField
@@ -383,7 +411,33 @@ function PostingPage(enqueueSnackbar) {
                         </Grid>
 
                         <Grid item xs={12} md={10}>
-                            <TextField
+                            <Autocomplete
+                                multiple
+                                limitTags={4}
+                                options={skills}
+                                getOptionLabel={(option) => {
+                                    return option.name;
+                                }}
+                                onChange={(_, value) => {
+                                    const requiredSkills = value;
+                                    setInput({ ...input, requiredSkills });
+                                }}
+                                getOptionSelected={(option, value) => {
+                                    return option._id === value;
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        color="secondary"
+                                        margin="normal"
+                                        variant="outlined"
+                                        label="Skills"
+                                        placeholder="Skills"
+                                    />
+                                )}
+                                value={input.requiredSkills}
+                            />
+                            {/* <TextField
                                 color="secondary"
                                 select
                                 variant="outlined"
@@ -410,7 +464,7 @@ function PostingPage(enqueueSnackbar) {
                                         {skill.name}
                                     </MenuItem>
                                 ))}
-                            </TextField>
+                            </TextField> */}
                         </Grid>
                     </Grid>
                     <TextField

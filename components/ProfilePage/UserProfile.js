@@ -44,7 +44,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UserProfile({ user, courses, skills, enqueueSnackbar }) {
+function UserProfile({
+    user,
+    courses: fetchedCourses,
+    skills: fetchedSkills,
+    enqueueSnackbar,
+}) {
     const classes = useStyles();
     const [input, setInput] = useState({
         name: user.name,
@@ -206,12 +211,13 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
             }
         }
     };
-    const defaultValue = courses.filter((course) =>
-        input.currentCourses.includes(course.id));
+    const defaultValue = fetchedCourses.filter((course) =>
+        input.currentCourses.includes(course.id)
+    );
 
-    const defaultSkillValue = skills.filter((skill) =>
-        input.skills.includes(skill.id));
-
+    const defaultSkillValue = fetchedSkills.filter((skill) =>
+        input.skills.includes(skill.id)
+    );
 
     return (
         <Container component="main" maxWidth="xs">
@@ -298,65 +304,61 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                         onChange={handleOnInputChange}
                     />
 
-                    {defaultSkillValue.length > 0 && (
-                        <Autocomplete
-                            multiple
-                            limitTags={2}
-                            options={skills}
-                            getOptionLabel={(option) => option.name}
-                            onChange={(_, value) => {
-                                if (value.length > 0) {
-                                    const skills = value.map(
-                                        (skill) => skill.id
-                                    );
-                                    setInput({ ...input, skills });
-                                }
-                            }}
-                            defaultValue={defaultSkillValue}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    color="secondary"
-                                    margin="normal"
-                                    variant="outlined"
-                                    label="Skills"
-                                    placeholder="Skills"
-                                />
-                            )}
-                        />
-                    )}
+                    <Autocomplete
+                        multiple
+                        limitTags={4}
+                        options={fetchedSkills}
+                        getOptionLabel={(option) => {
+                            return option.name;
+                        }}
+                        onChange={(_, value) => {
+                            const skills = value;
+                            setInput({ ...input, skills });
+                        }}
+                        getOptionSelected={(option, value) => {
+                            return option._id === value;
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                color="secondary"
+                                margin="normal"
+                                variant="outlined"
+                                label="Skills"
+                                placeholder="Skills"
+                            />
+                        )}
+                        value={input.skills}
+                    />
                     {errorMsg.skills && (
                         <FormHelperText error={true}>
                             {errorMsg.skills}
                         </FormHelperText>
                     )}
-                    {defaultValue.length > 0 && (
-                        <Autocomplete
-                            multiple
-                            limitTags={2}
-                            options={courses}
-                            getOptionLabel={(option) => option.name}
-                            onChange={(_, value) => {
-                                if (value.length > 0) {
-                                    const currentCourses = value.map(
-                                        (course) => course.id
-                                    );
-                                    setInput({ ...input, currentCourses });
-                                }
-                            }}
-                            defaultValue={defaultValue}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    color="secondary"
-                                    margin="normal"
-                                    variant="outlined"
-                                    label="Current Course"
-                                    placeholder="Current Course"
-                                />
-                            )}
-                        />
-                    )}
+                    <Autocomplete
+                        multiple
+                        limitTags={4}
+                        options={fetchedCourses}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(_, value) => {
+                            const currentCourses = value;
+                            setInput({ ...input, currentCourses });
+                        }}
+                        getOptionSelected={(option, value) => {
+                            return option._id === value;
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                color="secondary"
+                                margin="normal"
+                                variant="outlined"
+                                label="Current Course"
+                                placeholder="Current Course"
+                            />
+                        )}
+                        value={input.currentCourses}
+                    />
 
                     {errorMsg.currentCourses && (
                         <FormHelperText error={true}>

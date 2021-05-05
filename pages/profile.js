@@ -79,7 +79,7 @@ const ProfilePage = ({ user, enqueueSnackbar }) => {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
+
                     autoHideDuration: 4000,
                 });
             }

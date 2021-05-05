@@ -94,7 +94,6 @@ function ButtonProgress({ postId, appliedStudents, isOpen, enqueueSnackbar }) {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
                     autoHideDuration: 4000,
                 })
             );

@@ -110,7 +110,7 @@ const Feedback = ({ user, enqueueSnackbar }) => {
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
+
                 autoHideDuration: 4000,
             });
         }
@@ -158,7 +158,7 @@ const Feedback = ({ user, enqueueSnackbar }) => {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
+
                     autoHideDuration: 4000,
                 });
             } finally {

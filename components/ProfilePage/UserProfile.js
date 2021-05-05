@@ -19,6 +19,9 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { withSnackbar } from "notistack";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Checkbox from "@material-ui/core/Checkbox";
 const useStyles = makeStyles((theme) => ({
     paper: {
         // marginTop: theme.spacing(8),
@@ -43,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 function UserProfile({
     user,
@@ -165,7 +171,7 @@ function UserProfile({
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+
                         autoHideDuration: 4000,
                     });
                 }
@@ -211,13 +217,22 @@ function UserProfile({
             }
         }
     };
-    const defaultValue = fetchedCourses.filter((course) =>
-        input.currentCourses.includes(course.id)
-    );
 
-    const defaultSkillValue = fetchedSkills.filter((skill) =>
-        input.skills.includes(skill.id)
-    );
+    const displaySkills = fetchedSkills.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
+
+    const displayCourses = fetchedCourses.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
 
     return (
         <Container component="main" maxWidth="xs">
@@ -306,8 +321,13 @@ function UserProfile({
 
                     <Autocomplete
                         multiple
+                        disableCloseOnSelect
                         limitTags={4}
-                        options={fetchedSkills}
+                        options={displaySkills.sort(
+                            (a, b) =>
+                                -b.firstLetter.localeCompare(a.firstLetter)
+                        )}
+                        groupBy={(option) => option.firstLetter}
                         getOptionLabel={(option) => {
                             return option.name;
                         }}
@@ -317,6 +337,22 @@ function UserProfile({
                         }}
                         getOptionSelected={(option, value) => {
                             return option._id === value;
+                        }}
+                        renderOption={(option) => {
+                            return (
+                                <React.Fragment>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={input.skills
+                                            .map((skill) => skill._id)
+                                            .includes(option._id)}
+                                    />
+
+                                    {option.name}
+                                </React.Fragment>
+                            );
                         }}
                         renderInput={(params) => (
                             <TextField
@@ -338,7 +374,12 @@ function UserProfile({
                     <Autocomplete
                         multiple
                         limitTags={4}
-                        options={fetchedCourses}
+                        disableCloseOnSelect
+                        options={displayCourses.sort(
+                            (a, b) =>
+                                -b.firstLetter.localeCompare(a.firstLetter)
+                        )}
+                        groupBy={(option) => option.firstLetter}
                         getOptionLabel={(option) => option.name}
                         onChange={(_, value) => {
                             const currentCourses = value;
@@ -346,6 +387,22 @@ function UserProfile({
                         }}
                         getOptionSelected={(option, value) => {
                             return option._id === value;
+                        }}
+                        renderOption={(option) => {
+                            return (
+                                <React.Fragment>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={input.currentCourses
+                                            .map((course) => course._id)
+                                            .includes(option._id)}
+                                    />
+
+                                    {option.name}
+                                </React.Fragment>
+                            );
                         }}
                         renderInput={(params) => (
                             <TextField

@@ -95,7 +95,7 @@ function SaveButton({ userId, postId, savedPosts, enqueueSnackbar }) {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
+
                     autoHideDuration: 4000,
                 })
             );

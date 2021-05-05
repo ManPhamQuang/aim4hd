@@ -198,11 +198,19 @@ function PostCard({
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+
                         autoHideDuration: 4000,
                     })
                 );
         }
+    };
+    const isAuthor = () => {
+        if (context.user !== null) {
+            if (context.user._id == author._id) {
+                return true;
+            }
+        }
+        return false;
     };
     const handleSavedPost = async (userId, postId) => {
         console.log("ENTER");
@@ -220,7 +228,7 @@ function PostCard({
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
+
                 autoHideDuration: 4000,
             });
         }
@@ -402,36 +410,30 @@ function PostCard({
                 </ListItem>
             </List>
             {context.user ? (
-                <Grid
-                    container
-                    spacing={3}
-                    className={classes.buttonsContainer}
-                >
-                    <Grid item xs={6}>
-                        {/* <Button
-                            variant="contained"
-                            className={classes.button}
-                            startIcon={<BookmarkIcon />}
-                            onClick={() =>
-                                handleSavedPost(context.user.id, _id)
-                            }
+                <React.Fragment>
+                    {isAuthor() ? null : (
+                        <Grid
+                            container
+                            spacing={3}
+                            className={classes.buttonsContainer}
                         >
-                            Save It
-                        </Button> */}
-                        <SaveButton
-                            userId={context.user._id}
-                            postId={_id}
-                            savedPosts={context.user.savedPosts}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <ProgressButton
-                            postId={_id}
-                            appliedStudents={appliedStudents}
-                            isOpen={isOpen}
-                        />
-                    </Grid>
-                </Grid>
+                            <Grid item xs={6}>
+                                <SaveButton
+                                    userId={context.user._id}
+                                    postId={_id}
+                                    savedPosts={context.user.savedPosts}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <ProgressButton
+                                    postId={_id}
+                                    appliedStudents={appliedStudents}
+                                    isOpen={isOpen}
+                                />
+                            </Grid>
+                        </Grid>
+                    )}
+                </React.Fragment>
             ) : null}
             {/* <Box className={classes.bottomAction}>
                 <Button variant="contained" className={classes.button}>

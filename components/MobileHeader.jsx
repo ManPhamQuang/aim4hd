@@ -245,68 +245,7 @@ function MobileHeader({ enqueueSnackbar }) {
                         className={classes.title}
                     ></Typography>
                     {!auth.user && loginWithMicrosoft}
-                    {auth.user && (
-                        <React.Fragment>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleNotiDrawerOpen}
-                            >
-                                <Badge
-                                    badgeContent={notis.length}
-                                    color="primary"
-                                >
-                                    <NotificationsIcon
-                                        style={{ color: "#707070" }}
-                                    />
-                                </Badge>
-                            </IconButton>
-
-                            <SwipeableDrawer
-                                anchor="top"
-                                open={openNotiDrawer}
-                                onClose={handleNotiDrawerClose}
-                                onOpen={handleNotiDrawerOpen}
-                                className={classes.notiDrawer}
-                            >
-                                <div className={classes.topList}>
-                                    <AppBar
-                                        className={classes.bar}
-                                        position="static"
-                                        color="transparent"
-                                    >
-                                        <Toolbar disableGutters>
-                                            <Typography
-                                                variant="h5"
-                                                className={classes.title}
-                                                style={{ paddingLeft: "10px" }}
-                                            >
-                                                Notifications
-                                            </Typography>
-                                            <div className={classes.grow} />
-                                            <IconButton>
-                                                <MoreVertIcon />
-                                                {/* TODO: add the mark all noti function as read here */}
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={handleNotiDrawerClose}
-                                            >
-                                                <CloseIcon />
-                                            </IconButton>
-                                        </Toolbar>
-                                    </AppBar>
-                                    <Divider style={{ marginBottom: "1rem" }} />
-                                    {/* {notis.map((noti) => (
-                                        <NotiCard noti={noti} key={noti._id} />
-                                    ))}
-                                    <Notification/> */}
-                                    {auth.user && (
-                                        <Notification user={auth.user} />
-                                    )}
-                                </div>
-                            </SwipeableDrawer>
-                        </React.Fragment>
-                    )}
+                    {auth.user && <Notification user={auth.user} />}
                     {auth.user && (
                         <React.Fragment>
                             <IconButton

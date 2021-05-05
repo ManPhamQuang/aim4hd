@@ -29,6 +29,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
 import Divider from "@material-ui/core/Divider";
 import clsx from "clsx";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import CloseIcon from "@material-ui/icons/Close";
 const endpoint = "https://aim4hd-backend.herokuapp.com/";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
     },
+    topList: {
+        width: "auto",
+        height: "55vh",
+    },
 
     expand: {
         transform: "rotate(0deg)",
@@ -108,6 +114,7 @@ function Notification({ user, enqueueSnackbar }) {
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const optionsOpen = Boolean(anchorEl);
+    const [openNotiDrawer, setOpenNotiDrawer] = React.useState(false);
     const [roomIds, setRoomIds] = useState(null);
     const classes = useStyles();
 
@@ -132,7 +139,7 @@ function Notification({ user, enqueueSnackbar }) {
 
     useEffect(() => {
         if (roomIds !== null) {
-            console.log(roomIds);
+            console.log("mounting");
             const socket = io(endpoint);
             socket.emit("room ids", roomIds);
             socket.emit("getNotification", { id: user._id });
@@ -200,6 +207,14 @@ function Notification({ user, enqueueSnackbar }) {
             .catch((err) => console.log(err));
     };
 
+    const handleNotiDrawerOpen = () => {
+        setOpenNotiDrawer(true);
+    };
+
+    const handleNotiDrawerClose = () => {
+        setOpenNotiDrawer(false);
+    };
+
     return (
         <>
             <Hidden smDown>
@@ -263,9 +278,59 @@ function Notification({ user, enqueueSnackbar }) {
                 </ClickAwayListener>
             </Hidden>
             <Hidden mdUp>
-                {notis.map((noti) => (
-                    <NotiCard noti={noti} key={noti._id} />
-                ))}
+                <React.Fragment>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleNotiDrawerOpen}
+                    >
+                        <Badge badgeContent={notis.length} color="primary">
+                            <NotificationsIcon style={{ color: "#707070" }} />
+                        </Badge>
+                    </IconButton>
+
+                    <SwipeableDrawer
+                        anchor="top"
+                        open={openNotiDrawer}
+                        onClose={handleNotiDrawerClose}
+                        onOpen={handleNotiDrawerOpen}
+                        className={classes.notiDrawer}
+                    >
+                        <div className={classes.topList}>
+                            <AppBar
+                                className={classes.bar}
+                                position="static"
+                                color="transparent"
+                            >
+                                <Toolbar disableGutters>
+                                    <Typography
+                                        variant="h5"
+                                        className={classes.title}
+                                        style={{ paddingLeft: "10px" }}
+                                    >
+                                        Notifications
+                                    </Typography>
+                                    <div className={classes.grow} />
+                                    <IconButton>
+                                        <MoreVertIcon />
+                                        {/* TODO: add the mark all noti function as read here */}
+                                    </IconButton>
+                                    <IconButton onClick={handleNotiDrawerClose}>
+                                        <CloseIcon />
+                                    </IconButton>
+                                </Toolbar>
+                            </AppBar>
+                            <Divider style={{ marginBottom: "1rem" }} />
+                            {notis.map((noti) => (
+                                <NotiCard noti={noti} key={noti._id} />
+                            ))}
+                            {/* <Notification/>
+                                    {auth.user && (
+                                        <Notification user={auth.user} />
+                                    )} */}
+                        </div>
+                    </SwipeableDrawer>
+                </React.Fragment>
             </Hidden>
         </>
     );

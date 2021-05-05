@@ -188,6 +188,7 @@ function Notification({ user, enqueueSnackbar }) {
     };
 
     const markAllNotiRead = () => {
+        handleClose();
         axios
             .patch(
                 "https://aim4hd-backend.herokuapp.com/api/v1/notification/readAll",
@@ -202,7 +203,6 @@ function Notification({ user, enqueueSnackbar }) {
                 enqueueSnackbar(res.data.message, {
                     variant: res.data.status ? "success" : "info",
                 });
-                handleClose();
             })
             .catch((err) => console.log(err));
     };
@@ -252,7 +252,6 @@ function Notification({ user, enqueueSnackbar }) {
                                         <div className={classes.grow} />
                                         <IconButton onClick={handleClick}>
                                             <MoreVertIcon />
-                                            {/* TODO: add the mark all noti function as read here */}
                                         </IconButton>
                                         <Menu
                                             id="long-menu"
@@ -284,7 +283,13 @@ function Notification({ user, enqueueSnackbar }) {
                         aria-label="open drawer"
                         onClick={handleNotiDrawerOpen}
                     >
-                        <Badge badgeContent={notis.length} color="primary">
+                        <Badge
+                            badgeContent={
+                                notis.filter((noti) => noti.read === false)
+                                    .length
+                            }
+                            color="primary"
+                        >
                             <NotificationsIcon style={{ color: "#707070" }} />
                         </Badge>
                     </IconButton>
@@ -311,10 +316,21 @@ function Notification({ user, enqueueSnackbar }) {
                                         Notifications
                                     </Typography>
                                     <div className={classes.grow} />
-                                    <IconButton>
+                                    <IconButton onClick={handleClick}>
                                         <MoreVertIcon />
-                                        {/* TODO: add the mark all noti function as read here */}
                                     </IconButton>
+                                    <Menu
+                                        id="long-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={optionsOpen}
+                                        onClose={handleClose}
+                                        className={classes.menu}
+                                    >
+                                        <MenuItem onClick={markAllNotiRead}>
+                                            Mark all as read
+                                        </MenuItem>
+                                    </Menu>
                                     <IconButton onClick={handleNotiDrawerClose}>
                                         <CloseIcon />
                                     </IconButton>

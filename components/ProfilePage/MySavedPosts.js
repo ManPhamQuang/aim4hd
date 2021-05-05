@@ -6,27 +6,6 @@ import PostCard from "../common/PostCard";
 import { Typography } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 
-const getInterestedPosts = async (id) => {
-    try {
-        const response = await axios.get(
-            `https://aim4hd-backend.herokuapp.com/api/v1/users/${id}/posts?savedPosts=true`
-        );
-        if (response.data.status === "success") {
-            return response.data.data.posts;
-        }
-    } catch (error) {
-        enqueueSnackbar(err.message, {
-            variant: "warning",
-            anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left",
-            },
-
-            autoHideDuration: 4000,
-        });
-    }
-};
-
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -42,7 +21,26 @@ const MySavedPosts = ({ user, enqueueSnackbar }) => {
     const [interestedPosts, setInterestedPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const classes = useStyles();
+    const getInterestedPosts = async (id) => {
+        try {
+            const response = await axios.get(
+                `https://aim4hd-backend.herokuapp.com/api/v1/users/${id}/posts?savedPosts=true`
+            );
+            if (response.data.status === "success") {
+                return response.data.data.posts;
+            }
+        } catch (error) {
+            enqueueSnackbar(err.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
 
+                autoHideDuration: 4000,
+            });
+        }
+    };
     useEffect(() => {
         if (!user) return;
         const getPostsData = async () => {

@@ -24,10 +24,10 @@ import LoadingSpinner from "./common/LoadingSpinner";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
 import Notification from "./Notification/Notification";
+import { withSnackbar } from "notistack";
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
-import { withSnackbar } from "notistack";
 
 function ElevationScroll(props) {
     const { children, window } = props;
@@ -155,29 +155,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
-    try {
-        const response = await axios.post(
-            "https://aim4hd-backend.herokuapp.com/api/v1/users/check",
-            { microsoftUniqueId: uniqueId }
-        );
-        return {
-            user: response.data.data.user,
-            token: response.data.data.token,
-        };
-    } catch (error) {
-        enqueueSnackbar(error.message, {
-            variant: "warning",
-            anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "left",
-            },
-            autoHideDuration: 4000,
-        });
-    }
-};
-
-function DesktopHeader(props, enqueueSnackbar) {
+function DesktopHeader({ enqueueSnackbar }) {
     const classes = useStyles();
     const router = useRouter();
     const auth = useContext(AuthContext);
@@ -190,6 +168,28 @@ function DesktopHeader(props, enqueueSnackbar) {
     };
     const openMenu = Boolean(anchorEl);
     const id = openMenu ? "simple-popper" : undefined;
+
+    const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
+        try {
+            const response = await axios.post(
+                "https://aim4hd-backend.herokuapp.com/api/v1/users/check",
+                { microsoftUniqueId: uniqueId }
+            );
+            return {
+                user: response.data.data.user,
+                token: response.data.data.token,
+            };
+        } catch (error) {
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
+        }
+    };
 
     const handleOnAuth = async (error, authData, msal) => {
         if (authData) {

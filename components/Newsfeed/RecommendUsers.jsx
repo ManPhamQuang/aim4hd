@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function RecommenedUsers(enqueueSnackbar) {
+function RecommenedUsers({ enqueueSnackbar }) {
     const [users, setUsers] = useState([]);
     const classes = useStyles();
     const theme = useTheme();

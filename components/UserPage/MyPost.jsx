@@ -4,7 +4,7 @@ import axios from "axios";
 import { Container } from "@material-ui/core";
 import { withSnackbar } from "notistack";
 
-function MyPost(props, enqueueSnackbar) {
+function MyPost(props) {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         axios
@@ -13,7 +13,7 @@ function MyPost(props, enqueueSnackbar) {
             )
             .then((res) => setPosts(res.data.data.posts))
             .catch((err) =>
-                enqueueSnackbar(err.message, {
+                props.enqueueSnackbar(err.message, {
                     variant: "warning",
                     anchorOrigin: {
                         vertical: "bottom",

@@ -27,7 +27,7 @@ function MyPost(props) {
     return (
         <div>
             {posts.map((post) => (
-                <PostCard {...post} />
+                <PostCard key={post._id} {...post} />
             ))}
         </div>
     );

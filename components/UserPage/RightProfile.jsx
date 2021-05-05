@@ -152,7 +152,7 @@ function RightProfile({ feedback, user, enqueueSnackbar }) {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
+
                     autoHideDuration: 4000,
                 })
             );

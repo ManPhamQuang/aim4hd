@@ -198,7 +198,7 @@ function PostCard({
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+
                         autoHideDuration: 4000,
                     })
                 );
@@ -228,7 +228,7 @@ function PostCard({
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
+
                 autoHideDuration: 4000,
             });
         }

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Fab, Avatar } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { withSnackbar } from "notistack";
-import Slide from "@material-ui/core/Slide";
+
 import { SnackbarProvider } from "notistack";
 import Button from "@material-ui/core/Button";
 import WarningIcon from "@material-ui/icons/Warning";
@@ -28,7 +28,7 @@ const ImageUpload = ({ image, setImage, enqueueSnackbar }) => {
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
+
                 autoHideDuration: 4000,
             });
         }

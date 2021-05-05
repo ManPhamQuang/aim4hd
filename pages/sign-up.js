@@ -110,7 +110,6 @@ function SignIn({ courses, skills, enqueueSnackbar }) {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
                     autoHideDuration: 4000,
                 });
             }
@@ -145,7 +144,6 @@ function SignIn({ courses, skills, enqueueSnackbar }) {
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
                 autoHideDuration: 4000,
             });
         }
@@ -340,7 +338,6 @@ export async function getStaticProps(context) {
                 vertical: "bottom",
                 horizontal: "left",
             },
-            TransitionComponent: Slide,
             autoHideDuration: 4000,
         });
     }

@@ -295,7 +295,6 @@ function PostPage({
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
                 autoHideDuration: 4000,
             });
         }
@@ -337,7 +336,6 @@ function PostPage({
                     vertical: "bottom",
                     horizontal: "left",
                 },
-                TransitionComponent: Slide,
                 autoHideDuration: 4000,
             });
         }

@@ -160,7 +160,7 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
                             vertical: "bottom",
                             horizontal: "left",
                         },
-                        TransitionComponent: Slide,
+
                         autoHideDuration: 4000,
                     });
                 }
@@ -207,11 +207,12 @@ function UserProfile({ user, courses, skills, enqueueSnackbar }) {
         }
     };
     const defaultValue = courses.filter((course) =>
-        input.currentCourses.includes(course.id));
+        input.currentCourses.includes(course.id)
+    );
 
     const defaultSkillValue = skills.filter((skill) =>
-        input.skills.includes(skill.id));
-
+        input.skills.includes(skill.id)
+    );
 
     return (
         <Container component="main" maxWidth="xs">

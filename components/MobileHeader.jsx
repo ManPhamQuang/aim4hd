@@ -91,7 +91,6 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
                 vertical: "bottom",
                 horizontal: "left",
             },
-            TransitionComponent: Slide,
             autoHideDuration: 4000,
         });
     }
@@ -137,7 +136,6 @@ function MobileHeader({ enqueueSnackbar }) {
                         vertical: "bottom",
                         horizontal: "left",
                     },
-                    TransitionComponent: Slide,
                     autoHideDuration: 4000,
                 })
             );

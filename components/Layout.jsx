@@ -11,9 +11,9 @@ export default function Layout(props) {
                 <Hidden mdDown>
                     <Header />
                 </Hidden>
-                <Hidden mdUp>
+                {/* <Hidden mdUp>
                     <MobileHeader />
-                </Hidden>
+                </Hidden> */}
             </Grid>
             <Grid item container>
                 {props.children}

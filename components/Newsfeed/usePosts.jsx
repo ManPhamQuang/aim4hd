@@ -27,10 +27,6 @@ export default function usePosts(aiming, page, setPage) {
         })
             .then((res) => {
                 setPosts((prevPosts) => {
-                    console.log("posts previous: ");
-                    console.log(prevPosts);
-                    console.log("posts new: ");
-                    console.log(res.data.data.posts);
                     return [...prevPosts, ...res.data.data.posts];
                 });
                 setHasMore(res.data.data.posts.length > 0);

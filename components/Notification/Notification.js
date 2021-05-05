@@ -8,7 +8,14 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { makeStyles } from "@material-ui/core/styles";
 import NotiCard from "./NotiCard";
 import { withSnackbar } from "notistack";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Menu, MenuItem } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
 import { red } from "@material-ui/core/colors";
 import Paper from "@material-ui/core/Paper";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -83,13 +90,20 @@ const useStyles = makeStyles((theme) => ({
     notiIcon: {
         color: "#4395FF",
     },
+    menu: {
+        marginTop: "48px",
+        marginLeft: "-80px",
+    },
 }));
 
 function Notification({ user, enqueueSnackbar }) {
     const [notis, setNotis] = useState([]);
     const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const optionsOpen = Boolean(anchorEl);
     const [roomIds, setRoomIds] = useState(null);
     const classes = useStyles();
+
     useEffect(() => {
         axios
             .get(
@@ -108,10 +122,9 @@ function Notification({ user, enqueueSnackbar }) {
                 })
             );
     }, []);
+
     useEffect(() => {
-        console.log("useEffect running");
         if (roomIds !== null) {
-            console.log("socket running");
             console.log(roomIds);
             const socket = io(endpoint);
             socket.emit("room ids", roomIds);
@@ -134,6 +147,7 @@ function Notification({ user, enqueueSnackbar }) {
             );
             socket.on("newNoti", (data) => {
                 setNotis((res) => [data, ...res]);
+                console.log(data);
                 enqueueSnackbar(data.content, {
                     variant: "info",
                 });
@@ -147,13 +161,53 @@ function Notification({ user, enqueueSnackbar }) {
         [classes.notiIcon]: open,
     });
 
+    const onClickAway = () => {
+        setOpen(false);
+    };
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const markAllNotiRead = () => {
+        axios
+            .patch(
+                "https://aim4hd-backend.herokuapp.com/api/v1/notification/readAll",
+                {
+                    userId: user._id,
+                }
+            )
+            .then((res) => {
+                if (res.data.status) {
+                    setNotis(res.data.data.notifications);
+                }
+                enqueueSnackbar(res.data.message, {
+                    variant: res.data.status ? "success" : "info",
+                });
+                handleClose();
+            })
+            .catch((err) => console.log(err));
+    };
+
     return (
         <>
-            <ClickAwayListener onClickAway={() => setOpen(false)}>
-                <IconButton onClick={() => setOpen(!open)}>
-                    <Badge badgeContent={notis.length} color="primary">
-                        <NotificationsIcon className={iconClass} />
-                    </Badge>
+            <ClickAwayListener onClickAway={onClickAway}>
+                <div>
+                    <IconButton onClick={() => setOpen(!open)}>
+                        <Badge
+                            badgeContent={
+                                notis.filter((noti) => noti.read === false)
+                                    .length
+                            }
+                            color="primary"
+                        >
+                            <NotificationsIcon className={iconClass} />
+                        </Badge>
+                    </IconButton>
                     {open && (
                         <Paper className={classes.dropdown} variant="outlined">
                             <AppBar
@@ -170,10 +224,22 @@ function Notification({ user, enqueueSnackbar }) {
                                         Notifications
                                     </Typography>
                                     <div className={classes.grow} />
-                                    <IconButton>
+                                    <IconButton onClick={handleClick}>
                                         <MoreVertIcon />
                                         {/* TODO: add the mark all noti function as read here */}
                                     </IconButton>
+                                    <Menu
+                                        id="long-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={optionsOpen}
+                                        onClose={handleClose}
+                                        className={classes.menu}
+                                    >
+                                        <MenuItem onClick={markAllNotiRead}>
+                                            Mark all as read
+                                        </MenuItem>
+                                    </Menu>
                                 </Toolbar>
                             </AppBar>
                             <Divider style={{ marginBottom: "1rem" }} />
@@ -182,7 +248,7 @@ function Notification({ user, enqueueSnackbar }) {
                             ))}
                         </Paper>
                     )}
-                </IconButton>
+                </div>
             </ClickAwayListener>
         </>
     );

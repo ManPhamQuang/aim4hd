@@ -86,15 +86,15 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        return { error: error.response.data.message, enqueueSnackbar(error.message, {
-            variant: "warning",
+        enqueueSnackbar("Creating new account", {
+            variant: "info",
             anchorOrigin: {
                 vertical: "bottom",
                 horizontal: "left",
             },
             autoHideDuration: 4000,
-        });  };
-        
+        });
+        return { error: error.response.data.message };
     }
 };
 

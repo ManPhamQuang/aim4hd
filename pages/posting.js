@@ -75,7 +75,7 @@ function isEmpty(obj) {
     return JSON.stringify(obj) === JSON.stringify({});
 }
 const ITEM_HEIGHT = 52;
-function PostingPage(enqueueSnackbar) {
+function PostingPage({ enqueueSnackbar }) {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();

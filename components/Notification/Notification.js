@@ -300,6 +300,7 @@ function Notification({ user, enqueueSnackbar }) {
                         onClose={handleNotiDrawerClose}
                         onOpen={handleNotiDrawerOpen}
                         className={classes.notiDrawer}
+                        transitionDuration={200}
                     >
                         <div className={classes.topList}>
                             <AppBar

@@ -1,4 +1,11 @@
-import { CircularProgress, Grid, Hidden, makeStyles } from "@material-ui/core";
+import {
+    CircularProgress,
+    Grid,
+    Hidden,
+    InputAdornment,
+    makeStyles,
+    TextField,
+} from "@material-ui/core";
 import Posts from "../components/Newsfeed/NewPosts";
 import Filter from "../components/Newsfeed/Filter";
 import RecommendedUsers from "../components/Newsfeed/RecommendUsers";
@@ -10,6 +17,8 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import { useRouter } from "next/router";
 import usePosts from "../components/Newsfeed/usePosts";
+import { AccountCircle } from "@material-ui/icons";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -65,6 +74,20 @@ export default function Home() {
                 <Filter aiming={aiming} setAiming={setAiming} />
             </Grid>
             <Grid item xs={11} md={7}>
+                <TextField
+                    id="filled-search"
+                    label="Search"
+                    type="search"
+                    variant="filled"
+                    fullWidth
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
                 <Posts
                     posts={posts}
                     aiming={aiming.join()}

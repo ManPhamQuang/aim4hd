@@ -189,6 +189,14 @@ function DesktopHeader({ enqueueSnackbar }) {
                 token: response.data.data.token,
             };
         } catch (error) {
+            enqueueSnackbar("Creating new account", {
+                variant: "info",
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                },
+                autoHideDuration: 4000,
+            });
             return { error: error.response.data.message };
         }
     };

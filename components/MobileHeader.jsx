@@ -86,14 +86,15 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        enqueueSnackbar(error.message, {
+        return { error: error.response.data.message, enqueueSnackbar(error.message, {
             variant: "warning",
             anchorOrigin: {
                 vertical: "bottom",
                 horizontal: "left",
             },
             autoHideDuration: 4000,
-        });
+        });  };
+        
     }
 };
 

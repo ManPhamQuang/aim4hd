@@ -259,6 +259,7 @@ function MobileHeader({ enqueueSnackbar }) {
                                 open={openDrawer}
                                 onClose={handleDrawerClose}
                                 onOpen={handleDrawerOpen}
+                                transitionDuration={200}
                             >
                                 <div className={classes.list}>
                                     <Grid

@@ -243,15 +243,22 @@ function PostPage({
     const UserCard = ({ student }) => {
         return (
             <Link href={`/users/${student._id}`}>
-                <ListItem className={classes.userCard}>
-                    <ListItemAvatar>
-                        <Avatar
-                            alt={student.name}
-                            src={student.avatar}
-                        ></Avatar>
-                    </ListItemAvatar>
-                    <ListItemText>{student.name}</ListItemText>
-                </ListItem>
+                <a
+                    style={{
+                        color: "inherit",
+                        textDecoration: "none",
+                    }}
+                >
+                    <ListItem className={classes.userCard}>
+                        <ListItemAvatar>
+                            <Avatar
+                                alt={student.name}
+                                src={student.avatar}
+                            ></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText>{student.name}</ListItemText>
+                    </ListItem>
+                </a>
             </Link>
         );
     };
@@ -381,7 +388,16 @@ function PostPage({
                     }
                     title={
                         <Link href={`/users/${author._id}`}>
-                            <Typography variant="h6">{author.name}</Typography>
+                            <a
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "none",
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {author.name}
+                                </Typography>
+                            </a>
                         </Link>
                     }
                     subheader={author.school}

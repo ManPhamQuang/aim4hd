@@ -343,7 +343,6 @@ function DesktopHeader({ enqueueSnackbar }) {
                                                     button
                                                     onClick={() => {
                                                         router.push("/posting");
-                                                        setOpenDrawer(false);
                                                     }}
                                                 >
                                                     <ListItemIcon>
@@ -361,7 +360,6 @@ function DesktopHeader({ enqueueSnackbar }) {
                                                     button
                                                     onClick={() => {
                                                         router.push("/profile");
-                                                        setOpenDrawer(false);
                                                     }}
                                                 >
                                                     <ListItemIcon>

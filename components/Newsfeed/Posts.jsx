@@ -20,26 +20,53 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "2rem",
     },
 }));
-export default function Posts({ posts, refVar }) {
+export default function Posts({ posts, refVar, infiniteLoad }) {
     const classes = useStyles();
-    return (
-        <Grid container direction="column" spacing={2} className={classes.grid}>
-            {/* show spinner when loading */}
-            {posts.map((post, index, posts) => {
-                if (posts.length === index + 1) {
-                    return (
-                        <Grid ref={refVar} item key={post._id}>
-                            <PostCard {...post} />
-                        </Grid>
-                    );
-                } else {
+    // console.log(posts);
+
+    if (infiniteLoad) {
+        return (
+            <Grid
+                container
+                direction="column"
+                spacing={2}
+                className={classes.grid}
+            >
+                {/* show spinner when loading */}
+                {posts.map((post, index, posts) => {
+                    if (posts.length === index + 1) {
+                        return (
+                            <Grid ref={refVar} item key={post._id}>
+                                <PostCard {...post} />
+                            </Grid>
+                        );
+                    } else {
+                        return (
+                            <Grid item key={post._id}>
+                                <PostCard {...post} />
+                            </Grid>
+                        );
+                    }
+                })}
+            </Grid>
+        );
+    } else {
+        return (
+            <Grid
+                container
+                direction="column"
+                spacing={2}
+                className={classes.grid}
+            >
+                {/* show spinner when loading */}
+                {posts.map((post, index, posts) => {
                     return (
                         <Grid item key={post._id}>
                             <PostCard {...post} />
                         </Grid>
                     );
-                }
-            })}
-        </Grid>
-    );
+                })}
+            </Grid>
+        );
+    }
 }

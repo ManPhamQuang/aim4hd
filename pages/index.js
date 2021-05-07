@@ -102,6 +102,7 @@ export default function Home() {
                     posts={posts}
                     aiming={aiming.join()}
                     refVar={lastBookElementRef}
+                    infiniteLoad={true}
                 />
                 {loading && <CircularProgress className={classes.loader} />}
                 {!hasMore && <h2>no more data</h2>}{" "}

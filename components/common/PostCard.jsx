@@ -173,19 +173,16 @@ function PostCard({
     const [expanded, setExpanded] = React.useState(false);
     const context = useContext(AuthContext);
     const router = useRouter();
-    const handleToolbarClick = () => {
-        setToolbar(!toolbar);
-    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const optionsOpen = Boolean(anchorEl);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = (action) => {
-        setAnchorEl(null);
-        if (action == "delete") {
+        if (action === "delete") {
             axios
                 .delete(
                     `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
@@ -202,7 +199,10 @@ function PostCard({
                         autoHideDuration: 4000,
                     })
                 );
+        } else if (action === "edit") {
+            router.push(`/posting?postId=${_id}`);
         }
+        setAnchorEl(null);
     };
     const isAuthor = () => {
         if (context.user !== null) {
@@ -277,18 +277,16 @@ function PostCard({
                                     id="postcard-toolbar"
                                     anchorEl={anchorEl}
                                     keepMounted
-                                    open={Boolean(anchorEl)}
+                                    open={optionsOpen}
                                     onClose={handleClose}
                                 >
-                                    <Link href={`/posting?postId=${_id}`}>
-                                        <MenuItem
-                                            className={classes.toolbar}
-                                            onClick={handleClose}
-                                        >
-                                            <EditIcon />
-                                            Edit Post
-                                        </MenuItem>
-                                    </Link>
+                                    <MenuItem
+                                        className={classes.toolbar}
+                                        onClick={() => handleClose("edit")}
+                                    >
+                                        <EditIcon />
+                                        Edit Post
+                                    </MenuItem>
                                     <MenuItem
                                         onClick={() => handleClose("delete")}
                                     >

@@ -56,18 +56,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserCard({ user }) {
+    const { avatar, major, school, name } = user;
     const classes = useStyles();
     return (
         <Card className={classes.root}>
             <CardHeader
                 classes={{ root: classes.cardHeaderRoot }}
-                avatar={<Avatar src={user.avatar} className={classes.cover} />}
-                title={user.name}
+                avatar={<Avatar src={avatar} className={classes.cover} />}
+                title={name}
                 titleTypographyProps={{
                     variant: "body2",
                     align: "left",
                 }}
-                subheader={`${user.major} - ${user.school}`}
+                subheader={`${major} - ${school}`}
                 subheaderTypographyProps={{
                     align: "left",
                     variant: "subtitle2",

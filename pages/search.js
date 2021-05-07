@@ -72,23 +72,6 @@ export default function Search() {
         page,
         setPage
     );
-    const observer = useRef();
-
-    const lastBookElementRef = useCallback(
-        (node) => {
-            if (loading) return;
-            if (observer.current) observer.current.disconnect();
-            observer.current = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting && hasMore) {
-                    console.log("getting more");
-                    console.log(`has more is now: ${hasMore}`);
-                    setPage((prevPageNumber) => prevPageNumber + 1);
-                }
-            });
-            if (node) observer.current.observe(node);
-        },
-        [loading, hasMore]
-    );
 
     const handleSetType = (event, newType) => {
         setType((prevType) => {
@@ -99,7 +82,6 @@ export default function Search() {
             }
         });
     };
-    console.log(data);
 
     return (
         <Grid container justify="center" spacing={6}>
@@ -145,53 +127,17 @@ export default function Search() {
                         className={classes.input}
                         placeholder="Search posts or users"
                         inputProps={{ "aria-label": "serach posts or users" }}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                     />
                 </Paper>
-                <TextField
-                    id="filled-search"
-                    label="Search"
-                    type="search"
-                    variant="filled"
-                    fullWidth
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <ToggleButtonGroup
-                                    value={type}
-                                    exclusive
-                                    onChange={handleSetType}
-                                    arial-label="set search type posts or users"
-                                >
-                                    <ToggleButton
-                                        value="posts"
-                                        aria-label="posts"
-                                        selected={type === "posts"}
-                                    >
-                                        <DescriptionIcon />
-                                    </ToggleButton>
-                                    <ToggleButton
-                                        value="users"
-                                        aria-label="users"
-                                        selected={type === "users"}
-                                    >
-                                        <PersonIcon />
-                                    </ToggleButton>
-                                </ToggleButtonGroup>
-                            </InputAdornment>
-                        ),
-                    }}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                {type === "posts" ? (
-                    <Posts
-                        posts={data}
-                        aiming={aiming.join()}
-                        refVar={lastBookElementRef}
-                    />
-                ) : (
-                    <Users users={data} />
+
+                {type === "posts" && data[0]?.author && (
+                    <Posts posts={data} infiniteLoad={false} />
                 )}
+
+                {type === "users" && data[0]?.name && <Users users={data} />}
+
                 {loading && <CircularProgress className={classes.loader} />}
                 {/* TODO: Thien An pls style this part */}
             </Grid>

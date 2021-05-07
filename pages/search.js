@@ -33,19 +33,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Home() {
+export default function Search() {
     const [aiming, setAiming] = useState(["HD"]);
     const [query, setQuery] = useState("");
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState(false);
-    const { posts, hasMore, loading, error } = usePosts(aiming, page, setPage);
-    // const { posts: searchedPosts, hasMore: hasMoreSearchedPosts, loading: loadingSearchedPosts, error: errorSearchedPosts } = usePostsSearch(
-    //     query,
-    //     page,
-    //     setPage
-    // );
+    const { posts, hasMore, loading, error } = usePostsSearch(
+        query,
+        aiming,
+        page,
+        setPage
+    );
     const observer = useRef();
 
     const lastBookElementRef = useCallback(

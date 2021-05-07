@@ -6,7 +6,7 @@ import {
     makeStyles,
     TextField,
 } from "@material-ui/core";
-import Posts from "../components/Newsfeed/NewPosts";
+import Posts from "../components/Newsfeed/Posts";
 import Filter from "../components/Newsfeed/Filter";
 import RecommendedUsers from "../components/Newsfeed/RecommendUsers";
 import { useEffect, useState, useContext, useRef, useCallback } from "react";

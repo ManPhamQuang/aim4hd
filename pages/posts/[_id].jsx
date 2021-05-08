@@ -402,6 +402,15 @@ function PostPage({
                     }
                     subheader={author.school}
                 />
+                <CardContent className={classes.content}>
+                    <Typography variant="h4" component="h2">
+                        {title}
+                    </Typography>
+                    <Typography paragraph variant="body1" component="p">
+                        {content}
+                    </Typography>
+                </CardContent>
+                <Breaker />
                 <Grid container className={classes.infoContainer}>
                     <Grid item xs={12} md={4}>
                         <Typography
@@ -524,7 +533,7 @@ function PostPage({
                         )}
                     </Grid>
                 </Grid>
-                <Breaker />
+
                 {context.user ? (
                     <React.Fragment>
                         {isAuthor() ? (
@@ -561,14 +570,7 @@ function PostPage({
                         )}
                     </React.Fragment>
                 ) : null}
-                <CardContent className={classes.content}>
-                    <Typography variant="h4" component="h2">
-                        {title}
-                    </Typography>
-                    <Typography paragraph variant="body1" component="p">
-                        {content}
-                    </Typography>
-                </CardContent>
+
                 <Breaker />
                 {/* member list */}
 

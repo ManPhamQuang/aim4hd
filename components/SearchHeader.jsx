@@ -29,6 +29,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Users from "../components/Newsfeed/Users";
 import { fade } from "@material-ui/core/styles";
+import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -41,14 +42,9 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: fade(theme.palette.common.black, 0.25),
         },
-        marginRight: theme.spacing(2),
         marginLeft: 0,
-        width: "100%",
-
-        [theme.breakpoints.up("sm")]: {
-            marginLeft: theme.spacing(3),
-            width: "auto",
-        },
+        width: "60%",
+        marginLeft: theme.spacing(3),
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -67,12 +63,17 @@ const useStyles = makeStyles((theme) => ({
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create("width"),
-        width: "100%",
+        width: "50%",
         [theme.breakpoints.up("md")]: {
             width: "20ch",
         },
     },
+    Autocomplete: {
+        border: "none",
+        borderRadius: "1.5rem",
+    },
 }));
+const filter = createFilterOptions();
 
 export default function SearchHeader() {
     const classes = useStyles();
@@ -88,6 +89,7 @@ export default function SearchHeader() {
         page,
         setPage
     );
+    const [value, setValue] = React.useState(null);
 
     const handleSetType = (event, newType) => {
         setType((prevType) => {
@@ -98,31 +100,66 @@ export default function SearchHeader() {
             }
         });
     };
+    const options = [{ name: "" }];
     return (
         <div className={classes.grow}>
             <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                    <SearchIcon />
-                </div>
-                <InputBase
-                    classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
+                <Autocomplete
+                    value={value}
+                    onChange={(event, newValue) => {
+                        if (typeof newValue === "string") {
+                            setValue({
+                                name: newValue,
+                            });
+                        } else if (newValue && newValue.inputValue) {
+                            // Create a new value from the user input
+                            setValue({
+                                name: newValue.inputValue,
+                            });
+                        } else {
+                            setValue(newValue);
+                        }
                     }}
-                    placeholder="Search posts or users"
-                    inputProps={{ "aria-label": "serach posts or users" }}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    filterOptions={(options, params) => {
+                        const filtered = filter(options, params);
+                        if (params.inputValue !== "") {
+                            filtered.push({
+                                inputValue: params.inputValue,
+                                name: `Search for "${params.inputValue}"`,
+                            });
+                        }
+
+                        return filtered;
+                    }}
+                    selectOnFocus
+                    clearOnBlur
+                    handleHomeEndKeys
+                    fullWidth
+                    options={options}
+                    getOptionLabel={(option) => {
+                        // Value selected with enter, right from the input
+                        if (typeof option === "string") {
+                            return option;
+                        }
+                        // Add "xxx" option created dynamically
+                        if (option.inputValue) {
+                            return option.inputValue;
+                        }
+                        // Regular option
+                        return option.name;
+                    }}
+                    renderOption={(option) => option.name}
+                    style={{ width: 300 }}
+                    freeSolo
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Search on Aim4HD"
+                            variant="outlined"
+                        />
+                    )}
+                    classes={{ fullWidth: classes.Autocomplete }}
                 />
-
-                {/* {type === "posts" && data[0]?.author && (
-                    
-                    // <Posts posts={data} infiniteLoad={false} />
-                )}
-
-                {type === "users" && data[0]?.name && <Users users={data} />}
-
-                {loading && <CircularProgress className={classes.loader} />} */}
             </div>
         </div>
     );

@@ -113,9 +113,16 @@ function RecommenedUsers({ enqueueSnackbar }) {
             <Grid container direction="column" spacing={4}>
                 {users.map((user) => (
                     <Link href={`/users/${user._id}`} key={user._id}>
-                        <Grid item classes={{ item: classes.gridItem }}>
-                            <UserCard user={user} />
-                        </Grid>
+                        <a
+                            style={{
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            <Grid item classes={{ item: classes.gridItem }}>
+                                <UserCard user={user} />
+                            </Grid>
+                        </a>
                     </Link>
                 ))}
             </Grid>

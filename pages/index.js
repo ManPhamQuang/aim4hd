@@ -74,7 +74,17 @@ export default function Home() {
                     aria-label="add"
                 >
                     <Link href="posting">
-                        <AddIcon />
+                        <a
+                            style={{
+                                color: "inherit",
+                                textDecoration: "none",
+                                textAlign: "center",
+                                justifyItems: "center",
+                                display: "flex",
+                            }}
+                        >
+                            <AddIcon />
+                        </a>
                     </Link>
                 </Fab>
             ) : null}

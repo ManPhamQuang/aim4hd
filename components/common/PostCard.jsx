@@ -243,11 +243,13 @@ function PostCard({
                 }}
                 avatar={
                     <Link href={`/users/${author._id}`}>
-                        <Avatar
-                            alt={author.name}
-                            src={author.avatar}
-                            className={classes.avatar}
-                        />
+                        <a>
+                            <Avatar
+                                alt={author.name}
+                                src={author.avatar}
+                                className={classes.avatar}
+                            />
+                        </a>
                     </Link>
                 }
                 action={
@@ -300,7 +302,14 @@ function PostCard({
                 }
                 title={
                     <Link href={`/users/${author._id}`}>
-                        <Typography variant="h6">{author.name}</Typography>
+                        <a
+                            style={{
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            <Typography variant="h6">{author.name}</Typography>
+                        </a>
                     </Link>
                 }
                 subheader={author.school}
@@ -314,9 +323,17 @@ function PostCard({
                     {content}
                 </Typography>
                 <Link href={`/posts/${_id}`}>
-                    <Typography className={classes.titleLink}>
-                        Read more
-                    </Typography>
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
+                        {" "}
+                        <Typography className={classes.titleLink}>
+                            Read more
+                        </Typography>{" "}
+                    </a>
                 </Link>
             </CardContent>
             <div
@@ -327,37 +344,52 @@ function PostCard({
                 }}
             >
                 <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
                     >
-                        {numberOfComments} comments
-                    </Typography>
+                        {" "}
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                            component="a"
+                        >
+                            {numberOfComments} comments
+                        </Typography>
+                    </a>
                 </Link>
 
                 <Link href={`/posts/${_id}`}>
-                    {currentMember ? (
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members
-                        </Typography>
-                    ) : (
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember} members
-                        </Typography>
-                    )}
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
+                        {currentMember ? (
+                            <Typography
+                                variant="caption"
+                                align="right"
+                                className={classes.commentText}
+                                component="a"
+                            >
+                                recruiting {maximumMember - currentMember}/{""}
+                                {maximumMember} members
+                            </Typography>
+                        ) : (
+                            <Typography
+                                variant="caption"
+                                align="right"
+                                className={classes.commentText}
+                                component="a"
+                            >
+                                recruiting {maximumMember} members
+                            </Typography>
+                        )}
+                    </a>
                 </Link>
             </div>
             {/* <MUILink

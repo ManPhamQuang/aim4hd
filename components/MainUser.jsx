@@ -21,11 +21,7 @@ function TabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <div p={3}>
-                    {children}
-                </div>
-            )}
+            {value === index && <div p={3}>{children}</div>}
         </div>
     );
 }
@@ -40,10 +36,10 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#F0F2F5",
     },
     appbar: {
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#F0F2F5",
         color: "black",
         boxShadow: "none",
         paddingBottom: "1rem",

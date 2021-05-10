@@ -84,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
         overflow: "hidden",
         marginBottom: "1rem",
     },
+    cardActionRoot: { marginTop: "-3rem" },
 }));
 
 export default function UserCard({ user }) {
@@ -129,7 +130,10 @@ export default function UserCard({ user }) {
                         {description}
                     </Typography>
                 </CardContent>
-                <CardActions disableSpacing>
+                <CardActions
+                    disableSpacing
+                    classes={{ root: classes.cardActionRoot }}
+                >
                     <IconButton
                         className={clsx(classes.expand, {
                             [classes.expandOpen]: expanded,

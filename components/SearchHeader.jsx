@@ -34,6 +34,7 @@ import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
+        marginLeft: theme.spacing(3),
     },
     search: {
         position: "relative",
@@ -44,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
         },
         marginLeft: 0,
         width: "60%",
-        marginLeft: theme.spacing(3),
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -70,18 +70,19 @@ const useStyles = makeStyles((theme) => ({
     },
     Autocomplete: {
         border: "none",
-        borderRadius: "1.5rem",
+        borderRadius: "10rem",
     },
 }));
 const filter = createFilterOptions();
 
-export default function SearchHeader() {
+export default function SearchHeader({ user }) {
     const classes = useStyles();
     const [aiming, setAiming] = useState(["HD"]);
     const [query, setQuery] = useState("");
     const auth = useContext(AuthContext);
     const [page, setPage] = useState(1);
     const [type, setType] = useState("posts");
+    const router = useRouter();
     const { data, hasMore, loading, error } = usePostsSearch(
         type,
         query,
@@ -103,64 +104,71 @@ export default function SearchHeader() {
     const options = [{ name: "" }];
     return (
         <div className={classes.grow}>
-            <div className={classes.search}>
-                <Autocomplete
-                    value={value}
-                    onChange={(event, newValue) => {
-                        if (typeof newValue === "string") {
-                            setValue({
-                                name: newValue,
-                            });
-                        } else if (newValue && newValue.inputValue) {
-                            // Create a new value from the user input
-                            setValue({
-                                name: newValue.inputValue,
-                            });
-                        } else {
-                            setValue(newValue);
-                        }
-                    }}
-                    filterOptions={(options, params) => {
-                        const filtered = filter(options, params);
-                        if (params.inputValue !== "") {
-                            filtered.push({
-                                inputValue: params.inputValue,
-                                name: `Search for "${params.inputValue}"`,
-                            });
-                        }
+            <Autocomplete
+                value={value}
+                onChange={(event, newValue) => {
+                    if (typeof newValue === "string") {
+                        setValue({
+                            name: newValue,
+                        });
+                    } else if (newValue && newValue.inputValue) {
+                        setValue({
+                            name: newValue.inputValue,
+                        });
+                    } else {
+                        setValue(newValue);
+                    }
+                }}
+                filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
+                    if (params.inputValue !== "") {
+                        filtered.push({
+                            inputValue: params.inputValue,
+                            name: `Search for "${params.inputValue}"`,
+                        });
+                    }
 
-                        return filtered;
-                    }}
-                    selectOnFocus
-                    clearOnBlur
-                    handleHomeEndKeys
-                    fullWidth
-                    options={options}
-                    getOptionLabel={(option) => {
-                        // Value selected with enter, right from the input
-                        if (typeof option === "string") {
-                            return option;
-                        }
-                        // Add "xxx" option created dynamically
-                        if (option.inputValue) {
-                            return option.inputValue;
-                        }
-                        // Regular option
-                        return option.name;
-                    }}
-                    renderOption={(option) => option.name}
-                    style={{ width: 300 }}
-                    freeSolo
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Search on Aim4HD"
-                            variant="outlined"
-                        />
-                    )}
-                    classes={{ fullWidth: classes.Autocomplete }}
-                />
-            </div>
+                    return filtered;
+                }}
+                selectOnFocus
+                clearOnBlur
+                handleHomeEndKeys
+                options={options}
+                getOptionLabel={(option) => {
+                    // Value selected with enter, right from the input
+                    if (typeof option === "string") {
+                        return option;
+                    }
+                    // Add "xxx" option created dynamically
+                    if (option.inputValue) {
+                        return option.inputValue;
+                    }
+                    // Regular option
+                    return option.name;
+                }}
+                renderOption={(option, params) => (
+                    <React.Fragment>
+                        <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                router.push("/search");
+                            }}
+                        >
+                            Search for "{params.inputValue}"
+                        </span>
+                    </React.Fragment>
+                )}
+                style={{ width: 300 }}
+                freeSolo
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Search on Aim4HD"
+                        variant="outlined"
+                    />
+                )}
+                classes={{ root: classes.Autocomplete }}
+            />
         </div>
     );
 }

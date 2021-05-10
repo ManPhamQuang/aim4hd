@@ -278,7 +278,7 @@ function DesktopHeader({ enqueueSnackbar }) {
                         </a>
                     </Link>
 
-                    <SearchHeader />
+                    <SearchHeader user={auth.user} />
                     <Typography
                         variant="h6"
                         className={classes.title}

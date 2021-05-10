@@ -84,7 +84,7 @@ export default function Search() {
     };
 
     return (
-        <Grid container justify="center" spacing={6}>
+        <Grid container justify="center">
             {auth.user ? (
                 <Fab
                     className={classes.fab}

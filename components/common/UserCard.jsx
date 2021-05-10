@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         alignSelf: "center",
     },
     outsideDiv: {
-        border: "2px solid black",
+        border: "1px solid black",
         borderRadius: "1rem",
         padding: "1rem",
     },
@@ -176,6 +176,7 @@ export default function UserCard({ user }) {
                                     style={{
                                         marginBottom: "0.5rem",
                                         fontWeight: "500",
+                                        marginTop: "0.5rem",
                                     }}
                                 >
                                     Current Courses

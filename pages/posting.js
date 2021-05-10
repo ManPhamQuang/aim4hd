@@ -26,6 +26,8 @@ import SendIcon from "@material-ui/icons/Send";
 import DoneIcon from "@material-ui/icons/Done";
 import { withSnackbar } from "notistack";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -66,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
     usersList: {},
     course: {},
 }));
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 function isEmpty(obj) {
     for (var prop in obj) {
@@ -278,6 +283,22 @@ function PostingPage({ enqueueSnackbar }) {
                 );
         }
     };
+
+    const displaySkills = skills.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
+
+    const displayCourses = courses.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
     return (
         <Container>
             <Paper className={classes.container}>
@@ -326,13 +347,18 @@ function PostingPage({ enqueueSnackbar }) {
                                 <MenuItem value="DI">DI</MenuItem>
                                 <MenuItem value="CR">CR</MenuItem>
                                 <MenuItem value="PA">PA</MenuItem>
-                                <MenuItem value="NN">NN</MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={12} md={10}>
                             <Autocomplete
                                 limitTags={1}
-                                options={courses}
+                                options={displayCourses.sort(
+                                    (a, b) =>
+                                        -b.firstLetter.localeCompare(
+                                            a.firstLetter
+                                        )
+                                )}
+                                groupBy={(option) => option.firstLetter}
                                 getOptionLabel={(option) => {
                                     return option.name;
                                 }}
@@ -412,7 +438,13 @@ function PostingPage({ enqueueSnackbar }) {
                             <Autocomplete
                                 multiple
                                 limitTags={4}
-                                options={skills}
+                                options={displaySkills.sort(
+                                    (a, b) =>
+                                        -b.firstLetter.localeCompare(
+                                            a.firstLetter
+                                        )
+                                )}
+                                groupBy={(option) => option.firstLetter}
                                 getOptionLabel={(option) => {
                                     return option.name;
                                 }}

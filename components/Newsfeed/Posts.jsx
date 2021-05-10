@@ -26,12 +26,7 @@ export default function Posts({ posts, refVar, infiniteLoad }) {
 
     if (infiniteLoad) {
         return (
-            <Grid
-                container
-                direction="column"
-                spacing={2}
-                className={classes.grid}
-            >
+            <Grid container direction="column" className={classes.grid}>
                 {/* show spinner when loading */}
                 {posts.map((post, index, posts) => {
                     if (posts.length === index + 1) {
@@ -52,12 +47,7 @@ export default function Posts({ posts, refVar, infiniteLoad }) {
         );
     } else {
         return (
-            <Grid
-                container
-                direction="column"
-                spacing={2}
-                className={classes.grid}
-            >
+            <Grid container direction="column" className={classes.grid}>
                 {/* show spinner when loading */}
                 {posts.map((post, index, posts) => {
                     return (

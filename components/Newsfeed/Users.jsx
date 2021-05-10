@@ -21,14 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Users({ users }) {
     const classes = useStyles();
     return (
-        <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={2}
-            className={classes.grid}
-        >
+        <Grid container direction="column" className={classes.grid}>
             {/* show spinner when loading */}
             {users.map((user, index, posts) => (
                 <Grid item xs={12} key={user._id}>

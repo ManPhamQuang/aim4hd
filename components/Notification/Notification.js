@@ -139,7 +139,6 @@ function Notification({ user, enqueueSnackbar }) {
 
     useEffect(() => {
         if (roomIds !== null) {
-            console.log("mounting");
             const socket = io(endpoint);
             socket.emit("room ids", roomIds);
             socket.emit("getNotification", { id: user._id });

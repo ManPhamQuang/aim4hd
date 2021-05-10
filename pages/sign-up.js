@@ -308,7 +308,7 @@ function SignIn({
                                 }
                             }}
                             getOptionSelected={(option, value) => {
-                                return option._id === value;
+                                return option._id === value._id;
                             }}
                             renderOption={(option) => {
                                 return (
@@ -377,7 +377,7 @@ function SignIn({
                                 }
                             }}
                             getOptionSelected={(option, value) => {
-                                return option._id === value;
+                                return option._id === value._id;
                             }}
                             renderOption={(option) => {
                                 return (

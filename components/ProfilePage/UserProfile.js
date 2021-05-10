@@ -145,9 +145,11 @@ function UserProfile({
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        console.log(input.currentCourses);
         if (
-            validateUrl(input.socialLinks.github, patterns.github) &&
+            validateUrl(
+                input.socialLinks.github,
+                patterns.github || input.socialLinks.github === ""
+            ) &&
             validateUrl(input.socialLinks.facebook, patterns.facebook) &&
             validateUrl(input.socialLinks.linkedin, patterns.linkedin) &&
             validateUrl(input.socialLinks.instagram, patterns.instagram)
@@ -331,16 +333,18 @@ function UserProfile({
                         getOptionLabel={(option) => {
                             return option.name;
                         }}
-                        onChange={(_, value) => {
+                        onChange={(_, value, reason) => {
+                            console.log(reason);
+                            console.log(value);
                             const skills = value;
                             setInput({ ...input, skills });
                         }}
                         getOptionSelected={(option, value) => {
-                            return option._id === value;
+                            return option._id === value._id;
                         }}
                         renderOption={(option) => {
                             return (
-                                <React.Fragment>
+                                <React.Fragment key={option._id}>
                                     <Checkbox
                                         icon={icon}
                                         checkedIcon={checkedIcon}
@@ -386,11 +390,11 @@ function UserProfile({
                             setInput({ ...input, currentCourses });
                         }}
                         getOptionSelected={(option, value) => {
-                            return option._id === value;
+                            return option._id === value._id;
                         }}
                         renderOption={(option) => {
                             return (
-                                <React.Fragment>
+                                <React.Fragment key={option._id}>
                                     <Checkbox
                                         icon={icon}
                                         checkedIcon={checkedIcon}

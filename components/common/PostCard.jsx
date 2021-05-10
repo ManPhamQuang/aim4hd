@@ -355,7 +355,6 @@ function PostCard({
                             variant="caption"
                             align="right"
                             className={classes.commentText}
-                            component="a"
                         >
                             {numberOfComments} comments
                         </Typography>
@@ -374,7 +373,6 @@ function PostCard({
                                 variant="caption"
                                 align="right"
                                 className={classes.commentText}
-                                component="a"
                             >
                                 recruiting {maximumMember - currentMember}/{""}
                                 {maximumMember} members
@@ -384,7 +382,6 @@ function PostCard({
                                 variant="caption"
                                 align="right"
                                 className={classes.commentText}
-                                component="a"
                             >
                                 recruiting {maximumMember} members
                             </Typography>

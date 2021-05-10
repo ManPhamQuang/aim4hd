@@ -65,7 +65,7 @@ export default function Home() {
     );
 
     return (
-        <Grid container justify="center" spacing={6}>
+        <Grid container justify="center">
             {auth.user ? (
                 <Fab
                     className={classes.fab}

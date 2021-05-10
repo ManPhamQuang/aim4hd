@@ -120,13 +120,7 @@ export default function UserCard({ user }) {
                     }}
                 />
                 <CardContent>
-                    <Typography
-                        variant="body1"
-                        style={{
-                            marginBottom: "0.5rem",
-                            fontWeight: "500",
-                        }}
-                    >
+                    <Typography variant="h6" style={{ fontWeight: "400" }}>
                         {description}
                     </Typography>
                 </CardContent>

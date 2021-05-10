@@ -24,7 +24,7 @@ export default function Users({ users }) {
         <Grid container direction="column" className={classes.grid}>
             {/* show spinner when loading */}
             {users.map((user, index, posts) => (
-                <Grid item key={user._id}>
+                <Grid item xs={12} key={user._id}>
                     <UserCard user={user} />
                 </Grid>
             ))}

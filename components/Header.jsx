@@ -33,6 +33,7 @@ import NoteIcon from "@material-ui/icons/Note";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import SearchHeader from "./SearchHeader";
 
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
@@ -277,6 +278,7 @@ function DesktopHeader({ enqueueSnackbar }) {
                         </a>
                     </Link>
 
+                    <SearchHeader user={auth.user} />
                     <Typography
                         variant="h6"
                         className={classes.title}

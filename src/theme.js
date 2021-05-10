@@ -30,6 +30,11 @@ const theme = createMuiTheme({
             cursor: "pointer",
         },
     },
+    title: {
+        fontSize: "34px",
+        fontWeight: "bold",
+        color: "black",
+    },
 });
 
 export default theme;

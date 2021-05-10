@@ -5,29 +5,38 @@ import axios from "axios";
 import { withSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { AirportShuttle } from "@material-ui/icons";
-import { Grid, makeStyles } from "@material-ui/core";
+import {
+    Grid,
+    makeStyles,
+    Typography,
+    Avatar,
+    CardHeader,
+} from "@material-ui/core";
 // const socket = io.connect("http://localhost:4000");
 const endpoint = "http://localhost:5000";
 
 const useStyles = makeStyles((theme) => ({
     chatroomsContainer: {
         height: "100%",
-        backgroundColor: "red",
+        // backgroundColor: "red",
     },
     activeChatContainer: {
         height: "100%",
-        backgroundColor: "blue",
+        // backgroundColor: "blue",
     },
     infoPanelContainer: {
         height: "100%",
-        backgroundColor: "green",
+        // backgroundColor: "green",
     },
     chatAppContainer: {
-        height: "80vh",
+        marginTop: "-40px",
+        height: "calc(100vh - 80px)",
+        backgroundColor: "#fff",
     },
+    title: theme.title,
 }));
 
-function chatRoomManTheSon({ enqueueSnackbar }) {
+function Chat({ enqueueSnackbar }) {
     const auth = useContext(AuthContext);
     const [messages, setMessages] = useState([]);
     const [chatrooms, setChatRoom] = useState([]);
@@ -107,7 +116,13 @@ function chatRoomManTheSon({ enqueueSnackbar }) {
                     xl={2}
                     className={classes.chatroomsContainer}
                 >
-                    <h1>chatroom container</h1>
+                    <CardHeader
+                        avatar={<Avatar src={auth.user.avatar} title="Chat" />}
+                    >
+                        {/* <Typography variant="h5" className={classes.title}>
+                            Chat
+                        </Typography> */}
+                    </CardHeader>
                 </Grid>
                 <Grid
                     item
@@ -133,4 +148,4 @@ function chatRoomManTheSon({ enqueueSnackbar }) {
     // change some render thing for id to pass TOTO: FIX THIS SHIT LATER
 }
 
-export default withSnackbar(chatRoomManTheSon);
+export default withSnackbar(Chat);

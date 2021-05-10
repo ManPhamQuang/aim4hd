@@ -5,14 +5,34 @@ import axios from "axios";
 import { withSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import { AirportShuttle } from "@material-ui/icons";
+import { Grid, makeStyles } from "@material-ui/core";
 // const socket = io.connect("http://localhost:4000");
 const endpoint = "http://localhost:5000";
+
+const useStyles = makeStyles((theme) => ({
+    chatroomsContainer: {
+        height: "100%",
+        backgroundColor: "red",
+    },
+    activeChatContainer: {
+        height: "100%",
+        backgroundColor: "blue",
+    },
+    infoPanelContainer: {
+        height: "100%",
+        backgroundColor: "green",
+    },
+    chatAppContainer: {
+        height: "80vh",
+    },
+}));
 
 function chatRoomManTheSon({ enqueueSnackbar }) {
     const auth = useContext(AuthContext);
     const [messages, setMessages] = useState([]);
     const [chatrooms, setChatRoom] = useState([]);
     const router = useRouter();
+    const classes = useStyles();
     // if (!auth.authData && typeof window !== "undefined") router.push("/");
     // if (auth.user && typeof window !== "undefined") router.push("/");
     // socket.on("notifications", ({ notifications }) => {
@@ -27,7 +47,7 @@ function chatRoomManTheSon({ enqueueSnackbar }) {
                 .get(
                     `https://aim4hd-backend.herokuapp.com/api/v1/chatroom/${auth.user._id}` // fetch chat rooms
                 )
-                .then((res) => console.log(res))
+                .then((res) => setChatRoom(res.data.rooms))
                 .catch((err) => {
                     enqueueSnackbar(err.message, {
                         variant: "warning",
@@ -75,10 +95,39 @@ function chatRoomManTheSon({ enqueueSnackbar }) {
 
     return (
         auth.user && (
-            <div>
-                <h1>hello2</h1>
-                <h1>{auth.user.name}</h1>
-            </div>
+            <Grid
+                container
+                direction="row"
+                className={classes.chatAppContainer}
+            >
+                <Grid
+                    item
+                    xs={false}
+                    md={3}
+                    xl={2}
+                    className={classes.chatroomsContainer}
+                >
+                    <h1>chatroom container</h1>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    xl={8}
+                    className={classes.activeChatContainer}
+                >
+                    <h1>active chatroom container</h1>
+                </Grid>
+                <Grid
+                    item
+                    xs={false}
+                    md={3}
+                    xl={2}
+                    className={classes.infoPanelContainer}
+                >
+                    <h1>Info panel</h1>
+                </Grid>
+            </Grid>
         )
     );
     // change some render thing for id to pass TOTO: FIX THIS SHIT LATER

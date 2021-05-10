@@ -87,7 +87,7 @@ function PostingPage({ enqueueSnackbar }) {
         title: "",
         content: "",
         aiming: "",
-        course: "",
+        course: null,
         // isOpen: true,
         maximumMember: 4,
         requiredSkills: [],
@@ -341,7 +341,7 @@ function PostingPage({ enqueueSnackbar }) {
                                     setInput({ ...input, course });
                                 }}
                                 getOptionSelected={(option, value) => {
-                                    return option._id === value;
+                                    return option._id === value._id;
                                 }}
                                 renderInput={(params) => (
                                     <TextField
@@ -421,7 +421,7 @@ function PostingPage({ enqueueSnackbar }) {
                                     setInput({ ...input, requiredSkills });
                                 }}
                                 getOptionSelected={(option, value) => {
-                                    return option._id === value;
+                                    return option._id === value._id;
                                 }}
                                 renderInput={(params) => (
                                     <TextField

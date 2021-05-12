@@ -17,8 +17,11 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import { withSnackbar } from "notistack";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Checkbox from "@material-ui/core/Checkbox";
 const useStyles = makeStyles((theme) => ({
     paper: {
         // marginTop: theme.spacing(8),
@@ -43,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 function UserProfile({
     user,
@@ -139,9 +145,11 @@ function UserProfile({
 
     const handleSubmitSignin = async (event) => {
         event.preventDefault();
-        console.log(input.currentCourses);
         if (
-            validateUrl(input.socialLinks.github, patterns.github) &&
+            validateUrl(
+                input.socialLinks.github,
+                patterns.github || input.socialLinks.github === ""
+            ) &&
             validateUrl(input.socialLinks.facebook, patterns.facebook) &&
             validateUrl(input.socialLinks.linkedin, patterns.linkedin) &&
             validateUrl(input.socialLinks.instagram, patterns.instagram)
@@ -211,13 +219,22 @@ function UserProfile({
             }
         }
     };
-    const defaultValue = fetchedCourses.filter((course) =>
-        input.currentCourses.includes(course.id)
-    );
 
-    const defaultSkillValue = fetchedSkills.filter((skill) =>
-        input.skills.includes(skill.id)
-    );
+    const displaySkills = fetchedSkills.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
+
+    const displayCourses = fetchedCourses.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
 
     return (
         <Container component="main" maxWidth="xs">
@@ -306,17 +323,40 @@ function UserProfile({
 
                     <Autocomplete
                         multiple
+                        disableCloseOnSelect
                         limitTags={4}
-                        options={fetchedSkills}
+                        options={displaySkills.sort(
+                            (a, b) =>
+                                -b.firstLetter.localeCompare(a.firstLetter)
+                        )}
+                        groupBy={(option) => option.firstLetter}
                         getOptionLabel={(option) => {
                             return option.name;
                         }}
-                        onChange={(_, value) => {
+                        onChange={(_, value, reason) => {
+                            console.log(reason);
+                            console.log(value);
                             const skills = value;
                             setInput({ ...input, skills });
                         }}
                         getOptionSelected={(option, value) => {
-                            return option._id === value;
+                            return option._id === value._id;
+                        }}
+                        renderOption={(option) => {
+                            return (
+                                <React.Fragment key={option._id}>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={input.skills
+                                            .map((skill) => skill._id)
+                                            .includes(option._id)}
+                                    />
+
+                                    {option.name}
+                                </React.Fragment>
+                            );
                         }}
                         renderInput={(params) => (
                             <TextField
@@ -338,14 +378,35 @@ function UserProfile({
                     <Autocomplete
                         multiple
                         limitTags={4}
-                        options={fetchedCourses}
+                        disableCloseOnSelect
+                        options={displayCourses.sort(
+                            (a, b) =>
+                                -b.firstLetter.localeCompare(a.firstLetter)
+                        )}
+                        groupBy={(option) => option.firstLetter}
                         getOptionLabel={(option) => option.name}
                         onChange={(_, value) => {
                             const currentCourses = value;
                             setInput({ ...input, currentCourses });
                         }}
                         getOptionSelected={(option, value) => {
-                            return option._id === value;
+                            return option._id === value._id;
+                        }}
+                        renderOption={(option) => {
+                            return (
+                                <React.Fragment key={option._id}>
+                                    <Checkbox
+                                        icon={icon}
+                                        checkedIcon={checkedIcon}
+                                        style={{ marginRight: 8 }}
+                                        checked={input.currentCourses
+                                            .map((course) => course._id)
+                                            .includes(option._id)}
+                                    />
+
+                                    {option.name}
+                                </React.Fragment>
+                            );
                         }}
                         renderInput={(params) => (
                             <TextField

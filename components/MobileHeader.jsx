@@ -86,14 +86,15 @@ const checkIfUserHasAlreadyLoginWithMicrosoft = async (uniqueId) => {
             token: response.data.data.token,
         };
     } catch (error) {
-        enqueueSnackbar(error.message, {
-            variant: "warning",
+        enqueueSnackbar("Creating new account", {
+            variant: "info",
             anchorOrigin: {
                 vertical: "bottom",
                 horizontal: "left",
             },
             autoHideDuration: 4000,
         });
+        return { error: error.response.data.message };
     }
 };
 
@@ -259,6 +260,7 @@ function MobileHeader({ enqueueSnackbar }) {
                                 open={openDrawer}
                                 onClose={handleDrawerClose}
                                 onOpen={handleDrawerOpen}
+                                transitionDuration={200}
                             >
                                 <div className={classes.list}>
                                     <Grid

@@ -243,15 +243,22 @@ function PostPage({
     const UserCard = ({ student }) => {
         return (
             <Link href={`/users/${student._id}`}>
-                <ListItem className={classes.userCard}>
-                    <ListItemAvatar>
-                        <Avatar
-                            alt={student.name}
-                            src={student.avatar}
-                        ></Avatar>
-                    </ListItemAvatar>
-                    <ListItemText>{student.name}</ListItemText>
-                </ListItem>
+                <a
+                    style={{
+                        color: "inherit",
+                        textDecoration: "none",
+                    }}
+                >
+                    <ListItem className={classes.userCard}>
+                        <ListItemAvatar>
+                            <Avatar
+                                alt={student.name}
+                                src={student.avatar}
+                            ></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText>{student.name}</ListItemText>
+                    </ListItem>
+                </a>
             </Link>
         );
     };
@@ -381,11 +388,29 @@ function PostPage({
                     }
                     title={
                         <Link href={`/users/${author._id}`}>
-                            <Typography variant="h6">{author.name}</Typography>
+                            <a
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "none",
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {author.name}
+                                </Typography>
+                            </a>
                         </Link>
                     }
                     subheader={author.school}
                 />
+                <CardContent className={classes.content}>
+                    <Typography variant="h4" component="h2">
+                        {title}
+                    </Typography>
+                    <Typography paragraph variant="body1" component="p">
+                        {content}
+                    </Typography>
+                </CardContent>
+                <Breaker />
                 <Grid container className={classes.infoContainer}>
                     <Grid item xs={12} md={4}>
                         <Typography
@@ -508,7 +533,7 @@ function PostPage({
                         )}
                     </Grid>
                 </Grid>
-                <Breaker />
+
                 {context.user ? (
                     <React.Fragment>
                         {isAuthor() ? (
@@ -545,14 +570,7 @@ function PostPage({
                         )}
                     </React.Fragment>
                 ) : null}
-                <CardContent className={classes.content}>
-                    <Typography variant="h4" component="h2">
-                        {title}
-                    </Typography>
-                    <Typography paragraph variant="body1" component="p">
-                        {content}
-                    </Typography>
-                </CardContent>
+
                 <Breaker />
                 {/* member list */}
 

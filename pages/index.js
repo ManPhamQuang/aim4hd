@@ -1,5 +1,12 @@
-import { CircularProgress, Grid, Hidden, makeStyles } from "@material-ui/core";
-import Posts from "../components/Newsfeed/NewPosts";
+import {
+    CircularProgress,
+    Grid,
+    Hidden,
+    InputAdornment,
+    makeStyles,
+    TextField,
+} from "@material-ui/core";
+import Posts from "../components/Newsfeed/Posts";
 import Filter from "../components/Newsfeed/Filter";
 import RecommendedUsers from "../components/Newsfeed/RecommendUsers";
 import { useEffect, useState, useContext, useRef, useCallback } from "react";
@@ -10,6 +17,9 @@ import AuthContext from "../utils/authContext";
 import axios from "axios";
 import { useRouter } from "next/router";
 import usePosts from "../components/Newsfeed/usePosts";
+import usePostsSearch from "../components/Newsfeed/usePostsSearch";
+import { AccountCircle } from "@material-ui/icons";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
     fab: {
@@ -25,10 +35,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const [aiming, setAiming] = useState(["HD"]);
+    const [query, setQuery] = useState("");
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const [page, setPage] = useState(1);
+    const [search, setSearch] = useState(false);
     const { posts, hasMore, loading, error } = usePosts(aiming, page, setPage);
+    // const { posts: searchedPosts, hasMore: hasMoreSearchedPosts, loading: loadingSearchedPosts, error: errorSearchedPosts } = usePostsSearch(
+    //     query,
+    //     page,
+    //     setPage
+    // );
     const observer = useRef();
 
     const lastBookElementRef = useCallback(
@@ -48,7 +65,7 @@ export default function Home() {
     );
 
     return (
-        <Grid container justify="center" spacing={6}>
+        <Grid container justify="center">
             {auth.user ? (
                 <Fab
                     className={classes.fab}
@@ -57,7 +74,17 @@ export default function Home() {
                     aria-label="add"
                 >
                     <Link href="posting">
-                        <AddIcon />
+                        <a
+                            style={{
+                                color: "inherit",
+                                textDecoration: "none",
+                                textAlign: "center",
+                                justifyItems: "center",
+                                display: "flex",
+                            }}
+                        >
+                            <AddIcon />
+                        </a>
                     </Link>
                 </Fab>
             ) : null}
@@ -65,10 +92,27 @@ export default function Home() {
                 <Filter aiming={aiming} setAiming={setAiming} />
             </Grid>
             <Grid item xs={11} md={7}>
+                <TextField
+                    id="filled-search"
+                    label="Search"
+                    type="search"
+                    variant="filled"
+                    fullWidth
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
                 <Posts
                     posts={posts}
                     aiming={aiming.join()}
                     refVar={lastBookElementRef}
+                    infiniteLoad={true}
                 />
                 {loading && <CircularProgress className={classes.loader} />}
                 {!hasMore && <h2>no more data</h2>}{" "}

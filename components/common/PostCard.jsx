@@ -173,19 +173,16 @@ function PostCard({
     const [expanded, setExpanded] = React.useState(false);
     const context = useContext(AuthContext);
     const router = useRouter();
-    const handleToolbarClick = () => {
-        setToolbar(!toolbar);
-    };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const optionsOpen = Boolean(anchorEl);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = (action) => {
-        setAnchorEl(null);
-        if (action == "delete") {
+        if (action === "delete") {
             axios
                 .delete(
                     `https://aim4hd-backend.herokuapp.com/api/v1/posts/${_id}`
@@ -202,7 +199,10 @@ function PostCard({
                         autoHideDuration: 4000,
                     })
                 );
+        } else if (action === "edit") {
+            router.push(`/posting?postId=${_id}`);
         }
+        setAnchorEl(null);
     };
     const isAuthor = () => {
         if (context.user !== null) {
@@ -243,11 +243,13 @@ function PostCard({
                 }}
                 avatar={
                     <Link href={`/users/${author._id}`}>
-                        <Avatar
-                            alt={author.name}
-                            src={author.avatar}
-                            className={classes.avatar}
-                        />
+                        <a>
+                            <Avatar
+                                alt={author.name}
+                                src={author.avatar}
+                                className={classes.avatar}
+                            />
+                        </a>
                     </Link>
                 }
                 action={
@@ -277,18 +279,16 @@ function PostCard({
                                     id="postcard-toolbar"
                                     anchorEl={anchorEl}
                                     keepMounted
-                                    open={Boolean(anchorEl)}
+                                    open={optionsOpen}
                                     onClose={handleClose}
                                 >
-                                    <Link href={`/posting?postId=${_id}`}>
-                                        <MenuItem
-                                            className={classes.toolbar}
-                                            onClick={handleClose}
-                                        >
-                                            <EditIcon />
-                                            Edit Post
-                                        </MenuItem>
-                                    </Link>
+                                    <MenuItem
+                                        className={classes.toolbar}
+                                        onClick={() => handleClose("edit")}
+                                    >
+                                        <EditIcon />
+                                        Edit Post
+                                    </MenuItem>
                                     <MenuItem
                                         onClick={() => handleClose("delete")}
                                     >
@@ -302,7 +302,14 @@ function PostCard({
                 }
                 title={
                     <Link href={`/users/${author._id}`}>
-                        <Typography variant="h6">{author.name}</Typography>
+                        <a
+                            style={{
+                                color: "inherit",
+                                textDecoration: "none",
+                            }}
+                        >
+                            <Typography variant="h6">{author.name}</Typography>
+                        </a>
                     </Link>
                 }
                 subheader={author.school}
@@ -316,9 +323,17 @@ function PostCard({
                     {content}
                 </Typography>
                 <Link href={`/posts/${_id}`}>
-                    <Typography className={classes.titleLink}>
-                        Read more
-                    </Typography>
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
+                        {" "}
+                        <Typography className={classes.titleLink}>
+                            Read more
+                        </Typography>{" "}
+                    </a>
                 </Link>
             </CardContent>
             <div
@@ -329,37 +344,49 @@ function PostCard({
                 }}
             >
                 <Link href={`/posts/${_id}`}>
-                    <Typography
-                        variant="caption"
-                        align="right"
-                        className={classes.commentText}
-                        component="a"
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
                     >
-                        {numberOfComments} comments
-                    </Typography>
+                        {" "}
+                        <Typography
+                            variant="caption"
+                            align="right"
+                            className={classes.commentText}
+                        >
+                            {numberOfComments} comments
+                        </Typography>
+                    </a>
                 </Link>
 
                 <Link href={`/posts/${_id}`}>
-                    {currentMember ? (
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember - currentMember}/{""}
-                            {maximumMember} members
-                        </Typography>
-                    ) : (
-                        <Typography
-                            variant="caption"
-                            align="right"
-                            className={classes.commentText}
-                            component="a"
-                        >
-                            recruiting {maximumMember} members
-                        </Typography>
-                    )}
+                    <a
+                        style={{
+                            color: "inherit",
+                            textDecoration: "none",
+                        }}
+                    >
+                        {currentMember ? (
+                            <Typography
+                                variant="caption"
+                                align="right"
+                                className={classes.commentText}
+                            >
+                                recruiting {maximumMember - currentMember}/{""}
+                                {maximumMember} members
+                            </Typography>
+                        ) : (
+                            <Typography
+                                variant="caption"
+                                align="right"
+                                className={classes.commentText}
+                            >
+                                recruiting {maximumMember} members
+                            </Typography>
+                        )}
+                    </a>
                 </Link>
             </div>
             {/* <MUILink

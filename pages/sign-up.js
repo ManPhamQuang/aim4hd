@@ -15,6 +15,10 @@ import axios from "axios";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import ImageUpload from "../components/common/ImageUpload";
 import { withSnackbar } from "notistack";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Checkbox from "@material-ui/core/Checkbox";
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -38,7 +42,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SignIn({ courses, skills, enqueueSnackbar }) {
+function SignIn({
+    courses: fetchedCourses,
+    skills: fetchedSkills,
+    enqueueSnackbar,
+}) {
     const classes = useStyles();
     const auth = useContext(AuthContext);
     const router = useRouter();
@@ -149,6 +157,25 @@ function SignIn({ courses, skills, enqueueSnackbar }) {
         }
     };
 
+    const displaySkills = fetchedSkills.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
+
+    const displayCourses = fetchedCourses.map((option) => {
+        const firstLetter = option.name[0].toUpperCase();
+        return {
+            firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+            ...option,
+        };
+    });
+
+    const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+    const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
     return (
         auth.authData && (
             <Container component="main" maxWidth="xs">
@@ -248,51 +275,138 @@ function SignIn({ courses, skills, enqueueSnackbar }) {
                             value={input.description}
                             onChange={handleOnInputChange}
                         />
-                        <TextField
-                            color="secondary"
-                            select
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            label="Skills"
-                            name="skills"
-                            SelectProps={{
-                                multiple: true,
-                                value: input.skills,
-                                onChange: handleOnInputChange,
+                        <Autocomplete
+                            multiple
+                            disableCloseOnSelect
+                            limitTags={4}
+                            options={displaySkills.sort(
+                                (a, b) =>
+                                    -b.firstLetter.localeCompare(a.firstLetter)
+                            )}
+                            groupBy={(option) => option.firstLetter}
+                            getOptionLabel={(option) => {
+                                return option.name;
                             }}
-                        >
-                            {skills.map((skill) => (
-                                <MenuItem key={skill.id} value={skill.id}>
-                                    {skill.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            onChange={(_, value) => {
+                                const skills = value;
+
+                                setInput((input) => ({
+                                    ...input,
+                                    skills: skills,
+                                }));
+                                let newErrorMsg = { ...errorMsg };
+                                console.log(newErrorMsg);
+                                const message = validator("skills", skills);
+                                if (message)
+                                    setErrorMsg({
+                                        ...errorMsg,
+                                        skills: message,
+                                    });
+                                else {
+                                    delete newErrorMsg.skills;
+                                    setErrorMsg(newErrorMsg);
+                                }
+                            }}
+                            getOptionSelected={(option, value) => {
+                                return option._id === value._id;
+                            }}
+                            renderOption={(option) => {
+                                return (
+                                    <React.Fragment>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={input.skills
+                                                .map((skill) => skill._id)
+                                                .includes(option._id)}
+                                        />
+
+                                        {option.name}
+                                    </React.Fragment>
+                                );
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Skills"
+                                    placeholder="Skills"
+                                />
+                            )}
+                            value={input.skills}
+                        />
+
                         {errorMsg.skills && (
                             <FormHelperText error={true}>
                                 {errorMsg.skills}
                             </FormHelperText>
                         )}
-                        <TextField
-                            color="secondary"
-                            select
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            label="Current courses"
-                            name="currentCourses"
-                            SelectProps={{
-                                multiple: true,
-                                value: input.currentCourses,
-                                onChange: handleOnInputChange,
+                        <Autocomplete
+                            multiple
+                            limitTags={4}
+                            disableCloseOnSelect
+                            options={displayCourses.sort(
+                                (a, b) =>
+                                    -b.firstLetter.localeCompare(a.firstLetter)
+                            )}
+                            groupBy={(option) => option.firstLetter}
+                            getOptionLabel={(option) => option.name}
+                            onChange={(_, value) => {
+                                const currentCourses = value;
+                                setInput((input) => ({
+                                    ...input,
+                                    currentCourses: currentCourses,
+                                }));
+                                let newErrorMsg = { ...errorMsg };
+                                console.log(newErrorMsg);
+                                const message = validator(
+                                    "currentCourses",
+                                    currentCourses
+                                );
+                                if (message)
+                                    setErrorMsg({
+                                        ...errorMsg,
+                                        currentCourses: message,
+                                    });
+                                else {
+                                    delete newErrorMsg.currentCourses;
+                                    setErrorMsg(newErrorMsg);
+                                }
                             }}
-                        >
-                            {courses.map((course) => (
-                                <MenuItem key={course.id} value={course.id}>
-                                    {course.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            getOptionSelected={(option, value) => {
+                                return option._id === value._id;
+                            }}
+                            renderOption={(option) => {
+                                return (
+                                    <React.Fragment>
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={input.currentCourses
+                                                .map((course) => course._id)
+                                                .includes(option._id)}
+                                        />
+
+                                        {option.name}
+                                    </React.Fragment>
+                                );
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    color="secondary"
+                                    margin="normal"
+                                    variant="outlined"
+                                    label="Current Course"
+                                    placeholder="Current Course"
+                                />
+                            )}
+                            value={input.currentCourses}
+                        />
                         {errorMsg.currentCourses && (
                             <FormHelperText error={true}>
                                 {errorMsg.currentCourses}

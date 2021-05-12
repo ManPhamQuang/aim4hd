@@ -25,6 +25,16 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Image from "next/image";
 import Notification from "./Notification/Notification";
 import { withSnackbar } from "notistack";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import NoteIcon from "@material-ui/icons/Note";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import SearchHeader from "./SearchHeader";
+
 const MicrosoftLogin = dynamic(() => import("react-microsoft-login"), {
     ssr: false,
 });
@@ -180,14 +190,15 @@ function DesktopHeader({ enqueueSnackbar }) {
                 token: response.data.data.token,
             };
         } catch (error) {
-            enqueueSnackbar(error.message, {
-                variant: "warning",
+            enqueueSnackbar("Creating new account", {
+                variant: "info",
                 anchorOrigin: {
                     vertical: "bottom",
                     horizontal: "left",
                 },
                 autoHideDuration: 4000,
             });
+            return { error: error.response.data.message };
         }
     };
 
@@ -267,6 +278,7 @@ function DesktopHeader({ enqueueSnackbar }) {
                         </a>
                     </Link>
 
+                    <SearchHeader user={auth.user} />
                     <Typography
                         variant="h6"
                         className={classes.title}
@@ -317,55 +329,69 @@ function DesktopHeader({ enqueueSnackbar }) {
                                             </a>
                                         </Link>
                                         <div className={classes.cardBody}>
-                                            <Link
-                                                href={`/users/${auth.user._id}?viewPosts=2`}
-                                            >
-                                                <a
-                                                    className={
-                                                        classes.cardBodyLink
-                                                    }
+                                            <List>
+                                                <ListItem button>
+                                                    <ListItemIcon>
+                                                        <NoteIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary="My Post"
+                                                        primaryTypographyProps={{
+                                                            variant:
+                                                                "subtitle2",
+                                                        }}
+                                                    />
+                                                </ListItem>
+                                                <ListItem
+                                                    button
+                                                    onClick={() => {
+                                                        router.push("/posting");
+                                                    }}
                                                 >
-                                                    Your Posts
-                                                </a>
-                                            </Link>
-
-                                            {/* <Link href="/team">
-                                                    <a
-                                                        className={
-                                                            classes.cardBodyLink
-                                                        }
-                                                    >
-                                                        My team
-                                                    </a>
-                                                </Link> */}
-                                            <Link href={`/posting`}>
-                                                <a
-                                                    className={
-                                                        classes.cardBodyLink
-                                                    }
+                                                    <ListItemIcon>
+                                                        <PostAddIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary="Create Post"
+                                                        primaryTypographyProps={{
+                                                            variant:
+                                                                "subtitle2",
+                                                        }}
+                                                    />
+                                                </ListItem>
+                                                <ListItem
+                                                    button
+                                                    onClick={() => {
+                                                        router.push("/profile");
+                                                    }}
                                                 >
-                                                    New Post
-                                                </a>
-                                            </Link>
-                                            <Link href={`/profile`}>
-                                                <a
-                                                    className={
-                                                        classes.cardBodyLink
-                                                    }
-                                                >
-                                                    Edit Profile
-                                                </a>
-                                            </Link>
-                                            <Link href="/">
-                                                <a
+                                                    <ListItemIcon>
+                                                        <SettingsIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary="Edit Profile"
+                                                        primaryTypographyProps={{
+                                                            variant:
+                                                                "subtitle2",
+                                                        }}
+                                                    />
+                                                </ListItem>
+                                                <ListItem
+                                                    button
                                                     onClick={auth.logout}
-                                                    className={
-                                                        classes.cardBodyLink
-                                                    }
                                                 >
-                                                    Log Out
-                                                </a>
-                                            </Link>
+                                                    <ListItemIcon>
+                                                        <ExitToAppIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText
+                                                        primary="Log Out"
+                                                        primaryTypographyProps={{
+                                                            variant:
+                                                                "subtitle2",
+                                                        }}
+                                                    />
+                                                </ListItem>
+                                            </List>
                                         </div>
                                     </div>
                                 )}

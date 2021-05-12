@@ -16,6 +16,9 @@ import Layout from "../components/Layout";
 import AuthContext from "../utils/authContext";
 import { useRouter } from "next/router";
 import { SnackbarProvider, useSnackbar } from "notistack";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
     success: { backgroundColor: "purple" },
@@ -91,13 +94,17 @@ function MyApp(props) {
                         vertical: "top",
                         horizontal: "center",
                     },
-                    autoHideDuration: 4000,
-                    // persist: true,
+                    autoHideDuration: 30000,
                 });
             },
         }));
         return null;
     });
+
+    const notistackRef = React.createRef();
+    const onClickDismiss = (key) => () => {
+        notistackRef.current.closeSnackbar(key);
+    };
 
     useEffect(() => {
         if (localStorage.getItem("user")) {
@@ -126,6 +133,12 @@ function MyApp(props) {
                 <ThemeProvider theme={theme}>
                     <SnackbarProvider
                         maxSnack={3}
+                        ref={notistackRef}
+                        action={(key) => (
+                            <IconButton onClick={onClickDismiss(key)}>
+                                <CloseIcon style={{ color: "white" }} />
+                            </IconButton>
+                        )}
                         classes={{
                             variantSuccess: classes.success,
                             variantError: classes.error,

@@ -14,7 +14,7 @@ const theme = createMuiTheme({
             main: red.A400,
         },
         background: {
-            default: "#f2f2f2",
+            default: "#F0F2F5",
         },
     },
     userCard: {
@@ -29,6 +29,11 @@ const theme = createMuiTheme({
             borderRadius: "7px",
             cursor: "pointer",
         },
+    },
+    title: {
+        fontSize: "34px",
+        fontWeight: "bold",
+        color: "black",
     },
 });
 

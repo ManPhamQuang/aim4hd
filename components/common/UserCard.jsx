@@ -38,15 +38,13 @@ const useStyles = makeStyles((theme) => ({
     },
 
     cover: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
+        width: theme.spacing(8),
+        height: theme.spacing(8),
         [theme.breakpoints.down("md")]: {
-            width: theme.spacing(8),
-            height: theme.spacing(8),
+            width: theme.spacing(6),
+            height: theme.spacing(6),
         },
         borderRadius: "7px",
-        // width: "100%",
-        // height: "100%",
         objectFit: "cover",
     },
     hover: {
@@ -84,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
         overflow: "hidden",
         marginBottom: "1rem",
     },
-    cardActionRoot: { marginTop: "-3rem" },
+    cardActionRoot: { marginTop: "-5rem" },
 }));
 
 export default function UserCard({ user }) {
@@ -119,7 +117,7 @@ export default function UserCard({ user }) {
                         variant: "body1",
                     }}
                 />
-                <CardContent>
+                <CardContent style={{ marginTop: "-1rem" }}>
                     <Typography variant="h6" style={{ fontWeight: "400" }}>
                         {description}
                     </Typography>

@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 // import landingPageHeadImg from '../pages/landingPageHeadImg.png';
 import Image from "next/image";
 import Box from "@material-ui/core/Box";
+import LoginWithMicrosoft from "../pages/login";
 
 const useStyles = makeStyles((theme) => ({
     breaker: {
@@ -158,9 +159,9 @@ export default function LandingPage() {
                         Exercitationem ducimus doloribus voluptate odit atque
                         sit perferendis blanditiis repellat ipsam.
                     </p>
-                    <a href="ProductBrowser.html" className={classes.btn}>
-                        Login now &#8594;
-                    </a>
+                    <LoginWithMicrosoft>
+                        {/* <a className={classes.btn}>Login now &#8594;</a> */}
+                    </LoginWithMicrosoft>
                 </div>
                 <div class="col-2">
                     {/* <a href="order-placement.html"> */}
@@ -255,7 +256,7 @@ export default function LandingPage() {
                             <h4>
                                 If you feel that finding teammates on Canvas or
                                 RMIT Society on Facebook , this web application
-                                helps you solve this problem.{" "}
+                                helps you solve this problem.
                             </h4>
                         </Grid>
                     </Grid>
@@ -264,9 +265,9 @@ export default function LandingPage() {
             <div className={classes.bottom}>
                 <br></br>
                 <h1>Let's work together</h1>
-                <a href="ProductBrowser.html" className={classes.btn}>
-                    Join now &#8594;
-                </a>
+                <LoginWithMicrosoft>
+                    {/* <a className={classes.btn}>Login now &#8594;</a> */}
+                </LoginWithMicrosoft>
             </div>
         </div>
     );

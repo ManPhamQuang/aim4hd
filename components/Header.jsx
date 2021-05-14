@@ -233,6 +233,7 @@ function DesktopHeader({ enqueueSnackbar }) {
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
+
     const loginWithMicrosoft = (
         <MicrosoftLogin
             clientId="846fecbc-f462-4716-8d6f-1e7f0682b998"

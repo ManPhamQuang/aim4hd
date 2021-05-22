@@ -35,21 +35,6 @@ const getUser = async (_id) => {
     return post.data.data;
 };
 
-const history = {
-    images: [
-        {
-            link:
-                "https://cdn.slidesharecdn.com/ss_thumbnails/d8b0f189-3db0-4cf3-9691-ce34a7d0f9b0-150714050544-lva1-app6891-thumbnail-4.jpg?cb=1436850363",
-            title: "GPA",
-        },
-        {
-            link:
-                "https://phlebotomyscout.com/wp-content/uploads/2019/09/phlebotomy-certification.jpg",
-            title: "Certification",
-        },
-    ],
-};
-
 export async function getStaticProps({ params }) {
     let res = await getUser(params._id);
     return {

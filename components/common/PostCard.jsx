@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     titleLink: {
         // color: theme.palette.primary,
         // backgroundColor: theme.palette.primary,
-        fontWeight: "bold",
+        fontWeight: "420",
         textDecoration: "none",
         "&:hover": {
             cursor: "pointer",
@@ -254,19 +254,6 @@ function PostCard({
                 }
                 action={
                     <>
-                        <Hidden xsDown>
-                            {/* desktop */}
-                            {requiredSkills.map((skill, idx) => {
-                                if (idx < 4) {
-                                    return (
-                                        <SkillBadge
-                                            key={skill.name}
-                                            label={skill.name}
-                                        />
-                                    );
-                                }
-                            })}
-                        </Hidden>
                         {context.user && context.user._id == author._id ? (
                             <>
                                 <IconButton
@@ -315,11 +302,12 @@ function PostCard({
                 subheader={author.school}
             />
             <CardContent className={classes.content}>
-                <Typography variant="h5" component="h2">
-                    {title} - <AimBadge aiming={aiming} />
+                <Typography variant="h6" component="h2">
+                    {title} - {course.name} - {course.code} -{" "}
+                    <AimBadge aiming={aiming} />
                 </Typography>
 
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant="body1" style={{ marginTop: "0.5rem" }}>
                     {content}
                 </Typography>
                 <Link href={`/posts/${_id}`}>
@@ -329,12 +317,35 @@ function PostCard({
                             textDecoration: "none",
                         }}
                     >
-                        {" "}
-                        <Typography className={classes.titleLink}>
-                            Read more
+                        <Typography
+                            variant="body1"
+                            className={classes.titleLink}
+                            style={{ marginTop: "0.5rem" }}
+                        >
+                            ...Read more
                         </Typography>{" "}
                     </a>
                 </Link>
+                <Typography
+                    variant="body1"
+                    style={{ marginTop: "0.5rem" }}
+                    className={classes.titleLink}
+                >
+                    Required Skills:{" "}
+                    <Hidden xsDown>
+                        {/* desktop */}
+                        {requiredSkills.map((skill, idx) => {
+                            if (idx < 4) {
+                                return (
+                                    <SkillBadge
+                                        key={skill.name}
+                                        label={skill.name}
+                                    />
+                                );
+                            }
+                        })}
+                    </Hidden>
+                </Typography>
             </CardContent>
             <div
                 style={{
@@ -427,15 +438,7 @@ function PostCard({
                     })}
                 </Hidden>
             </CardActions>
-            <List>
-                <ListItem>
-                    {course ? (
-                        <ListItemText>
-                            {course.name} - {course.code}
-                        </ListItemText>
-                    ) : null}
-                </ListItem>
-            </List>
+
             {context.user ? (
                 <React.Fragment>
                     {isAuthor() ? null : (

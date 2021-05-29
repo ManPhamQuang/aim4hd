@@ -92,22 +92,6 @@ export default function Home() {
                 <Filter aiming={aiming} setAiming={setAiming} />
             </Grid>
             <Grid item xs={11} md={7}>
-                <TextField
-                    id="filled-search"
-                    label="Search"
-                    type="search"
-                    variant="filled"
-                    fullWidth
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
                 <Posts
                     posts={posts}
                     aiming={aiming.join()}

@@ -303,7 +303,7 @@ function PostCard({
             />
             <CardContent className={classes.content}>
                 <Typography variant="h6" component="h2">
-                    {title} - {course.name} - {course.code} -{" "}
+                    {title} - {course?.name} - {course?.code} -{" "}
                     <AimBadge aiming={aiming} />
                 </Typography>
 

@@ -73,13 +73,15 @@ function UserProfile({
 
     const patterns = {
         github: /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_]{1,25}$/gim,
-        facebook: /(https?:\/\/)?(www\.)?(facebook|fb|m\.facebook)\.(com|me)\/[\W\S_]{1,25}$/gim,
-        linkedin: /(ftp|http|https):\/\/?((www|\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+        facebook:
+            /(https?:\/\/)?(www\.)?(facebook|fb|m\.facebook)\.(com|me)\/[\W\S_]{1,25}$/gim,
+        linkedin:
+            /(ftp|http|https):\/\/?((www|\w\w)\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
         // instagram: /(?:https?:)?\/\/(?:www\.)?(?:instagram\.com|instagr\.am)\/(?P<username>[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?)/,
         instagram: /^(https?:\/\/)?(www\.)?instagram\.com\/[\W\S_]{1,25}\/$/gim,
     };
     function validateUrl(value, expression) {
-        if (value == "") {
+        if (!value || value == "") {
             return true;
         }
         var regexp = new RegExp(expression);
